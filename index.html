@@ -488,22 +488,7 @@ const DD=[
 {type:"list",items:[
 "Native V2G-Unterstützung: ISO 15118-20 BPT direkt im Protokoll integriert – kein Workaround mehr nötig","Dynamic Tariffs: Echtzeit-Tarifinformationen vom CSMS an die EVSE (Basis für dynamische Strompreise am Ladepunkt)","Demand Response Integration: Standardisierte Schnittstelle für DSO-Direktsteuerung (OpenADR-Integration)","Certificate Management verbessert: automatisches Zertifikats-Lifecycle-Management für Plug & Charge","GridCodeCompliance: EVSE kann Netzanforderungen (FCR, aFRR) direkt über OCPP signalisieren","Energy Transfer Mode: explizite Modi für AC V1G, DC V1G, AC V2G, DC V2G, DC BPT","Transaction Event erweitert: neue Trigger und Felder für bidirektionale Ladesitzungen"
 ]},
-{type:"code",c:"// OCPP Versionsvergleich
-
-OCPP 1.6     → Marktstandard heute (80% aller EVSE in DACH)
-               JSON oder SOAP, begrenzte Security
-               
-OCPP 2.0.1   → Neues Deployment-Standard (wachsend)
-               Security Profiles 1–3, Smart Charging 2.0
-               Device Management, ISO 15118 vorbereitet
-               
-OCPP 2.1     → In Finalisierung (OCA, 2025)
-               Nativ V2G/BPT, Dynamic Tariffs
-               DSO-Integration, GridCode
-               Rückwärtskompatibel zu 2.0.1
-               
-Empfehlung:  2.0.1 jetzt lernen und deployen
-             2.1 beobachten – produktiv ab 2026/27"},
+{type:"code",c:"// OCPP Versionsvergleich\n\nOCPP 1.6     → Marktstandard heute (80% aller EVSE in DACH)\n               JSON oder SOAP, begrenzte Security\n               \nOCPP 2.0.1   → Neues Deployment-Standard (wachsend)\n               Security Profiles 1–3, Smart Charging 2.0\n               Device Management, ISO 15118 vorbereitet\n               \nOCPP 2.1     → In Finalisierung (OCA, 2025)\n               Nativ V2G/BPT, Dynamic Tariffs\n               DSO-Integration, GridCode\n               Rückwärtskompatibel zu 2.0.1\n               \nEmpfehlung:  2.0.1 jetzt lernen und deployen\n             2.1 beobachten – produktiv ab 2026/27"},
 {type:"list",items:[
 "Rückwärtskompatibilität: 2.1-CSMS kann 2.0.1-EVSE ansprechen – kein Bruch beim Upgrade","Rollout-Prognose DACH: erste produktive 2.1-Deployments erwartet ab 2026, breite Adoption 2027–2028","Lernstrategie: OCPP 2.0.1 vollständig beherrschen ist Pflicht – 2.1 als Erweiterung darauf aufbauen","OCA-Ressource: 2.1 Draft-Spec kostenlos auf openchargealliance.org verfügbar (englisch)"
 ]},
