@@ -1,0 +1,1481 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>⚡ EV Mastery System – CPO/eMSP DACH</title>
+<style>
+:root{--fd:"Gill Sans MT","Gill Sans","Century Gothic","Trebuchet MS",sans-serif;--fb:"Garamond",Georgia,serif;--fm:"Consolas","Courier New",monospace;--r:10px;--rs:6px}
+[data-theme="dark"]{--bg:#0c0f1a;--s:#141824;--s2:#1c2235;--s3:#262d40;--bd:#2d354a;--t:#e8ecf4;--t2:#8b93a8;--t3:#525b70;--ac:#00d68f;--ad:rgba(0,214,143,.12);--a2:#4d9fff;--l1:#00c2d4;--l2:#4d9fff;--l3:#a78bfa;--l4:#fbbf24;--l5:#f87171;--l6:#00d68f}
+[data-theme="light"]{--bg:#f0f2f8;--s:#fff;--s2:#f5f7ff;--s3:#e8ecf4;--bd:#d1d9e8;--t:#0d1117;--t2:#4a5568;--t3:#9aa0b0;--ac:#00a870;--ad:rgba(0,168,112,.1);--a2:#2563eb;--l1:#0891b2;--l2:#2563eb;--l3:#7c3aed;--l4:#d97706;--l5:#dc2626;--l6:#059669}
+[data-theme="black"]{--bg:#000000;--s:#111111;--s2:#1a1a1a;--s3:#242424;--bd:#333333;--t:#f5f5f5;--t2:#a0a0a0;--t3:#555555;--ac:#00ff9d;--ad:rgba(0,255,157,.1);--a2:#60a5fa;--l1:#22d3ee;--l2:#60a5fa;--l3:#c084fc;--l4:#fbbf24;--l5:#f87171;--l6:#00ff9d}
+[data-theme="white"]{--bg:#ffffff;--s:#ffffff;--s2:#f8f8f8;--s3:#efefef;--bd:#e0e0e0;--t:#111111;--t2:#555555;--t3:#aaaaaa;--ac:#007a50;--ad:rgba(0,122,80,.1);--a2:#1d4ed8;--l1:#0369a1;--l2:#1d4ed8;--l3:#6d28d9;--l4:#b45309;--l5:#b91c1c;--l6:#007a50}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--fb);background:var(--bg);color:var(--t);min-height:100vh;font-size:15px;line-height:1.65}
+.hdr{background:var(--s);border-bottom:1px solid var(--bd);padding:.6rem 1.25rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200}
+.logo{display:flex;align-items:baseline;gap:.5rem}
+.logo-b{font-size:1.25rem;line-height:1}
+.logo-n{font-family:var(--fd);font-size:1rem;font-weight:700;letter-spacing:.12em;color:var(--ac);text-transform:uppercase}
+.logo-t{font-size:.72rem;color:var(--t3);letter-spacing:.05em}
+.hdr-r{display:flex;align-items:center;gap:.75rem}
+.ov-prog{font-family:var(--fd);font-size:.72rem;color:var(--t3);display:flex;align-items:center;gap:.375rem}
+.ov-pct{color:var(--ac);font-weight:700}
+.tbtn{width:2rem;height:2rem;border-radius:50%;border:1px solid var(--bd);background:var(--s2);color:var(--t2);cursor:pointer;font-size:.875rem;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.tbtn:hover{background:var(--s3);color:var(--t)}
+.nav{background:var(--s);border-bottom:1px solid var(--bd);display:flex;padding:0 .75rem;overflow-x:auto;scrollbar-width:none;position:sticky;top:44px;z-index:199}
+.nav::-webkit-scrollbar{display:none}
+.nbtn{font-family:var(--fd);padding:.75rem 1rem;border:none;background:none;color:var(--t3);cursor:pointer;font-size:.78rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;white-space:nowrap;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .15s}
+.nbtn:hover{color:var(--t2)}
+.nbtn.active{color:var(--ac);border-bottom-color:var(--ac)}
+.main{max-width:860px;margin:0 auto;padding:1.5rem 1rem 3rem}
+.panel{display:none}
+.panel.active{display:block}
+.sh{margin-bottom:1.5rem}
+.st{font-family:var(--fd);font-size:1.375rem;font-weight:800;letter-spacing:-.01em;line-height:1.2}
+.ss{font-size:.875rem;color:var(--t2);margin-top:.25rem}
+.card{background:var(--s);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden;margin-bottom:.875rem}
+.ch{padding:1rem 1.125rem;display:flex;align-items:center;gap:.875rem;cursor:pointer;user-select:none;transition:background .15s}
+.ch:hover{background:var(--s2)}
+.cb{display:none;padding:.875rem 1.125rem 1.125rem;border-top:1px solid var(--bd)}
+.cb.open{display:block}
+.cvn{margin-left:auto;color:var(--t3);font-size:.75rem;transition:transform .2s;flex-shrink:0}
+.cvn.open{transform:rotate(90deg)}
+.bdg{font-family:var(--fd);font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.2rem .55rem;border-radius:999px;display:inline-flex;align-items:center}
+.pbar{height:4px;background:var(--s3);border-radius:999px;overflow:hidden}
+.pf{height:100%;background:var(--ac);border-radius:999px;transition:width .4s ease}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:.625rem;margin-bottom:1.375rem}
+.stat{background:var(--s);border:1px solid var(--bd);border-radius:var(--r);padding:.875rem;text-align:center}
+.stn{font-family:var(--fd);font-size:1.625rem;font-weight:900;color:var(--ac);line-height:1}
+.stl{font-family:var(--fd);font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;color:var(--t2);margin-top:.25rem}
+.pri{display:flex;gap:1rem;padding:.75rem 0;border-bottom:1px solid var(--bd)}
+.pri:last-child{border-bottom:none}
+.pn{font-family:var(--fd);font-size:1.5rem;font-weight:900;color:var(--ac);line-height:1;min-width:2rem}
+.pt{font-family:var(--fd);font-size:.875rem;font-weight:700;margin-bottom:.125rem}
+.px{font-size:.82rem;color:var(--t2)}
+.tls{display:flex;background:var(--s);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden;margin-bottom:1.375rem}
+.tlseg{flex:1;padding:.875rem .625rem;border-right:1px solid var(--bd);text-align:center}
+.tlseg:last-child{border-right:none}
+.tls-c{font-family:var(--fd);font-size:.75rem;font-weight:900;letter-spacing:.08em;margin-bottom:.2rem}
+.tls-m{font-family:var(--fm);font-size:.68rem;color:var(--t3)}
+.tls-ti{font-size:.7rem;color:var(--t2);margin-top:.2rem;display:none}
+@media(min-width:640px){.tls-ti{display:block}}
+.stg-title-row{display:flex;align-items:center;gap:.75rem;flex:1}
+.stg-code{font-family:var(--fd);font-size:.68rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase}
+.stg-title{font-family:var(--fd);font-size:.9rem;font-weight:700;flex:1}
+.stg-period{font-family:var(--fm);font-size:.72rem;color:var(--t3)}
+.stg-hours{font-family:var(--fm);font-size:.78rem;color:var(--ac);font-weight:700}
+.stabs{display:flex;gap:.375rem;margin-bottom:.875rem}
+.stab-btn{font-family:var(--fd);font-size:.72rem;font-weight:700;letter-spacing:.04em;padding:.25rem .625rem;border-radius:5px;border:1px solid var(--bd);background:var(--s2);color:var(--t2);cursor:pointer;transition:all .1s}
+.stab-btn.active{background:var(--s3);color:var(--t)}
+.stab-c{display:none}
+.stab-c.active{display:block}
+ul.thl{list-style:none}
+ul.thl li{padding:.3rem 0 .3rem 1.125rem;position:relative;font-size:.875rem;border-bottom:1px solid var(--bd)}
+ul.thl li:last-child{border-bottom:none}
+ul.thl li::before{content:"—";position:absolute;left:0;color:var(--t3)}
+ul.bml{list-style:none}
+ul.bml li{padding:.3rem 0 .3rem 1.25rem;position:relative;font-size:.875rem;border-bottom:1px solid var(--bd)}
+ul.bml li:last-child{border-bottom:none}
+ul.bml li::before{content:"✓";position:absolute;left:0;color:var(--ac);font-size:.8rem}
+.day-item{display:grid;grid-template-columns:1.125rem 2.5rem 1fr auto;gap:.625rem;align-items:start;padding:.625rem 0;border-bottom:1px solid var(--bd)}
+.day-item:last-child{border-bottom:none}
+.day-cb{width:1.125rem;height:1.125rem;accent-color:var(--ac);cursor:pointer;margin-top:.15rem}
+.day-wd{font-family:var(--fd);font-size:.72rem;font-weight:700;letter-spacing:.05em;color:var(--t3);text-transform:uppercase;padding-top:.15rem}
+.day-topic{font-family:var(--fd);font-size:.875rem;font-weight:700;color:var(--t)}
+.day-act{font-size:.8rem;color:var(--t2);margin-top:.1rem}
+.day-res{font-size:.75rem;color:var(--t3);margin-top:.125rem;font-style:italic}
+.day-min{font-family:var(--fm);font-size:.72rem;color:var(--t3);white-space:nowrap;padding-top:.15rem}
+.day-dc.done .day-topic,.day-dc.done .day-act{opacity:.4;text-decoration:line-through}
+.wk-sum{display:flex;align-items:center;gap:.75rem;font-family:var(--fd)}
+.wk-nb{font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--t3)}
+.wk-title{font-size:.9rem;font-weight:700;flex:1}
+.wk-pct{font-size:.75rem;color:var(--t3)}
+.wk-pbar{margin-top:.5rem}
+.fc-top{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:1rem;flex-wrap:wrap}
+.fc-filters{display:flex;gap:.375rem;flex-wrap:wrap}
+.fc-fb{font-family:var(--fd);font-size:.72rem;font-weight:700;letter-spacing:.05em;padding:.25rem .625rem;border-radius:5px;border:1px solid var(--bd);background:var(--s);color:var(--t2);cursor:pointer;transition:all .1s}
+.fc-fb:hover{background:var(--s2)}
+.fc-fb.active{background:var(--ac);color:#000;border-color:var(--ac)}
+.fc-sl{font-family:var(--fm);font-size:.78rem;color:var(--t3)}
+.fc-wrap{perspective:1200px;margin-bottom:1rem}
+.fc-scene{width:100%;height:280px;position:relative;transform-style:preserve-3d;transition:transform .55s cubic-bezier(.35,.9,.4,1);cursor:pointer}
+.fc-scene.flipped{transform:rotateY(180deg)}
+.fc-face{position:absolute;inset:0;backface-visibility:hidden;border-radius:var(--r);display:flex;flex-direction:column;padding:1.75rem}
+.fc-front{background:var(--s);border:1px solid var(--bd)}
+.fc-back{background:var(--s2);border:2px solid var(--ac);transform:rotateY(180deg)}
+.fc-stag{font-family:var(--fd);font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:auto}
+.fc-q{font-family:var(--fd);font-size:1.1rem;font-weight:700;text-align:center;line-height:1.45;margin:auto;max-width:90%}
+.fc-hint{font-size:.72rem;color:var(--t3);text-align:center;margin-top:auto}
+.fc-atitle{font-family:var(--fd);font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ac);margin-bottom:.625rem}
+.fc-alist{list-style:none;overflow-y:auto;flex:1}
+.fc-alist li{padding:.3rem 0 .3rem 1.25rem;position:relative;font-size:.875rem;border-bottom:1px solid var(--bd);line-height:1.4}
+.fc-alist li:last-child{border-bottom:none}
+.fc-alist li::before{content:"›";position:absolute;left:0;color:var(--ac);font-size:1rem;line-height:1.3}
+.fc-acts{display:flex;align-items:center;justify-content:space-between;gap:.75rem;margin-bottom:.875rem}
+.fc-nb{font-family:var(--fd);font-size:.8rem;padding:.5rem 1rem;border-radius:var(--rs);border:1px solid var(--bd);background:var(--s);color:var(--t);cursor:pointer;transition:all .1s}
+.fc-nb:hover:not(:disabled){background:var(--s2)}
+.fc-nb:disabled{opacity:.3;cursor:default}
+.fc-ctr{font-family:var(--fm);font-size:.875rem;color:var(--t2)}
+.fc-vbs{display:flex;gap:.75rem;justify-content:center;margin-bottom:1rem}
+.fc-vb{font-family:var(--fd);font-size:.875rem;font-weight:700;padding:.625rem 1.5rem;border-radius:var(--rs);border:none;cursor:pointer;transition:all .1s}
+.fc-ok{background:var(--ac);color:#000}
+.fc-ok:hover{filter:brightness(1.1)}
+.fc-rt{background:var(--s3);color:var(--t)}
+.fc-rt:hover{background:var(--bd)}
+.dd-sel{display:flex;gap:.5rem;margin-bottom:1.25rem;overflow-x:auto;scrollbar-width:none;padding-bottom:.25rem}
+.dd-sel::-webkit-scrollbar{display:none}
+.dd-sb{font-family:var(--fd);font-size:.78rem;font-weight:700;letter-spacing:.04em;padding:.5rem .875rem;border-radius:var(--rs);border:1px solid var(--bd);background:var(--s);color:var(--t2);cursor:pointer;white-space:nowrap;transition:all .1s}
+.dd-sb:hover{background:var(--s2);color:var(--t)}
+.dd-sb.active{background:var(--ac);color:#000;border-color:var(--ac)}
+.dd-p{display:none}
+.dd-p.active{display:block}
+.dd-st{font-family:var(--fd);font-size:.78rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ac);margin-bottom:.625rem;padding-bottom:.375rem;border-bottom:1px solid var(--ad)}
+.dd-tx{font-size:.9rem;color:var(--t);margin-bottom:.625rem;line-height:1.7}
+.dd-ul{list-style:none;margin-bottom:.75rem}
+.dd-ul li{padding:.3rem 0 .3rem 1.375rem;position:relative;font-size:.875rem;color:var(--t);border-bottom:1px solid var(--bd)}
+.dd-ul li:last-child{border-bottom:none}
+.dd-ul li::before{content:"▸";position:absolute;left:0;color:var(--ac);font-size:.75rem;top:.45rem}
+.code{font-family:var(--fm);font-size:.78rem;background:var(--bg);border:1px solid var(--bd);border-left:3px solid var(--ac);border-radius:var(--rs);padding:.875rem 1rem;white-space:pre;overflow-x:auto;color:var(--t);margin-bottom:.75rem;line-height:1.5}
+.dd-blk{margin-bottom:1.5rem}
+.rs-filt{display:flex;gap:.375rem;margin-bottom:1.25rem;flex-wrap:wrap}
+.rs-fb{font-family:var(--fd);font-size:.72rem;font-weight:700;letter-spacing:.05em;padding:.25rem .625rem;border-radius:5px;border:1px solid var(--bd);background:var(--s);color:var(--t2);cursor:pointer;transition:all .1s}
+.rs-fb:hover{background:var(--s2)}
+.rs-fb.active{background:var(--ac);color:#000;border-color:var(--ac)}
+.rs-item{display:grid;grid-template-columns:1.25rem auto 1fr 1.5rem;gap:.75rem;align-items:start;padding:.875rem 0;border-bottom:1px solid var(--bd)}
+.rs-item:last-child{border-bottom:none}
+.rs-cb{width:1.25rem;height:1.25rem;accent-color:var(--ac);cursor:pointer;margin-top:.15rem}
+.rs-bdg{font-family:var(--fd);font-size:.65rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:.15rem .45rem;border-radius:4px;white-space:nowrap;margin-top:.1rem}
+.rs-ti{font-family:var(--fd);font-size:.9rem;font-weight:700;margin-bottom:.1rem}
+.rs-ti.done{opacity:.45;text-decoration:line-through}
+.rs-au{font-size:.78rem;color:var(--t2);margin-bottom:.125rem}
+.rs-dc{font-size:.78rem;color:var(--t3);margin-bottom:.375rem}
+.rs-note{width:100%;background:var(--s2);border:1px solid var(--bd);border-radius:var(--rs);color:var(--t);font-family:inherit;font-size:.8rem;padding:.375rem .5rem;resize:none;min-height:2rem;transition:border-color .15s}
+.rs-note:focus{outline:none;border-color:var(--ac)}
+.rs-star{cursor:pointer;font-size:1.1rem;user-select:none;color:var(--s3);margin-top:.1rem;transition:color .15s}
+.rs-star.on{color:#fbbf24}
+.toast{position:fixed;bottom:1.5rem;right:1.5rem;background:var(--ac);color:#000;padding:.625rem 1.125rem;border-radius:8px;font-family:var(--fd);font-size:.875rem;font-weight:700;letter-spacing:.04em;opacity:0;transform:translateY(.5rem);transition:all .25s;pointer-events:none;z-index:999}
+.toast.show{opacity:1;transform:translateY(0)}
+.ibox{background:var(--ad);border:1px solid var(--ac);border-radius:var(--rs);padding:.75rem 1rem;font-size:.875rem;margin-bottom:1rem}
+.io-btn{font-family:var(--fd);font-size:.7rem;font-weight:700;letter-spacing:.04em;padding:.3rem .625rem;border-radius:5px;border:1px solid var(--bd);background:var(--s2);color:var(--t2);cursor:pointer;white-space:nowrap;transition:all .15s;display:inline-flex;align-items:center;gap:.25rem}
+.io-btn:hover{background:var(--s3);color:var(--t)}
+.prog-timeline{background:var(--s);border-bottom:2px solid var(--bd);padding:.875rem 1.25rem}
+.pt-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:.5rem}
+.pt-label{font-family:var(--fd);font-size:.78rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--t2)}
+.pt-pct{font-family:var(--fd);font-size:1.25rem;font-weight:900;color:var(--ac)}
+.pt-track{position:relative;height:10px;background:var(--s3);border-radius:999px;overflow:visible;margin-bottom:.625rem}
+.pt-fill{height:100%;background:linear-gradient(90deg,var(--l1) 0%,var(--l2) 20%,var(--l3) 40%,var(--l4) 60%,var(--l5) 80%,var(--l6) 100%);border-radius:999px;transition:width .6s ease;position:relative;min-width:0}
+.pt-fill::after{content:"";position:absolute;right:-6px;top:-4px;width:18px;height:18px;border-radius:50%;background:var(--ac);border:3px solid var(--bg);box-shadow:0 0 8px var(--ac);transition:right .6s ease}
+.pt-divider{position:absolute;top:-2px;width:2px;height:14px;background:var(--bg);border-radius:1px}
+.pt-stage-row{display:flex}
+.pt-seg{flex:1;text-align:center;font-family:var(--fd);font-size:.68rem;font-weight:700;letter-spacing:.06em;color:var(--t3);padding:.1rem 0;border-radius:3px;transition:all .2s}
+.pt-seg.done{color:var(--ac)}
+.pt-seg.current{color:var(--t);background:var(--ad)}
+@media(max-width:640px){.io-btn{font-size:.65rem;padding:.25rem .5rem}.hdr{flex-wrap:wrap;gap:.375rem}.pt-pct{font-size:1rem}}
+
+.sync-st{font-family:var(--fm);font-size:.72rem;transition:color .3s;white-space:nowrap}
+.setup-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:1000;display:flex;align-items:center;justify-content:center;padding:1rem}
+.setup-box{background:var(--s);border:1px solid var(--bd);border-radius:var(--r);padding:1.75rem;max-width:520px;width:100%}
+.setup-title{font-family:var(--fd);font-size:1.1rem;font-weight:800;margin-bottom:.875rem}
+.setup-desc{font-size:.875rem;color:var(--t2);margin-bottom:1.25rem;line-height:1.6}
+.setup-step{display:flex;gap:.875rem;align-items:flex-start;padding:.625rem 0;border-bottom:1px solid var(--bd)}
+.setup-step:last-of-type{border-bottom:none;margin-bottom:1rem}
+.step-n{font-family:var(--fd);font-size:.875rem;font-weight:900;color:var(--ac);min-width:1.25rem;padding-top:.1rem}
+.step-tx{font-size:.875rem;line-height:1.6}
+.step-tx a{color:var(--a2);text-decoration:none}
+.step-tx a:hover{text-decoration:underline}
+.token-inp{width:100%;background:var(--s2);border:1px solid var(--bd);border-radius:var(--rs);color:var(--t);font-family:var(--fm);font-size:.8rem;padding:.625rem .875rem;margin:.875rem 0 1rem;transition:border-color .15s}
+.token-inp:focus{outline:none;border-color:var(--ac)}
+.setup-btns{display:flex;gap:.625rem}
+.btn-connect{font-family:var(--fd);font-size:.875rem;font-weight:700;padding:.625rem 1.25rem;border-radius:var(--rs);border:none;background:var(--ac);color:#000;cursor:pointer;transition:filter .15s}
+.btn-connect:hover{filter:brightness(1.1)}
+.btn-later{font-family:var(--fd);font-size:.875rem;font-weight:600;padding:.625rem 1rem;border-radius:var(--rs);border:1px solid var(--bd);background:var(--s2);color:var(--t2);cursor:pointer}
+.btn-later:hover{background:var(--s3)}
+.token-msg{font-size:.8rem;margin-top:.75rem;padding:.5rem .75rem;border-radius:var(--rs)}
+.token-msg.ok{background:var(--ad);color:var(--ac);border:1px solid var(--ac)}
+.token-msg.err{background:rgba(248,113,113,.1);color:var(--l5);border:1px solid var(--l5)}
+.sync-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:currentColor;margin-right:.25rem;vertical-align:middle}
+@media(max-width:640px){.stats{grid-template-columns:repeat(2,1fr)}.fc-scene{height:320px}.tls{flex-wrap:wrap}.tlseg{min-width:33.33%}.hdr{padding:.5rem 1rem}.logo-t{display:none}.day-item{grid-template-columns:1.125rem 2.25rem 1fr auto}}
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="logo">
+    <span class="logo-b">⚡</span>
+    <span class="logo-n">EV Mastery</span>
+    <span class="logo-t">CPO/eMSP · DACH · 12 Monate</span>
+  </div>
+  <div class="hdr-r">
+    <span class="sync-st" id="syncSt"></span>
+    <button class="io-btn" onclick="showSetup()" title="Cloud-Sync einrichten">⚙ Sync</button>
+    <button class="tbtn" onclick="toggleTheme()" title="Hell/Dunkel">◑</button>
+  </div>
+</header>
+<div class="prog-timeline">
+  <div class="pt-header">
+    <span class="pt-label">Gesamtfortschritt</span>
+    <span class="pt-pct" id="ptPct">0%</span>
+  </div>
+  <div class="pt-track">
+    <div class="pt-fill" id="ptFill" style="width:0%"></div>
+    <div id="ptMarkers"></div>
+  </div>
+  <div class="pt-stage-row" id="ptStageRow"></div>
+</div>
+<nav class="nav">
+  <button class="nbtn active" onclick="showPanel('roadmap',this)">🗺 Roadmap</button>
+  <button class="nbtn" onclick="showPanel('wochenplan',this)">📅 Wochenplan</button>
+  <button class="nbtn" onclick="showPanel('deepdive',this)">🔬 Deep Dive</button>
+  <button class="nbtn" onclick="showPanel('flashcards',this)">🃏 Flashcards</button>
+  <button class="nbtn" onclick="showPanel('ressourcen',this)">📚 Ressourcen</button>
+  <button class="nbtn" onclick="showPanel('anleitung',this)">📖 Anleitung</button>
+</nav>
+<main class="main">
+  <div id="panel-roadmap" class="panel active"></div>
+  <div id="panel-wochenplan" class="panel"></div>
+  <div id="panel-deepdive" class="panel"></div>
+  <div id="panel-flashcards" class="panel"></div>
+  <div id="panel-ressourcen" class="panel"></div>
+  <div id="panel-anleitung" class="panel"></div>
+</main>
+<div class="toast" id="toast"></div>
+<script>
+// ═══ DATA ═══════════════════════════════════════════════════════
+
+const STAGES=[
+{id:1,code:"L1",title:"Elektrotechnisches Fundament",period:"Monat 1–2",hours:80,color:"--l1",
+themes:["Ohm'sches Gesetz, Kirchhoff: Spannungs- und Stromteiler","Wechselstrom, Drehstrom, Phasenverschiebung, cos(φ)","Leistung P=U×I, Energie kWh, Wirkungsgrad","Netzstruktur DACH: Höchst-/Hoch-/Mittel-/Niederspannung","Transformatoren, Netzschutz, RCD-Typen A/B/F","IEC 61851: Lademodi 1–4, CP/PP-Signal, Steckerstandards"],
+benchmarks:["Berechne Ladeleistung, -dauer und Energiemenge für jedes Szenario","Erkläre Drehstrom und Sternschaltung einem Nicht-Elektriker","Unterscheide Lademodus 1–4 mit je einem Praxisbeispiel","Beschreibe CP-Signalzustände A–F und ihre Bedeutung","Erkläre warum Typ-B RCD bei EV-Ladern nötig ist","Skizziere ein Ortsnetz vom Trafo bis zur Wallbox","Beantworte: Warum ist Typ-2-Stecker EU-Standard?"],
+resources:["Elektrotechnik für Einsteiger – Gregor Häberle (Buch)","The Simple Club – Elektrotechnik (YouTube)","VDE FNN Leitfaden Netzanschluss (PDF)","IEC 61851-1 Kurzfassung – CharIN/DEKRA","ElCom Jahresbericht Strommarkt (CH)","Bundesnetzagentur Monitoringberichte (DE)"]},
+{id:2,code:"L2",title:"Kerntechnologie: Laden & Batterie",period:"Monat 3–4",hours:100,color:"--l2",
+themes:["CCS, CHAdeMO, NACS: Protokolle, Leistungsklassen, Märkte","On-Board Charger OBC: Funktion, PFC, Limitierungen","Li-Ion Elektrochemie: Anode, Kathode, Interkalation","Zellchemien: NMC, LFP, NCA – Vor-/Nachteile, Trends 2025","BMS: Cell Balancing, SOC/SOH/SOP, Schutzmechanismen","Thermomanagement, Schnellladen, Alterungsmechanismen"],
+benchmarks:["Erkläre Unterschied AC- vs. DC-Laden physikalisch","Berechne C-Rate und Alterungseffekte bei hohem C","Vergleiche NMC vs. LFP: Kosten, Lebensdauer, Sicherheit","Erkläre SOH-Bestimmung und Second-Life-Kriterien","Analysiere ein EV-Datenblatt: Kapazität, OBC, Ladekurve","Erkläre warum DC-Laden ab 150kW Mittelspannung benötigt","Nenne 3 Degradationsmechanismen und Gegenmaßnahmen"],
+resources:["CharIN Technical Overview CCS (Whitepaper)","Battery Technology for Electric Vehicles – J. Warner (Buch)","Fraunhofer ISI: Batterietechnologien 2030 (Studie)","ISEA RWTH Aachen – Batterie-Grundlagen (Online-Kurs)","ev-database.org – Technische Specs aller EVs","BloombergNEF EV Outlook (Jahresbericht)"]},
+{id:3,code:"L3",title:"Protokolle, Standards & Netzintegration",period:"Monat 5–6",hours:100,color:"--l3",
+themes:["OCPP 1.6/2.0.1: Architektur, Nachrichten, Security Profiles","OCPI 2.2.1: Roaming, CDRs, Tokens, Hubs","ISO 15118: Plug & Charge, SLAC, Zertifikatsketten","Eichrecht: MessEG, MID, OCMF, Transparenz-Software","Smart Charging: Charging Profiles, Lastmanagement, §14a EnWG","Netzentgelte, Demand Response, DSO-Schnittstellen"],
+benchmarks:["Erkläre OCPP-Verbindungsaufbau und 5 wichtigste Nachrichten","Beschreibe OCPI-Roaming-Ablauf von Karte bis CDR","Erkläre Plug & Charge Zertifikatskette (5 Ebenen)","Nenne Unterschied Eichrecht DE vs. Schweiz MetV","Konfiguriere Smart Charging Profile für Wohngebäude","Erkläre §14a EnWG und was er für CPOs bedeutet","Beschreibe Netzanschlussprozess von A bis Z"],
+resources:["OCPP 2.0.1 Specification – OCA (kostenlos)","OCPI 2.2.1 Documentation – evroaming.io","ISO 15118 Zusammenfassung – CharIN (Whitepaper)","PTB Leitfaden Eichrecht im EV-Laden (PDF)","Ladenetz.de – Eichrecht FAQ","EVBox Smart Charging Guide (Whitepaper)"]},
+{id:4,code:"L4",title:"Business, Regulatorik & Operations",period:"Monat 7–8",hours:100,color:"--l4",
+themes:["CPO Business Case: CAPEX/OPEX-Struktur, Break-Even, KPIs","AFIR: Pflichten, Fristen, Ad-hoc-Zahlung, Preistransparenz","Eichrecht DE/AT/CH: Vergleich, Praktische Umsetzung","Förderprogramme: BEW, KfW 441, AFID, Kantonale CH","Roaming: Hubject, e-clearing.net, OCPI Integration","Operations: Monitoring, Incident Management, SLAs"],
+benchmarks:["Erstelle Business Case für 4-HPC-Ladepark (Break-Even)","Erkläre AFIR-Pflichten für neuen Autobahnstandort","Beschreibe OCMF-Signierung (eichrechtskonform)","Kombiniere BEW und KfW-Förderung für Projekt","Erkläre CPO ↔ eMSP Unterschied und Roaming via Hubject","Definiere 3 operative KPIs für CPO mit Benchmarks","Nenne Top-5 Risiken beim Betrieb öffentlicher Ladepunkte"],
+resources:["AFIR Verordnung (EU) 2023/1804 – EUR-Lex","BAFA: BEW Merkblatt (PDF)","KfW 441 Merkblatt (PDF)","BDEW Leitfaden Ladeinfrastruktur","Electrosuisse: E-Mobilität Schweiz Guide","Roland Berger EV Charging Report"]},
+{id:5,code:"L5",title:"Advanced: V2X, BESS & Energiemärkte",period:"Monat 9–10",hours:100,color:"--l5",
+themes:["V2G/V2H/V2L: Protokolle, Fahrzeuge, Marktreife DACH 2025","ISO 15118-20 BPT: AC/DC V2G Architektur","BESS: Architektur, Front-of-Meter vs. Behind-the-Meter","Peak Shaving, Arbitrage, FCR/aFRR-Vermarktung","Second-Life Batterien: SOH-Bewertung, Wirtschaftlichkeit","Regelenergiemärkte: EPEX SPOT, Ausschreibungen"],
+benchmarks:["Erkläre Top-3 Hürden für V2G in DACH (Lösungsansätze)","Berechne Peak-Shaving-Ersparnis für Ladepark (Zahlenbeispiel)","Beschreibe BESS-Architektur: PCS, BMS, EMS","Erkläre FCR vs. aFRR und wie EV-Pool teilnehmen kann","Bewerte ob Second-Life wirtschaftlich sinnvoll ist","Analysiere EPEX-Day-Ahead-Preisverlauf für Arbitrage","Erkläre ISO 15118-20 BPT: Unterschied AC/DC V2G"],
+resources:["ISO 15118-20 / V2G Zusammenfassung – CharIN","IRENA: Electricity Storage and Renewables (Bericht)","regelleistung.net – Regelenergie-Ausschreibungen DE","EPEX SPOT – Marktdaten","Fraunhofer UMSICHT: Second-Life Batterien (Studie)","The Mobility House – V2G Whitepaper"]},
+{id:6,code:"L6",title:"Expert & Thought Leadership",period:"Monat 11–12",hours:50,color:"--l6",
+themes:["EV-Markt DACH 2025–2030: Szenarien, Treiber, Hürden","CPO/eMSP Investitionsanalyse: Multiples, KPIs, Due Diligence","Preismodelle der Zukunft: Flatrate, dynamische Tarife","Konsolidierung: M&A-Trends im CPO-Sektor","Thought Leadership: Publizieren, Netzwerk, Policy-Einfluss","Persönliche Positionierung: Nische, Marke, Sichtbarkeit"],
+benchmarks:["15-Min-Vortrag 'EV-Laden DACH 2030' für Investoren","Erstelle Investment-Scorecard für CPO-Bewertung","Publiziere LinkedIn-Artikel mit ≥200 Reaktionen","Erkläre Chicken-and-Egg-Problematik und 3 Lösungsansätze","Nenne 5 M&A-Trends im CPO-Markt 2025/26","Definiere persönliche Expertennische im EV-Sektor","Werde als Experte zu Konferenz-Panel eingeladen"],
+resources:["BloombergNEF: EV Charging Market Outlook","McKinsey: Electric Vehicle & Charging (Studie)","AVERE: European EV Statistics","CharIN Summit Proceedings (Konferenz)","RMI: The EV Charging Opportunity (Bericht)","Mobilitätsakademie Schweiz – EV-Kurs (Online)"]}
+];
+
+const PRINCIPLES=[
+{n:1,title:"System-Denken",text:"Denke immer vom Netz bis zum Fahrzeug – kein Element ist isoliert."},
+{n:2,title:"Protokoll-Souveränität",text:"OCPP, OCPI und ISO 15118 sind dein täglich Brot. Verstehe sie tief, nicht oberflächlich."},
+{n:3,title:"Physik vor Buzzwords",text:"kW, kWh, C-Rate, Wirkungsgrad – das sind deine Werkzeuge, keine Fremdwörter."},
+{n:4,title:"Regulatorik als Hebel",text:"AFIR, Eichrecht und Netzentgelte sind nicht Hindernis, sondern Gestaltungsmasse."},
+{n:5,title:"Business Case First",text:"Jede technische Entscheidung hat eine finanzielle Konsequenz. Kenne beide Seiten."},
+{n:6,title:"Standards sind Macht",text:"Wer CharIN und OCA mitgestaltet, gestaltet den Markt. Engagiere dich aktiv."},
+{n:7,title:"Interoperabilität entscheidet",text:"Roaming über OCPI ist für eMSPs existenziell. Ohne es: Marktfragmentierung."},
+{n:8,title:"Grid ist Engpass #1",text:"Der Netzanschluss bremst jedes Projekt. Starte diesen Prozess so früh wie möglich."},
+{n:9,title:"Daten als Kapital",text:"Ladedaten, SOH-Analysen und Nutzermuster sind echte Wettbewerbsvorteile."},
+{n:10,title:"V2G ist unvermeidlich",text:"Bidirektionales Laden verändert Energiemärkte fundamental. Bereite dich jetzt vor."}
+];
+
+const WP=[
+{w:1,title:"Elektrotechnik-Grundlagen",days:[
+{d:"Mo",t:"Ohm & Kirchhoff",a:"Ohm'sches Gesetz, Kirchhoff'sche Gesetze, Serien-/Parallelschaltung verstehen",r:"YouTube: Elektrotechnik einfach erklärt – Grundlagen",u:"https://www.youtube.com/channel/UCyFX1F6hpkyXeEbLFURd8PA",m:60},
+{d:"Di",t:"Wechsel- & Drehstrom",a:"AC-Grundlagen, Drehstrom-Prinzip, Phasenverschiebung, cos(φ)",r:"Elektronik-Kompendium – Wechselstromtechnik",u:"https://www.elektronik-kompendium.de/sites/grd/0201031.htm",m:70},
+{d:"Mi",t:"Leistung & Energie rechnen",a:"P=U×I, kW vs. kWh, Wirkungsgrad, Praxis: Ladezeit 22kW-Lader berechnen",r:"Elektronik-Kompendium – Elektrische Leistung",u:"https://www.elektronik-kompendium.de/sites/grd/0201041.htm",m:60},
+{d:"Do",t:"Drehstromsysteme",a:"Sternschaltung, 3×400V, L1/L2/L3/N/PE, Schieflastgrenze 3,68kW/Phase",r:"YouTube: Drehstrom einfach erklärt (Stern- und Dreieckschaltung)",u:"https://www.youtube.com/watch?v=Gwwmgh_6XnY",m:70},
+{d:"Fr",t:"Transformatoren",a:"Funktion, Übersetzungsverhältnis, Ortsnetztransformator, Verluste",r:"VDE FNN – Technische Anschlussregeln (TAR) Übersicht",u:"https://www.vde.com/de/fnn/themen/tar",m:60},
+{d:"Sa",t:"Netzschutz & RCD",a:"FI-Schalter Typ A/B/F, Sicherungen, PE-Konzepte – warum Typ-B bei EV-Ladern?",r:"Elektronik-Kompendium – Fehlerstrom-Schutzschalter",u:"https://www.elektronik-kompendium.de/sites/grd/0205231.htm",m:45},
+{d:"So",t:"Review W1",a:"Alle Begriffe wiederholen, Lücken notieren, erste 7 Flashcards L1 starten",r:"Modul: Flashcards → Filter L1",u:"",m:45}]},
+{w:2,title:"Netzinfrastruktur DACH",days:[
+{d:"Mo",t:"Netzstruktur Überblick",a:"Höchst-/Hoch-/Mittel-/Niederspannung, Rollen ÜNB/VNB, Regelzonen DACH",r:"Swissgrid – Grundlagen des Schweizer Stromnetzes",u:"https://www.swissgrid.ch/de/home/newsroom/grundlagen.html",m:60},
+{d:"Di",t:"Netzbetreiber DACH",a:"VNBs kennenlernen: EWZ, BKW, Netz Zürich, Stadtwerke München, Wiener Netze",r:"ElCom – Schweizer Strommarkt & Netzbetreiber",u:"https://www.elcom.admin.ch/de/documentation.html",m:70},
+{d:"Mi",t:"Netzanschluss Prozess",a:"Antragsweg, Dokumente, Wartezeiten 12–36 Monate – Checkliste für CPO-Projekte",r:"VDE FNN – Digitalisierung Netzanschlussprozess",u:"https://www.vde.com/de/fnn/themen/tar/tar-niederspannung/digitalisierung-netzanschlussprozess",m:60},
+{d:"Do",t:"Lastprofile & Netzlast",a:"Standard-Lastprofile H0/G0, Jahreslastkurven, EV-Einfluss auf Ortsnetz",r:"BDEW – Elektromobilität & Stromnetz",u:"https://www.bdew.de/energie/elektromobilitaet/",m:70},
+{d:"Fr",t:"Netzentgelte Grundlagen",a:"Leistungspreis €/kW/a + Arbeitspreis €/kWh, 15-Min-Peak-Relevanz für CPOs",r:"Bundesnetzagentur – Netzentgelte Strom",u:"https://www.bundesnetzagentur.de/DE/Fachthemen/ElektrizitaetundGas/Netzzugang/Entgelte/start.html",m:60},
+{d:"Sa",t:"Regelenergie Überblick",a:"FCR/aFRR/mFRR, Ausschreibungen DE – Vorgeschmack für V2G & BESS",r:"regelleistung.net – Regelleistungsmarkt Deutschland",u:"https://www.regelleistung.net/regelleistung/public/pages/regelleistung.xhtml",m:45},
+{d:"So",t:"Case Study: Netzanschluss",a:"Selbst berechnen: 150kW DC-Ladepark – welche Netzebene, welcher Anschluss?",r:"Freitext-Übung mit gelernten Formeln",u:"",m:45}]},
+{w:3,title:"EV-Ökosystem & Marktstruktur",days:[
+{d:"Mo",t:"EV-Markt DACH 2025",a:"Zulassungszahlen, Marktanteile OEM, Infrastruktur-Kennzahlen CH/DE/AT",r:"VDA – Elektromobilität Zahlen & Fakten",u:"https://www.vda.de/de/themen/innovation-und-technik/elektromobilitaet",m:60},
+{d:"Di",t:"Rollen im Ökosystem",a:"OEM, CPO, eMSP, DSO/VNB, Aggregator, Fahrzeugnutzer – wer macht was?",r:"CharIN – Ladeinfrastruktur Ökosystem (deutsch)",u:"https://www.charin.global/de/",m:70},
+{d:"Mi",t:"CPO Geschäftsmodelle",a:"Öffentlich vs. privat, Wohngebäude, Arbeitgeber, Autobahn-HPC – Unterschiede",r:"Bundesverband eMobilität – Marktüberblick",u:"https://www.bem-ev.de/",m:60},
+{d:"Do",t:"eMSP Geschäftsmodelle",a:"Tarifmodelle, Roaming-Erlöse, App/Karte/RFID, Kundenbindung, ARPU",r:"Bundesnetzagentur – Ladesäulenregister & Marktdaten",u:"https://www.bundesnetzagentur.de/DE/Fachthemen/ElektrizitaetundGas/E-Mobilitaet/start.html",m:70},
+{d:"Fr",t:"Wettbewerb DACH",a:"Top-CPOs: EnBW mobility+, Migros, MOVE (CH), SMATRICS (AT), Fastned, IONITY",r:"ADAC – Ladeinfrastruktur & E-Mobilität",u:"https://www.adac.de/rund-ums-fahrzeug/elektromobilitaet/laden/",m:60},
+{d:"Sa",t:"Investitionslandschaft",a:"Wer investiert: Energieversorger als CPOs, OEM-Investments, Förderstrukturen",r:"Fraunhofer ISI – Elektromobilität Studien",u:"https://www.isi.fraunhofer.de/de/competence-topics/elektromobilitaet.html",m:45},
+{d:"So",t:"Netzwerk-Mapping",a:"Eigenes Ökosystem-Diagramm: Kunden, Partner, Konkurrenten, Regulatoren",r:"Freitext-Übung (Papier / eigenes Notizbuch)",u:"",m:45}]},
+{w:4,title:"Lademodi & Steckerstandards",days:[
+{d:"Mo",t:"IEC 61851 Lademodi",a:"Modi 1–4 im Detail: Stecker, Strom, Sicherheitsprotokoll, Anwendungsfall",r:"Ladenetz.de – Grundlagen Ladeinfrastruktur",u:"https://www.ladenetz.de/ladeinfrastruktur/",m:60},
+{d:"Di",t:"Steckertypen weltweit",a:"Typ 1/2, CCS Combo 1/2, CHAdeMO, GB/T, NACS – Verbreitung und Unterschiede",r:"CharIN – Steckerstandards & Normen (deutsch)",u:"https://www.charin.global/de/technology/",m:70},
+{d:"Mi",t:"CP/PP Signal Deep Dive",a:"PWM Tastverhältnis → Strom-Mapping, Zustände A–F, Proximity Pilot PP",r:"Elektronik-Kompendium – Ladekabel und Signalisierung",u:"https://www.elektronik-kompendium.de/sites/com/2107101.htm",m:60},
+{d:"Do",t:"AC-Laden Praxis",a:"Wallbox-Typen, OBC-Limitierungen 7/11/22kW, Schieflast, 1-/3-phasig",r:"KEBA – Wallbox KeContact Produktseite (deutsch)",u:"https://www.keba.com/de/emobility/products/ev-charging-solutions",m:70},
+{d:"Fr",t:"DC-Laden Praxis",a:"HPC 150–350kW, Kühlung, Leistungselektronik, Mittelspannungsanschluss",r:"Alpitronic – HYpercharger Produktseite (deutsch)",u:"https://www.alpitronic.de/de/",m:60},
+{d:"Sa",t:"EVSE Marktüberblick",a:"Anbieter DACH: ABB, Alpitronic, Heliox, Kempower, Siemens – Datenblätter lesen",r:"Bundesnetzagentur – Ladesäulenregister Karte",u:"https://www.bundesnetzagentur.de/DE/Fachthemen/ElektrizitaetundGas/E-Mobilitaet/Ladesaeulenkarte/start.html",m:45},
+{d:"So",t:"Review W3–W4",a:"Flashcards L1+L2 komplett, Stecker-Quiz selbst erstellen",r:"Modul: Flashcards → Filter L1, L2",u:"",m:45}]},
+{w:5,title:"Li-Ion Batterien Grundlagen",days:[
+{d:"Mo",t:"Elektrochemie Basics",a:"Anode/Kathode/Elektrolyt, Interkalation, Lade-/Entladereaktion",r:"ISEA RWTH Aachen – Batterietechnik Lehrmaterial",u:"https://www.isea.rwth-aachen.de/lehre/",m:60},
+{d:"Di",t:"Zellchemien Vergleich",a:"NMC, LFP, NCA, LTO: Energiedichte, Sicherheit, Lebensdauer, Kosten",r:"Fraunhofer ISI – Batterietechnologien Report (deutsch)",u:"https://www.isi.fraunhofer.de/de/competence-topics/batterien.html",m:70},
+{d:"Mi",t:"BMS Funktion & Aufbau",a:"Cell Balancing passiv/aktiv, SOC-Schätzung Coulomb Counting, Schutzfunktionen",r:"ISEA RWTH – Batteriemanagementsysteme Publikationen",u:"https://www.isea.rwth-aachen.de/publications/",m:60},
+{d:"Do",t:"SOC / SOH / SOP",a:"Definitionen, Messverfahren, EoL-Kriterien 80% SOH, Relevanz Second Life",r:"EV-Datenbank Deutschland – Technische Fahrzeugdaten",u:"https://ev-database.de",m:70},
+{d:"Fr",t:"Thermomanagement",a:"Liquid-Kühlung, Heizfolien, Thermal Runaway, Sicherheitskonzepte",r:"VDA – Batterietechnologie & Sicherheit",u:"https://www.vda.de/de/themen/innovation-und-technik/batterietechnologie",m:60},
+{d:"Sa",t:"Schnellladen & Alterung",a:"C-Rate-Auswirkungen, Lithium-Plating, Zyklus- vs. kalendarische Alterung",r:"ADAC – Batterieverschleiss & Haltbarkeit Praxistest",u:"https://www.adac.de/rund-ums-fahrzeug/elektromobilitaet/tests-technik/batterie-haltbarkeit/",m:45},
+{d:"So",t:"Spec-Sheets lesen",a:"3 Batterie-Datenblätter analysieren und technische Kennwerte vergleichen",r:"EV-Datenbank.de – Technische Specs aller Elektroautos",u:"https://ev-database.de",m:45}]},
+{w:6,title:"Regulatorik DACH",days:[
+{d:"Mo",t:"EU Regulatorik Überblick",a:"AFIR, RED II, EPBD (Gebäuderichtlinie): was gilt wo, wann, für wen?",r:"EUR-Lex – AFIR Verordnung 2023/1804 (deutsch)",u:"https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=CELEX:32023R1804",m:60},
+{d:"Di",t:"Eichrecht Deutschland",a:"MessEG §3, MID-Konformität, OCMF-Format, Transparenz-Software Pflicht DE",r:"PTB – Leitfaden Eichrecht an Ladesäulen",u:"https://www.ptb.de/cms/ptb/fachabteilungen/abteilung9/fb-93/ladesaeulen.html",m:70},
+{d:"Mi",t:"Regulatorik Schweiz",a:"EnG, MetV (Messung), NetzG – kein striktes Eichrecht wie DE, aber OCMF sinnvoll",r:"ElCom – Regulierung Schweizer Strommarkt",u:"https://www.elcom.admin.ch/de/regulierung.html",m:60},
+{d:"Do",t:"Regulatorik Österreich",a:"Elektrizitätswirtschaftsgesetz, Ladeinfrastruktur-VO, E-Kennzeichen AT",r:"BMK Österreich – E-Mobilität & Ladeinfrastruktur",u:"https://www.bmk.gv.at/themen/mobilitaet/e-mobilitaet.html",m:70},
+{d:"Fr",t:"Datenschutz im Laden",a:"DSGVO: Transaktionsdaten, RFID als personenbezogene Daten, Einwilligung",r:"BfDI – Datenschutz im Bereich Elektromobilität",u:"https://www.bfdi.bund.de",m:60},
+{d:"Sa",t:"Förderprogramme DACH",a:"BEW (BAFA DE), KfW 441, AFID (AT), Kantonale CH: ZH/BE/GE im Überblick",r:"BAFA – Bundesförderung Ladeinfrastruktur (BEW)",u:"https://www.bafa.de/DE/Energie/Energieeffizienz/Ladeinfrastruktur/ladeinfrastruktur_node.html",m:45},
+{d:"So",t:"Regulatorik-Matrix",a:"Eigene Tabelle erstellen: DE vs. AT vs. CH – Pflichten, Fristen, Förderung",r:"Freitext-Übung – eigene Zusammenfassung",u:"",m:45}]},
+{w:7,title:"Protokolle & Vernetzung",days:[
+{d:"Mo",t:"OCPP 1.6 Überblick",a:"Kern-Nachrichten: BootNotification, Authorize, StartTransaction, MeterValues",r:"Open Charge Alliance – OCPP Spezifikation (kostenlos)",u:"https://www.openchargealliance.org/downloads/",m:60},
+{d:"Di",t:"OCPI 2.2.1 Überblick",a:"Module: Tokens, Sessions, CDRs, Locations, Tariffs, Commands verstehen",r:"EVRoaming Foundation – OCPI Dokumentation",u:"https://evroaming.io/ocpi-background/",m:70},
+{d:"Mi",t:"Smart Charging Basics",a:"Charging Profiles OCPP, Lastmanagement Wohngebäude, §14a EnWG Überblick",r:"Bundesnetzagentur – §14a EnWG steuerbare Verbrauchseinrichtungen",u:"https://www.bundesnetzagentur.de/DE/Fachthemen/ElektrizitaetundGas/E-Mobilitaet/§14aEnWG/start.html",m:60},
+{d:"Do",t:"Branchennetzwerk",a:"Webinar oder Podcast anhören: The Mobility House, CharIN-Kanal",r:"The Mobility House – YouTube-Kanal (deutsch)",u:"https://www.youtube.com/@TheMobilityHouseDE",m:70},
+{d:"Fr",t:"LinkedIn Aufbau",a:"5 CPO/eMSP-Experten folgen, 1 Post kommentieren, Profil EV-Keywords setzen",r:"LinkedIn – Suche nach 'CPO eMSP OCPP DACH Schweiz'",u:"https://www.linkedin.com/search/results/people/?keywords=CPO%20eMSP%20DACH",m:60},
+{d:"Sa",t:"Gap-Analyse",a:"Was weiss ich sicher? Was unklar? Prioritätsliste für Stufe 2 aufstellen",r:"Freitext – eigenes Notizbuch / Zusammenfassung",u:"",m:45},
+{d:"So",t:"Community",a:"CharIN e.V., Bundesverband eMobilität, emobility-forum.de – registrieren und lesen",r:"CharIN e.V. – Mitgliedschaft & Community (deutsch)",u:"https://www.charin.global/de/",m:45}]},
+{w:8,title:"Abschluss & Review Stufe 1",days:[
+{d:"Mo",t:"Vollständiger Flashcard-Review",a:"Alle L1+L2 Karten (14) komplett, schwache Karten 2× wiederholen",r:"Modul: Flashcards → Filter Alle / Nochmals",u:"",m:70},
+{d:"Di",t:"Mock-Präsentation",a:"'CPO-Markt DACH in 10 Min für einen Investor' – schriftlich vorbereiten und üben",r:"Freitext – eigene Stichpunkte aus Wochen 1–7",u:"",m:70},
+{d:"Mi",t:"Stufe-2 Vorbereitung",a:"OCPP 2.0.1 Spec downloaden, Lernmaterial Stufe 2 sichten, Plan anpassen",r:"Open Charge Alliance – OCPP 2.0.1 Spezifikation",u:"https://www.openchargealliance.org/downloads/",m:60},
+{d:"Do",t:"LinkedIn Post schreiben",a:"'Was ich in Monat 1–2 über EV-Laden gelernt habe' – authentisch 150–300 Wörter",r:"LinkedIn – eigenes Profil & Post verfassen",u:"https://www.linkedin.com",m:70},
+{d:"Fr",t:"L1 Self-Assessment",a:"Alle 7 Skill-Benchmarks Stufe 1 prüfen – jeden ohne Notizen erklären können?",r:"Roadmap → Stufe 1 Benchmarks (in dieser App)",u:"",m:60},
+{d:"Sa",t:"Stufe 1 feiern 🎉",a:"Erfolg dokumentieren! Plan Stufe 2 finalisieren, Kalender eintragen",r:"Roadmap → Stufe 2 ansehen (in dieser App)",u:"",m:30},
+{d:"So",t:"Erholung & Transition",a:"Kein Pflichtprogramm – Podcast hören, News lesen, Energie tanken",r:"The Mobility House Podcast oder emobility-forum.de",u:"https://www.youtube.com/@TheMobilityHouseDE",m:30}]}
+];
+
+const FC=[
+{id:1,s:1,q:"Was ist die Leistungsformel für 1-phasige und 3-phasige Systeme?",a:["P = U × I (einphasig, in Watt)","3-phasig: P = √3 × U × I × cos(φ)","cos(φ) = Leistungsfaktor (Ziel: möglichst nahe 1,0)","Beispiel: 400V / 32A 3-phasig = 22 kW (bei cos φ=1)"]},
+{id:2,s:1,q:"Was ist der Unterschied zwischen kW und kWh?",a:["kW = Leistung (Schnelligkeit des Energieflusses)","kWh = Energie (Menge der übertragenen Energie)","Analogie: kW = Wasserhahn-Öffnung, kWh = Liter im Tank","50kWh Akku ÷ 11kW Lader = ~4,5h Ladezeit"]},
+{id:3,s:1,q:"Welche Lademodi definiert IEC 61851?",a:["Modus 1: Haushaltssteckdose, kein Schutzprotokoll","Modus 2: Haushaltssteckdose + ICCPD (In-Cable Control)","Modus 3: AC-Wallbox mit CP-Kommunikation (Standard)","Modus 4: DC-Laden via EVSE (CCS, CHAdeMO)"]},
+{id:4,s:1,q:"Was ist das CP-Signal und was codiert sein Tastverhältnis?",a:["PWM-Signal zwischen EVSE und EV (±12V, 1kHz)","Tastverhältnis = max. verfügbarer Ladestrom","Zustände: A (getrennt), B (verbunden), C (lädt aktiv)","16% DC ≈ 10A; 85% DC ≈ 63A (nach IEC 61851)"]},
+{id:5,s:1,q:"Was ist der Unterschied zwischen TN-S und TN-C Netz?",a:["TN-C: N und PE kombiniert als PEN-Leiter (ältere Anlage)","TN-S: N und PE vollständig getrennt (moderner Standard)","TN-C-S: PEN bis Hauptverteilung, dann N+PE getrennt","Wichtig: Typ-B RCD nötig wegen DC-Fehlerströmen bei EV"]},
+{id:6,s:1,q:"Welche Spannungsebenen und Ströme sind für DACH relevant?",a:["230V / 400V (50Hz), einphasig / dreiphasig","16A = 3,7kW | 32A = 7,4kW (1-ph) / 22kW (3-ph)","Schieflastgrenze DE/CH/AT: 3,68kW je Phase","Wallbox ≥22kW: 3-phasig / 32A-Absicherung erforderlich"]},
+{id:7,s:1,q:"Warum dominiert der Typ-2-Stecker in Europa?",a:["IEC 62196-2 Standard: 1- und 3-phasig möglich","CP + PP Kommunikation integriert im Stecker","EU-Pflicht seit 2013 für öffentliche AC-Ladepunkte","DC-Variante: CCS Combo 2 (Typ-2 + 2 DC-Pins unten)"]},
+{id:8,s:2,q:"Was ist CCS und wie unterscheidet sich Combo 2 von Combo 1?",a:["CCS = Combined Charging System (CharIN-Standard)","Combo 2 (EU): Typ-2 + 2 DC-Pins unten","Combo 1 (USA/Japan): J1772 + 2 DC-Pins","Leistung bis 350kW DC; High Level Communication via PLC"]},
+{id:9,s:2,q:"Wie funktioniert ein On-Board Charger (OBC)?",a:["Wandelt Netz-AC → DC für die Fahrzeugbatterie","Stufen: PFC (Power Factor Correction) + DC/DC-Wandler","Limitiert AC-Ladeleistung des EV (7 / 11 / 22kW)","Wirkungsgrad ~93–96%; Wärme wird abgeführt"]},
+{id:10,s:2,q:"Was bedeutet C-Rate und welche Werte beim Schnellladen typisch?",a:["C-Rate = Lade-/Entladerate relativ zur Kapazität","1C = Vollladung in 1 Stunde; 2C = in 30 Minuten","DC-Schnellladen: typisch 1,5–3C","Beispiel: 80kWh × 2C = 160kW Ladeleistung"]},
+{id:11,s:2,q:"Welche Zellchemien dominieren EV-Batterien 2025?",a:["NMC: hohe Energiedichte, Mittelklasse/Premium-EVs","LFP: günstig, sicher, langlebig, kein Kobalt – wächst stark","NCA: Tesla-spezifisch, hohe Performance","Trend: LFP-Massenmarkt, CATL/BYD dominieren global"]},
+{id:12,s:2,q:"Was macht ein Battery Management System (BMS)?",a:["Überwacht Zellspannungen, Temperaturen, Ströme","Cell Balancing: passiv (Wärme) oder aktiv (Umverteilung)","SOC-Schätzung via Coulomb Counting + Spannungskennlinie","Schutz: Über-/Unterspannung, Übertemperatur, Kurzschluss"]},
+{id:13,s:2,q:"Was ist der Unterschied zwischen SOC, SOH und SOP?",a:["SOC = State of Charge: Ladezustand 0–100%","SOH = State of Health: Kapazitätsverlust durch Alterung","SOP = State of Power: aktuelle Maximalleistungsfähigkeit","SOH <80% = typisches End-of-Life-Kriterium"]},
+{id:14,s:2,q:"Was ist der Grid-Unterschied zwischen AC- und DC-Laden?",a:["AC: Netz → Kabel → OBC im Fahrzeug → Batterie","DC: Netz → Gleichrichter in EVSE → direkt zur Batterie","DC: kein OBC-Limit, höhere Leistungen möglich","DC-Lader ab ~150kW benötigen Mittelspannungsanschluss"]},
+{id:15,s:3,q:"Was ist OCPP und welche Versionen sind für DACH relevant?",a:["Open Charge Point Protocol – Standard EVSE ↔ CSMS","1.6: JSON/SOAP, am weitesten verbreitet (Status Quo DACH)","2.0.1: Sicherheit, ISO 15118-Support, Smart Charging 2.0","Verbindung: persistenter WebSocket; SRPC-Protokoll"]},
+{id:16,s:3,q:"Was ist OCPI und wie funktioniert EV-Roaming damit?",a:["Open Charge Point Interface – Roaming-Protokoll","Verbindet CPO ↔ eMSP (direkt oder via Hub)","Module: Locations, Tokens, Sessions, CDRs, Tariffs","Hubs DACH: Hubject, e-clearing.net, Gireve (FR)"]},
+{id:17,s:3,q:"Was ist ISO 15118 und was ermöglicht es konkret?",a:["Fahrzeug-EVSE Kommunikationsstandard","Plug & Charge: Authentifizierung ohne App/Karte","Smart Charging: EV meldet Energieprofil an EVSE","ISO 15118-20: V2G / BPT (bidirektionales Laden)"]},
+{id:18,s:3,q:"Wie funktioniert Smart Charging in OCPP 2.0.1?",a:["CSMS sendet Charging Profile → EVSE begrenzt Leistung","Profile: TxDefaultProfile, TxProfile, MaxProfile","StackLevel: Höherer Level hat Vorrang","Einheit: Watt (W) oder Ampere (A) wählbar"]},
+{id:19,s:3,q:"Was ist das Eichrecht und was bedeutet es für CPOs in DE?",a:["Gesetzliche Pflicht: öffentliches Laden muss geeicht sein","Basis: MessEG §3 + MessEV + MID (EU-Messrichtlinie)","OCMF: JSON mit digitaler Signatur + geeichter Zählwert","Transparenz-Software: Kunde kann Messung selbst prüfen"]},
+{id:20,s:3,q:"Was ist Demand Response und welche Protokolle sind relevant?",a:["Laststeuerung der EVSE auf Netzbetreiberanforderung","Zweck: Netzstabilität, Spitzenlastabbau","Protokolle: OpenADR 2.0, §14a EnWG/CLS-Kanal (DE)","EVSE als flexible steuerbare Verbrauchseinrichtung"]},
+{id:21,s:3,q:"Was ist ein Netzanschlusskonzept?",a:["Technische Planung des Anschlusses ans öffentliche Netz","Aussteller: Verteilnetzbetreiber (VNB)","Inhalt: Anschlussleistung, Spannungsebene, Trafo","Kritisch: 12–36 Monate Wartezeit – so früh wie möglich!"]},
+{id:22,s:4,q:"Was ist AFIR und welche Kernpflichten schafft sie?",a:["EU-Verordnung 2023/1804 – Alternative Fuels Infrastructure","AC-Laden alle 60km Autobahn TEN-T (bis 2025)","HPC ≥150kW alle 60km auf TEN-T Kernkorridoren","Ad-hoc-Zahlung ohne App + kWh-Preis-Anzeigepflicht"]},
+{id:23,s:4,q:"Welche CAPEX-Positionen entstehen beim Aufbau eines Ladeparks?",a:["Hardware: 1.500–5.000 CHF/kW installierte Leistung","Netzanschluss: 5k€ (NS) bis 500k€ (Mittelspannung)","Tiefbau: 200–500€/m Kabelkanal + Fundamente","Förderung: BEW/KfW bis 40% Zuschuss möglich"]},
+{id:24,s:4,q:"Was ist der Unterschied zwischen CPO und eMSP?",a:["CPO: Charge Point Operator – besitzt/betreibt Hardware","eMSP: e-Mobility Service Provider – Endkundeninterface","Roaming via OCPI verbindet beide Rollen","Viele Unternehmen sind beides (vertikale Integration)"]},
+{id:25,s:4,q:"Wie berechnet man die Break-Even-Auslastung?",a:["Break-Even wenn: Erlöse = CAPEX-Annuität + OPEX","Durchschnitt DE 2024: 8–12% Auslastung (viele unrentabel)","Typisch rentabler Bereich: ≥18–22% Auslastung","Erlöse DC/HPC: 0,65–0,89€/kWh; AC: 0,35–0,55€/kWh"]},
+{id:26,s:4,q:"Wie funktionieren Netzentgelte und warum für CPOs kritisch?",a:["Entgelt für Netznutzung: Transport + Verteilung + Messung","Leistungspreis: €/kW/a, basiert auf 15-Min-Jahreshöchstlast","Lastspitzen managen = direkte Kostensenkung","DACH: stark regional unterschiedlich (je nach VNB)"]},
+{id:27,s:4,q:"Was ist ein CDR und was enthält er?",a:["Charge Detail Record = Abrechnungsdatensatz pro Sitzung","Enthält: kWh, Start/Ende-Zeit, Standort, Auth-Methode","Format: OCPI CDR-Objekt (JSON)","Eichrechtskonform: OCMF-Signatur erforderlich (DE/AT)"]},
+{id:28,s:5,q:"Was ist V2G und welches Protokoll ermöglicht es?",a:["Vehicle-to-Grid: EV speist Strom ins Netz zurück","Protokoll: ISO 15118-20 (BPT = Bidirectional Power Transfer)","AC V2G: bidirektionaler OBC im Fahrzeug nötig","DC V2G: Gleichrichter in EVSE, direkt aus Batterie"]},
+{id:29,s:5,q:"Was ist FCR und wie kann ein EV-Pool daran teilnehmen?",a:["FCR = Frequency Containment Reserve (Primärregelleistung)","Reaktionszeit <30 Sekunden auf Frequenzabweichung","EV-Pool via Aggregator: virtuelle Kraftwerke (VPP)","Mindestgrösse DE: 1MW poolbar; Erlös ~50–150 CHF/kW/a"]},
+{id:30,s:5,q:"Was ist Peak Shaving und wie berechnet man den Nutzen?",a:["Leistungsspitzen kappen → Netzentgelt-Leistungspreis sinkt","Formel: ΔPeak [kW] × Leistungspreis [€/kW/a] = Ersparnis/a","Beispiel: 100kW BESS × 80€/kW/a = 8.000€ Ersparnis/Jahr","ROI Peak Shaving: typisch 5–10 Jahre"]},
+{id:31,s:5,q:"Was ist ein BESS und welche Architekturen gibt es?",a:["Battery Energy Storage System – stationärer Batteriespeicher","Front-of-Meter: Netzvermarktung, Regelenergie, Arbitrage","Behind-the-Meter: Peak Shaving, Eigenverbrauch, USV","Chemie: LFP dominiert wegen Sicherheit + Zyklenlebensdauer"]},
+{id:32,s:5,q:"Was ist Arbitrage im Strommarkt für BESS?",a:["Strom günstig kaufen (Schwachlast/neg. Preise) → teuer verkaufen","Day-Ahead Markt (EPEX SPOT): Preise variieren täglich stark","BESS lädt bei negativen Preisen, entlädt bei Spitzenpreisen","Erlöspotenzial stark abhängig von Preisvarianz"]},
+{id:33,s:5,q:"Was sind Second-Life Batterien und wann sind sie wirtschaftlich?",a:["EV-Batterien nach EoL (SOH <80%) → stationäre Nutzung","30–50% günstiger als neue Batterien (nach Aufarbeitung)","Nutzungsdauer stationär: 2–8 weitere Jahre","Risiko: Zell-Heterogenität, Garantie, Qualitätssicherung"]},
+{id:34,s:6,q:"Was sind die Top-3 Hürden für V2G in DACH bis 2026?",a:["1. Regulatorik: Doppelbesteuerung zurückgespeister Energie","2. Standards: ISO 15118-20 Rollout bei EVSE und Fahrzeugen","3. OEM: Batterie-Garantieverlust bei bidirektionalem Betrieb","Prognose Massenmarkt: 2027–2029 realistisch"]},
+{id:35,s:6,q:"Wie bewertet man einen CPO als Investitionsobjekt?",a:["KPIs: Auslastung %, kWh/Punkt/Jahr, ARPU, NRR","Multiples: EV/EBITDA 12–20x (Infrastruktur-Charakter)","Marktposition: Standortqualität, Roaming-Netzwerk","Risiken: Regulatorik, Technologiewandel, Konkurrenz"]},
+{id:36,s:6,q:"Wie entwickeln sich EV-Ladepreismodelle bis 2030?",a:["Aktuell: kWh-Preis + Sitzungsgebühr (Standard)","Trend: Flatrate-Abos, dynamische Tarife, B2B-Managed","AFIR erzwingt: kWh-Preistransparenz, Ad-hoc ohne App","Differenzierung: Schnellladen-Premium 2–3× AC-Preis"]},
+{id:37,s:6,q:"Was ist Managed Charging?",a:["Koordinierte Steuerung von Ladevorgängen im Verbund","Netzbetreiber profitiert: Netzstabilität, Kapazitätsmanagement","CPO/Aggregator profitiert: Regelenergie-Erlöse, Betriebskosten","Fahrer profitiert: günstiger Strom in Schwachlastzeiten"]},
+{id:38,s:6,q:"Welche Konsolidierungstrends prägen den CPO-Markt 2025/26?",a:["Viele kleine CPOs nicht profitabel → Übernahmen","Energieversorger kaufen CPOs (vertikale Integration)","Grosse Player: EnBW, bp pulse, TotalEnergies, IONITY","DACH: nationaler Fokus vs. Pan-EU-Strategien"]},
+{id:39,s:6,q:"Was ist das 'Chicken-and-Egg'-Problem der Ladeinfrastruktur?",a:["Wenig EVs → kein Investment-Rendite → wenig Ladenetz","Wenig Ladenetz → Kaufhemmung → wenig EV-Wachstum","Lösung: Regulierung (AFIR), Förderung, OEM-Commitment","Analogie: Tankstellennetz der 1920er Jahre"],},
+{id:40,s:6,q:"Wie entwickelt sich der EV-Markt in DACH bis 2030?",a:["CH: 50% Neuzulassungen EV-Ziel 2030 (Bund)","DE: 1 Mio öffentliche Ladepunkte Ziel bis 2030","Hemmnis: Netzkapazität, Förderstopp DE 2023/24","Trend: LFP-Massenmarkt, chinesische OEMs DACH-Eintritt"]},
+{id:41,s:6,q:"Was ist Interoperabilität im EV-Laden?",a:["Jedes Fahrzeug lädt an jeder Station ohne Registrierung","Technisch: OCPP + OCPI + ISO 15118 + AFIR","Geschäftlich: Roaming-Verträge via Hubject / e-clearing","Ohne Interoperabilität: Fragmentierung, Marktversagen"]},
+{id:42,s:6,q:"Was unterscheidet einen Thought Leader von einem Experten?",a:["Experte: weiss viel – Thought Leader: prägt Diskussion","Aktiv publizieren: LinkedIn, Konferenzen, Whitepapers","Netzwerk: CharIN, AVERE, nationale Verbände (VDIK, TCS)","Einfluss: Policy-Konsultationen, Medien, Ausbildung"]}
+];
+
+const RS=[
+{id:1,s:1,ti:"Elektronik-Kompendium",au:"Patrick Schnabel",type:"Website",url:"https://www.elektronik-kompendium.de",dc:"Umfassendes deutsches Nachschlagewerk: Grundlagen, Wechselstrom, Drehstrom – kostenlos"},
+{id:2,s:1,ti:"YouTube: Elektrotechnik einfach erklärt",au:"Kanal: Elektrotechnik einfach erklärt",type:"YouTube",url:"https://www.youtube.com/channel/UCyFX1F6hpkyXeEbLFURd8PA",dc:"Deutschsprachiger Kanal mit über 100 Videos: Grundlagen, Gleichstrom, Wechselstrom, Messtechnik"},
+{id:3,s:1,ti:"VDE FNN Leitfaden Netzanschluss",au:"VDE (DE)",type:"PDF",url:"https://www.vde.com",dc:"Technischer Leitfaden Netzanschluss – Pflichtlektüre für CPO-Projekte"},
+{id:4,s:1,ti:"IEC 61851-1 Kurzfassung",au:"CharIN / DEKRA",type:"Standard",url:"https://www.charin.global",dc:"Lademodi 1–4, CP-Signal, Sicherheitsanforderungen – gute Zusammenfassung"},
+{id:5,s:1,ti:"ElCom Jahresbericht Strommarkt",au:"ElCom (CH)",type:"Bericht",url:"https://www.elcom.admin.ch",dc:"Schweizer Elektrizitätsmarkt: Zahlen, Struktur, Netzbetreiber"},
+{id:6,s:1,ti:"Bundesnetzagentur Monitoringberichte",au:"BNetzA (DE)",type:"Website",url:"https://www.bundesnetzagentur.de",dc:"Jährliche Berichte zu Strom, Gas, Ladenetz – exzellente Datenbasis"},
+{id:7,s:2,ti:"CharIN Technical Overview CCS",au:"CharIN e.V.",type:"Whitepaper",url:"https://www.charin.global",dc:"CCS, Combo-Stecker, Protokolle – offizielle Quellendokumentation"},
+{id:8,s:2,ti:"Fraunhofer ISI – Statusbericht Batterien 2030",au:"Fraunhofer ISI",type:"Studie",url:"https://www.isi.fraunhofer.de/de/competence-topics/batterien.html",dc:"Deutschsprachige Übersicht zu Batterietechnologien, Kosten, Marktentwicklung bis 2030"},
+{id:9,s:2,ti:"Fraunhofer ISI: Batterietechnologien 2030",au:"Fraunhofer ISI",type:"Studie",url:"https://www.isi.fraunhofer.de",dc:"Marktentwicklung, Kostenprojektionen, Chemie-Trends – kostenlos downloadbar"},
+{id:10,s:2,ti:"ISEA RWTH – Batterie-Grundlagen",au:"ISEA RWTH Aachen",type:"Online-Kurs",url:"https://www.isea.rwth-aachen.de",dc:"Kostenlose Materialien führender Batterieforschungsgruppe"},
+{id:11,s:2,ti:"ev-database.org",au:"EV Database",type:"Website",url:"https://ev-database.org",dc:"Technische Specs aller EVs: Kapazität, OBC, Ladekurven, Reichweite"},
+{id:12,s:2,ti:"VDA – Jahresbericht Elektromobilität",au:"Verband der Automobilindustrie (VDA)",type:"Bericht",url:"https://www.vda.de/de/presse/publikationen",dc:"Jährliche deutschsprachige Übersicht: EV-Markt DACH, Batteriekosten, Infrastrukturentwicklung"},
+{id:13,s:3,ti:"OCPP 2.0.1 Specification",au:"Open Charge Alliance (OCA)",type:"Spezifikation",url:"https://www.openchargealliance.org",dc:"Vollständige Protokollspezifikation – kostenlos, Pflichtlektüre für L3"},
+{id:14,s:3,ti:"OCPI 2.2.1 Documentation",au:"EVRoaming Foundation",type:"Spezifikation",url:"https://evroaming.io",dc:"Roaming-Protokoll: Tokens, Sessions, CDRs, Commands – auf GitHub verfügbar"},
+{id:15,s:3,ti:"ISO 15118 Zusammenfassung (CharIN)",au:"CharIN e.V.",type:"Whitepaper",url:"https://www.charin.global",dc:"Verständliche Erklärung von PnC, SLAC, Zertifikatsketten, V2G"},
+{id:16,s:3,ti:"PTB Leitfaden Eichrecht im EV-Laden",au:"PTB (DE)",type:"PDF",url:"https://www.ptb.de",dc:"Massgeblicher Leitfaden für eichrechtskonformes Laden in Deutschland"},
+{id:17,s:3,ti:"Ladenetz.de – Eichrecht FAQ",au:"Ladenetz.de",type:"Website",url:"https://www.ladenetz.de",dc:"Praktischer FAQ zu OCMF, Transparenz-Software, MID – für Practitioners"},
+{id:18,s:3,ti:"EVBox Smart Charging Guide",au:"EVBox",type:"Whitepaper",url:"https://www.evbox.com",dc:"Praxisnahe Erklärung von Load Management, OCPP Charging Profiles"},
+{id:19,s:4,ti:"AFIR Verordnung (EU) 2023/1804",au:"Europäische Kommission",type:"Verordnung",url:"https://eur-lex.europa.eu",dc:"Volltext – Pflichten, Fristen, Definitionen für öffentliche Ladeinfrastruktur"},
+{id:20,s:4,ti:"BAFA: BEW Bundesförderung",au:"BAFA (DE)",type:"PDF",url:"https://www.bafa.de",dc:"Bundesförderung Ladeinfrastruktur: Voraussetzungen, Antrag, Höhe"},
+{id:21,s:4,ti:"KfW 441 Merkblatt",au:"KfW (DE)",type:"PDF",url:"https://www.kfw.de",dc:"Förderung Ladestationen Wohngebäude – Tilgungszuschüsse bis 30%"},
+{id:22,s:4,ti:"BDEW Leitfaden Ladeinfrastruktur",au:"BDEW (DE)",type:"Guide",url:"https://www.bdew.de",dc:"Praxisleitfaden: Technik, Recht, Geschäftsmodelle für Energieversorger"},
+{id:23,s:4,ti:"Electrosuisse: E-Mobilität Schweiz",au:"Electrosuisse (CH)",type:"Guide",url:"https://www.electrosuisse.ch",dc:"Schweizer Normen, MetV, Förderprogramme Kantone"},
+{id:24,s:4,ti:"BDEW – Statusbericht Elektromobilität",au:"BDEW (DE)",type:"Studie",url:"https://www.bdew.de/energie/elektromobilitaet/",dc:"Deutschsprachige Marktanalyse: CPO/eMSP Entwicklung, Ladepunktausbau, Geschäftsmodelle DACH"},
+{id:25,s:5,ti:"ISO 15118-20 V2G Zusammenfassung",au:"CharIN e.V.",type:"Whitepaper",url:"https://www.charin.global",dc:"BPT, Zertifikatsketten, V2G-Anforderungen – verständlich erklärt"},
+{id:26,s:5,ti:"IRENA: Electricity Storage and Renewables",au:"IRENA",type:"Bericht",url:"https://www.irena.org",dc:"BESS-Technologie, Kosten, Anwendungen, Marktperspektiven – kostenlos"},
+{id:27,s:5,ti:"regelleistung.net",au:"ÜNBs DE",type:"Website",url:"https://www.regelleistung.net",dc:"Regelenergie-Ausschreibungen DE: FCR, aFRR, mFRR – aktuelle Preise"},
+{id:28,s:5,ti:"EPEX SPOT – Marktdaten",au:"EPEX SPOT",type:"Website",url:"https://www.epexspot.com",dc:"Day-Ahead und Intraday Strompreise – Basis für Arbitrage-Analysen"},
+{id:29,s:5,ti:"Fraunhofer UMSICHT: Second-Life Batterien",au:"Fraunhofer UMSICHT",type:"Studie",url:"https://www.umsicht.fraunhofer.de",dc:"SOH-Bewertung, Wirtschaftlichkeit, Sicherheit von Second-Life-Batterien"},
+{id:30,s:5,ti:"The Mobility House – V2G Whitepaper",au:"The Mobility House",type:"Whitepaper",url:"https://www.mobilityhouse.com",dc:"Praktische Einblicke in V2G-Implementierung von führendem Anbieter"},
+{id:31,s:6,ti:"Nationaler Leitplan Elektromobilität",au:"Bundesregierung Deutschland",type:"Bericht",url:"https://www.bundesregierung.de/breg-de/themen/klimaschutz/elektromobilitaet",dc:"Deutschsprachiger Leitplan: Ausbauziele, Marktentwicklung 2025–2030, Infrastrukturprogramme"},
+{id:32,s:6,ti:"Fraunhofer IAO – Elektromobilität Transformationsstudie",au:"Fraunhofer IAO / IAT",type:"Studie",url:"https://www.iao.fraunhofer.de/de/forschung/branchen-und-maerkte/mobilitaet.html",dc:"Deutschsprachige Transformationsstudie: CPO-Märkte, Geschäftsmodelle, Technologie-Roadmap DACH"},
+{id:33,s:6,ti:"AVERE: European EV Statistics",au:"AVERE (EU)",type:"Website",url:"https://www.avere.org",dc:"Europäische Statistiken: Zulassungen, Infrastruktur, Policy-Updates"},
+{id:34,s:6,ti:"CharIN Summit Proceedings",au:"CharIN e.V.",type:"Konferenz",url:"https://www.charin.global",dc:"Jährliche Konferenz: Vorträge zu Standards, V2G, Business, Policy"},
+{id:35,s:6,ti:"Agora Verkehrswende – Ladeinfrastruktur 2030",au:"Agora Verkehrswende",type:"Bericht",url:"https://www.agora-verkehrswende.de/veroeffentlichungen/",dc:"Deutschsprachige Analyse: Netzintegration, Ladeinfrastruktur-Ausbaupfade, Geschäftsmodelle 2030"},
+{id:36,s:6,ti:"Mobilitätsakademie Schweiz – EV-Kurs",au:"Mobilitätsakademie (CH)",type:"Online-Kurs",url:"https://www.mobilitaetsakademie.ch",dc:"Schweizer Kurs für E-Mobilität Professionals: Praxis, Recht, Technik DACH"}
+];
+
+const DD=[
+{id:"ocpp",ti:"OCPP 2.0.1",sub:"Protokoll-Architektur & Smart Charging",sections:[
+{t:"Architektur & Überblick",items:[
+{type:"text",c:"OCPP (Open Charge Point Protocol) ist der Industriestandard für die Kommunikation zwischen Ladestation (EVSE) und Backend (CSMS = Charge Station Management System). Entwickelt und gepflegt von der Open Charge Alliance (OCA)."},
+{type:"list",items:["Client-Server-Modell: EVSE ist Client, CSMS ist Server","Verbindung: persistenter WebSocket (wss:// für TLS-verschlüsselt)","Protokoll: JSON + SRPC (Simple Remote Procedure Call)","OCPP 2.0.1 erweitert 1.6 um: Security, Device Mgmt, ISO 15118, Smart Charging 2.0"]},
+{type:"code",c:"// CALL Nachricht (EVSE → CSMS)\n[2,\"uid-12345\",\"BootNotification\",{\n  \"chargingStation\":{\n    \"model\":\"Alpitronic HYC300\",\n    \"vendorName\":\"Alpitronic\",\n    \"firmwareVersion\":\"1.2.3\"\n  },\n  \"reason\":\"PowerUp\"\n}]\n\n// CALLRESULT (CSMS → EVSE)\n[3,\"uid-12345\",{\n  \"currentTime\":\"2025-05-19T08:00:00Z\",\n  \"interval\":300,\n  \"status\":\"Accepted\"\n}]"}
+]},
+{t:"Schlüsselnachrichten & Message Flows",items:[
+{type:"list",items:["BootNotification: Erste Nachricht beim Neustart → CSMS antwortet mit Interval + Status","StatusNotification: EVSE meldet Connectorstatus (Available, Occupied, Faulted, Unavailable)","TransactionEvent: Ersetzt Start/StopTransaction aus 1.6 – enthält Trigger, Sequenznummer, Meter","Heartbeat: EVSE signalisiert dem CSMS regelmässig Betriebsbereitschaft","MeterValues: Zählerstände mit Timestamp – OCMF-Daten für Eichrecht","RequestStartTransaction: CSMS startet Ladesitzung remote (z.B. aus App)","SetChargingProfile: CSMS sendet Leistungsbegrenzung an EVSE"]}
+]},
+{t:"Security Profiles 1–3",items:[
+{type:"list",items:["SP 1: HTTP Basic Auth + TLS (absolutes Minimum, nicht empfohlen für neue Deployments)","SP 2: HTTP Basic Auth + Client-Side TLS-Zertifikat (CSMS verifiziert EVSE – empfohlen)","SP 3: Mutual TLS – beide Seiten authentifizieren sich mit Zertifikat (höchste Sicherheit)","Empfehlung DACH: SP 2 als Minimum; SP 3 für öffentliche HPC-Netze","TLS 1.2+ verpflichtend; Zertifikatserneuerung muss automatisiert werden"]},
+{type:"code",c:"// OCPP 2.0.1 Security Profile Übersicht\n\nSP1: EVSE → CSMS [Basic Auth + TLS] \n  • Einfach zu implementieren\n  • CSMS kann EVSE nicht authentifizieren!\n  \nSP2: EVSE → CSMS [Basic Auth + TLS + Client Cert]\n  • CSMS verifiziert EVSE-Zertifikat\n  • Empfohlen für produktive Deployments\n  \nSP3: EVSE ↔ CSMS [Mutual TLS]\n  • Gegenseitige Authentifizierung\n  • Höchste Sicherheit, höchster Aufwand"}
+]},
+{t:"Smart Charging in OCPP 2.0.1",items:[
+{type:"text",c:"Smart Charging erlaubt dem CSMS, die Ladeleistung pro Connector oder Station zeitbasiert zu steuern – Basis für Lastmanagement, §14a EnWG und DSO-Integration."},
+{type:"list",items:["Charging Profile Typen: TxDefaultProfile, TxProfile, MaxProfile, ChargingStationMaxProfile","StackLevel: Höherer Level überschreibt niedrigeren (Priorisierung verschiedener Quellen)","ChargingSchedule: Zeitfenster mit Leistungslimits in Watt (W) oder Ampere (A)","Anwendung: Wohngebäude-Lastmanagement, Firmenparkplatz, §14a EnWG Steuerkanal"]},
+{type:"code",c:"// SetChargingProfile Beispiel\n{\n  \"id\": 1,\n  \"stackLevel\": 2,\n  \"chargingProfilePurpose\": \"TxProfile\",\n  \"chargingProfileKind\": \"Relative\",\n  \"chargingSchedule\": [{\n    \"id\": 1,\n    \"chargingRateUnit\": \"W\",\n    \"chargingSchedulePeriod\": [\n      {\"startPeriod\": 0,     \"limit\": 11000},\n      {\"startPeriod\": 3600,  \"limit\": 7400},\n      {\"startPeriod\": 7200,  \"limit\": 22000}\n    ]\n  }]\n}"}
+]},
+{t:"DACH-Kontext & Besonderheiten",items:[
+{type:"list",items:["Eichrecht DE: MeterValues müssen OCMF-signiert sein (MessEG §3) – CPOs müssen Firmware prüfen","§14a EnWG (DE): Steuerbare Verbrauchseinrichtungen → CLS-Kanal oder OCPP Smart Charging ab 2024","Interoperabilitätstests: CharIN Testfestival, OCPP-Plugfests – wichtig vor Go-Live","Migration 1.6→2.0.1: Gleichzeitiger Betrieb nötig – Backend muss beide Versionen unterstützen","Schweiz: MetV weniger streng, aber OCMF als Best Practice empfohlen","Österreich: MID-Pflicht ab 2022, ähnlich wie DE"]}
+]}
+]},
+{id:"business",ti:"CPO Business Case & Eichrecht",sub:"Kostenstruktur, Break-Even & Förderung",sections:[
+{t:"CAPEX-Struktur im Detail",items:[
+{type:"list",items:["AC-Wallbox (7–22kW): 500–2.000 CHF Hardware + 500–1.500 CHF Installation","DC-Lader 50kW: 15.000–35.000€ Hardware + 5.000–15.000€ Installation","HPC 150–350kW: 80.000–150.000€ Hardware + 20.000–80.000€ Installation","Netzanschluss: 5.000€ (Niederspannung) bis 500.000€ (Mittelspannung)","Tiefbau: 200–500€/m Kabelkanal + Fundamente + Erdarbeiten","Faustregel Gesamtprojekt: 1.500–5.000 CHF/kW installierte Leistung"]},
+{type:"code",c:"// Kostenbeispiel: 4× HPC 150kW Ladepark\n\nHardware (4× 150kW HPC):    480.000 €\nInstallation + Tiefbau:      120.000 €\nNetzanschluss (MS):          200.000 €\nBauplanung + Genehmigung:     40.000 €\nSoftware/Backend (3 Jahre):   15.000 €\n──────────────────────────────────────\nGesamt CAPEX:                855.000 €\nAbzgl. BEW Förderung (30%): -256.500 €\n══════════════════════════════════════\nNetto CAPEX:                 598.500 €"}
+]},
+{t:"OPEX-Struktur",items:[
+{type:"list",items:["Stromeinkauf: 0,12–0,25€/kWh (Grossabnehmer, PPA möglich)","Netzentgelte: 0,03–0,12€/kWh Arbeitspreis + Leistungspreis je nach VNB","CSMS/Backend: 2–8€/Ladepunkt/Monat je nach Anbieter und Funktionsumfang","Wartung & Service: 2–5% des CAPEX pro Jahr (Hardware-Verschleiss, Checks)","Zahlungsabwicklung: 2–4% der Transaktionen (Kreditkarte, App-Zahlungen)","Netzentgelt-Leistungspreis: oft 50–150€/kW/a – Peak Shaving zahlt sich aus!"]}
+]},
+{t:"Break-Even Analyse",items:[
+{type:"text",c:"Die Auslastung ist der kritischste Faktor für die Profitabilität eines Ladepunkts. Viele Standorte in DACH sind heute noch unter Break-Even."},
+{type:"list",items:["Durchschnitt DE 2024: ~8–12% Auslastung (viele Standorte nicht profitabel)","Break-Even: typisch 15–20% Auslastung (je nach Standort und Kostenstruktur)","Autobahn HPC: 25–40% Auslastung möglich – kürzere Break-Even-Zeit","Erlöse AC öffentlich: 0,35–0,55€/kWh | DC/HPC: 0,65–0,89€/kWh","Kritischer Hebel: Standortqualität × Marketing × Roaming-Anbindung","ROI typisch: 6–12 Jahre (stark standortabhängig)"]},
+{type:"code",c:"// Break-Even Beispielrechnung HPC-Säule 150kW\n\nJährliche Kosten (OPEX + CAPEX-Annuität):\n  CAPEX-Annuität (15 Jahre, 5%):  9.000 €/a\n  Strom + Netzentgelt:            8.000 €/a\n  Wartung + Backend:              4.000 €/a\n  Gesamt OPEX:                   21.000 €/a\n\nErlös pro kWh (Marge):           0,25 €/kWh\n8760h/a × 150kW × X% × 0,25€ = 21.000€\n→ Break-Even bei X = 6,4% Auslastung\n\n(Annahme: Säule voll genutzt wenn geladen)"}
+]},
+{t:"Eichrecht im Detail (DE/AT/CH)",items:[
+{type:"list",items:["DE: MessEG §3 + MessEV – Eichpflicht bei jeder öffentlichen Ladesitzung","MID-konforme Zähler pflicht: Siemens, Landis+Gyr, ABB (zugelassene Typen)","OCMF (Open Charge Metering Format): JSON mit RSA/ECDSA Signatur + geeichtem Zählerstand","Transparenz-Software: Kunden können Messung selbst auf Korrektheit prüfen (Pflicht DE)","Eichfrist: 8 Jahre (DE) – dann Neueichung oder Zähleraustausch nötig","Österreich: MID-Pflicht ab 2022, ähnlich wie DE, eichrechtskonform von Anfang an planen","Schweiz MetV: Messung muss korrekt sein, aber kein strenges OCMF-Pflicht – Best Practice empfohlen"]},
+{type:"code",c:"// OCMF Beispiel-Struktur (vereinfacht)\n{\n  \"FV\": \"1.0\",\n  \"GI\": \"ABB Terra AC\",\n  \"GS\": \"SN12345678\",\n  \"GV\": \"Fw1.23\",\n  \"PG\": \"T12345\",\n  \"RD\": [{\n    \"TM\": \"2025-05-19T08:15:00,000+0100 I\",\n    \"TX\": \"B\",\n    \"RV\": 1234.567,\n    \"RI\": \"1-0:1.8.0\",\n    \"RU\": \"kWh\",\n    \"RT\": \"DC\",\n    \"ST\": \"G\"\n  }],\n  \"SA\": \"MEQ...==\"  // Signatur\n}"}
+]},
+{t:"Förderstrategie DACH 2024/25",items:[
+{type:"list",items:["DE – BEW (BAFA): Gewerbliche Ladepunkte bis 40% Förderquote, Antrag VOR Baubeginn!","DE – KfW 441: Wohngebäude-Ladepunkte, Tilgungszuschuss bis 30%","AT – E-Ladeinfrastruktur-Förderung: BMK-Programm, regelmässige Ausschreibungen","CH – Kantonal: ZH (Energiefonds ZH), BE (AEK Kanton), GE (SIG-Förderung)","EU – CEF Transport: Grosse Korridorprojekte, Matching Funds","Kumulierungsregeln: BEW + KfW oft kombinierbar – immer aktuelles Merkblatt prüfen!","Strategie: Förderantrag als erstes in Projekt-Meilensteinplan eintragen"]}
+]}
+]},
+{id:"iso15118",ti:"ISO 15118 / Plug & Charge",sub:"Protokollarchitektur & DACH-Rollout",sections:[
+{t:"Architekturübersicht",items:[
+{type:"text",c:"ISO 15118 definiert die bidirektionale Kommunikation zwischen EV und EVSE für AC/DC-Laden. Es ermöglicht Plug & Charge (PnC) und bildet die Grundlage für Vehicle-to-Grid."},
+{type:"list",items:["ISO 15118-1: Allgemeine Anforderungen und Use Cases (Überblick)","ISO 15118-2: AC/DC V1G (unidirektional) – aktueller Marktstandard","ISO 15118-20: AC/DC V2G + BPT (bidirektional) – aktuell im Rollout","Vorgänger: DIN 70121 (weitgehend durch 15118-2 ersetzt, aber noch in Feld)","Physikalische Schicht: HomePlug Green PHY (PLC) über den CP-Leiter"]},
+{type:"code",c:"// ISO 15118 Kommunikationsstack\n\nLayer 7 (Anwendung):  ISO 15118-2 / 15118-20 Messages (XML/EXI)\nLayer 6 (Sitzung):    TLS 1.2/1.3\nLayer 5 (Transport):  TCP\nLayer 4 (Netz):       IPv6 Link-Local\nLayer 3 (Data Link):  HomePlug Green PHY\nLayer 1/2 (Physisch): CP-Leiter im CCS/Typ-2 Kabel"}
+]},
+{t:"Verbindungsaufbau: SLAC & IPv6",items:[
+{type:"list",items:["SLAC: Signal Level Attenuation Characterization – erkennt welche EVSE angeschlossen ist","Physisch: Power Line Communication (PLC) über CP-Leiter (nach IEC 61851-1)","SLAC Prozess: EVSE sendet SLAC_PARM_REQ → EV antwortet → Matching → Bestätigung","Nach SLAC: IPv6 Link-Local Adresse (via SLAAC) wird ausgehandelt","TCP-Verbindung aufbauen → TLS-Handshake → Zertifikatsprüfung","Zeitfenster sehr eng: Verbindung muss innerhalb ~8 Sekunden stehen","Fehlerquelle Praxis: Kabelqualität beeinflusst PLC-Signal stark!"]},
+{type:"code",c:"// SLAC Sequenz (vereinfacht)\n\nEVSE                    EV\n  |                     |\n  |--SLAC_PARM_REQ---->|\n  |<--SLAC_PARM_CNF----|  \n  |                     |\n  |--ATTEN_CHAR_IND--->|  (Signal-Messung)\n  |<--ATTEN_CHAR_RSP---|  \n  |\n  | [Match bestätigt]\n  |\n  |--- IPv6 RA ------->|\n  |<-- IPv6 RS --------|  \n  |                     |\n  |=== TLS Handshake ===|  → ISO 15118 läuft"}
+]},
+{t:"Zertifikatskette & PKI",items:[
+{type:"text",c:"Plug & Charge basiert auf einer Public Key Infrastructure (PKI). Alle Akteure – OEM, eMSP, CPO – müssen in dieser Vertrauenshierarchie integriert sein."},
+{type:"list",items:["1. V2G Root CA: Oberster Vertrauensanker (z.B. Hubject, national oder bilateral)","2. OEM Provisioning CA: Fahrzeughersteller-Zertifizierungsstelle","3. OEM Sub-CA: Aussteller des Fahrzeug-Provisioning-Zertifikats (eingebettet ab Werk)","4. Contract Certificate (eMSP): Bindung Fahrzeug-VIN an eMSP-Vertrag (OTA-Update)","5. SECC-Zertifikat (CPO): EVSE-seitige Authentifizierung via CPO-Sub-CA","Zertifikatserneuerung: Automatisch via PnC Certificate Installation Message (OTA)"]},
+{type:"code",c:"// PKI Hierarchie für Plug & Charge\n\nV2G Root CA\n├── OEM Provisioning CA\n│   └── OEM Sub-CA\n│       └── EV Provisioning Certificate (im Fahrzeug ab Werk)\n│\n├── Certificate Provisioning Service (CPS)\n│   └── Contract Certificate (Fahrer/eMSP-Vertrag)\n│\n└── CPO Sub-CA\n    └── SECC Certificate (Ladestation)"}
+]},
+{t:"Plug & Charge Ablauf",items:[
+{type:"list",items:["1. Kabel einstecken → SLAC → IPv6 Link-Local → TLS-Verbindung","2. ServiceDiscovery: EV fragt nach verfügbaren EVSE-Diensten","3. CertificateInstallation (optional): EV holt neues Vertragszertifikat vom CSMS","4. Authorization: EVSE verifiziert EV-Vertragszertifikat → kein RFID nötig!","5. ChargeParameterDiscovery: EV teilt Energiebedarf/Profil mit EVSE","6. PowerDelivery: Ladevorgang startet (EVSE schaltet Strom frei)","7. MeteringReceipt: Signierte Messwerte EVSE → EV (Abrechnungsbasis)","8. SessionStop + PowerDelivery (Stop): Sauberes Beenden der Sitzung"]}
+]},
+{t:"DACH-Rollout Status 2025",items:[
+{type:"list",items:["Fahrzeuge mit PnC-Support: Porsche Taycan/Macan, Audi e-tron, BMW iX/i4, Hyundai IONIQ 6","CPOs mit PnC: IONITY (alle Standorte), EnBW HPC-Strecken, teilweise bp pulse","Hub für DACH: Hubject als Plug & Charge Hub – PKI-Infrastruktur","Herausforderungen: Zertifikatsmanagement komplex, OEM/eMSP/CPO müssen koordinieren","Kosten für CPO: PKI-Integration ~50.000–200.000€ einmalig","Prognose: Standard bei allen Neufahrzeugen ab 2026/27 – CPOs sollten jetzt planen"]}
+]}
+]},
+{id:"v2g",ti:"V2G & BESS",sub:"Bidirektionales Laden & Energiespeicher",sections:[
+{t:"V2G Grundlagen",items:[
+{type:"text",c:"Vehicle-to-Grid (V2G) erlaubt dem EV, Energie aus der Batterie ins Netz zurückzuspeisen. Damit wird das Fahrzeug zum mobilen Energiespeicher mit enormem Systemwert."},
+{type:"list",items:["V2G: Fahrzeug → Stromnetz (bidirektional, kommerziell nutzbar)","V2H: Fahrzeug → Haus (Eigenverbrauchsoptimierung, Inselversorgung)","V2L: Fahrzeug → Steckdose an der EVSE (Baustelle, Camping, Not-Versorgung)","AC V2G: OBC im Fahrzeug muss bidirektional sein (wenige Modelle 2025)","DC V2G: Gleichrichter in EVSE, direkt aus Batterie (höhere Leistung, ISO 15118-20)","Protokoll: ISO 15118-20 BPT (Bidirectional Power Transfer) – im Rollout"]},
+{type:"code",c:"// V2G Energiefluss Übersicht\n\nNetz ←→ [EVSE/BESS] ←→ [EV-Batterie]\n\nModi:\n  G2V:  Netz  → EVSE → EV   (Standard-Laden)\n  V2G:  EV    → EVSE → Netz  (Rückspeisung)\n  V2H:  EV    → EVSE → Haus  (Eigenverbrauch)\n  V2L:  EV    → Steckdose    (Mobile Stromversorgung)\n\nISO 15118-20 BPT Parameter:\n  EVMaximumDischargePower, EVMaximumChargeEnergy,\n  DepartureTime, EnergyRequest, ..."}
+]},
+{t:"V2G Status DACH 2025",items:[
+{type:"list",items:["DC V2G Fahrzeuge: Hyundai IONIQ 5/6, KIA EV6 (DC V2G via CCS), BYD Atto 3 (V2L)","AC V2G: Nissan Leaf (CHAdeMO, veraltet), einige chinesische Modelle (Markteinführung)","V2H EVSE: Wallbox Quasar 2 (DC), E3/DC Hauskraftwerk, Fronius Wattpilot","Pilotnetzwerke 2024/25: LichtBlick Smart Charging (DE), Repower Pilot (CH)","Regulatorische Hürden DE: Netzentgelte auf Rückspeisung, Doppelbesteuerung","Prognose Massenmarkt: 2027–2029 nach ISO 15118-20 Rollout + Regulatorikklärung"]}
+]},
+{t:"BESS-Architektur am Ladepark",items:[
+{type:"text",c:"Ein stationärer Batteriespeicher (BESS) am Ladepark ermöglicht Netzentlastung, Kostenoptimierung und neue Erlösquellen. Kernkomponenten:"},
+{type:"list",items:["Batteriezellen → BMS (Battery Management System) – Schutz und Balancing","Power Conversion System (PCS): bidirektionaler Wechselrichter AC/DC","Energy Management System (EMS): Echtzeit-Optimierung aller Energieflüsse","Front-of-Meter: Netzvermarktung, Regelenergie, Arbitrage (hinter dem Zähler des VNB)","Behind-the-Meter: Peak Shaving, PV-Eigenverbrauch, Inselversorgung","Skalierung: Rack-Systeme (10–100kWh) bis Container-BESS (100kWh–100MWh)","Anbieter: CATL, BYD, Tesla Megapack, Fluence, Sonnen, E3/DC, Tesvolt"]},
+{type:"code",c:"// BESS Sizing Beispiel Ladepark\n\nSituation:\n  4× HPC 150kW = 600kW Peak-Bedarf\n  Netzanschluss: 400kW verfügbar\n  Netzentgelt-Leistungspreis: 80€/kW/a\n\nOhne BESS: Peak = 600kW → 200kW über Limit\nProblem: Starke Peaks → hoher Leistungspreis\n\nMit 200kW/400kWh BESS:\n  Peak begrenzt auf 400kW\n  Ersparnis: 200kW × 80€ = 16.000€/a\n  BESS-Kosten: ~180.000€ → ROI ~11 Jahre\n  + Arbitrage + FCR-Erlöse möglich!"}
+]},
+{t:"Geschäftsmodelle BESS am Ladepark",items:[
+{type:"list",items:["Peak Shaving: 15-Min-Jahreshöchstlast kappen → Netzentgelt-Leistungspreis senken","Arbitrage: BESS lädt bei günstigen/negativen Preisen → entlädt bei Spitzenpreisen","FCR-Vermarktung: BESS als Primärregelleistungsanlage (Mindestgrösse 1MW poolbar)","PV-Kombination: Überschuss-PV im BESS puffern → Eigenverbrauch erhöhen","Netzentlastung für DSO: Kapazitätszahlung für steuerbare Last (emerging)","USV-Funktion: Kritische Infrastruktur (Tankstelle, Krankenhaus) absichern","Kombination aller Erlösquellen = Stacking: deutlich bessere ROI"]}
+]},
+{t:"Second-Life Batterien",items:[
+{type:"list",items:["Kriterium: EV-Batterie < 80% SOH → zu wenig Reichweite → Second Life stationär","SOH-Bewertung: Kapazitätsmessung, Impedanzspektroskopie, Ladekurvenanalyse","Wirtschaft: 30–50% günstiger als Neubatterien (nach Aufarbeitungskosten)","Typische Second-Life-Nutzung: 2–8 weitere Jahre stationär bei moderatem Zyklieren","Herausforderung: Heterogenität der Rückläufer, fehlende OEM-Garantie, Qualitätssicherung","Marktplayer: Volkswagen (ID.3 Rückläufer), Renault, Autobatterie.com, Spiers New Technologies","Prognose: Markt wächst stark ab 2026–2028 mit ersten Massenrückläufern von frühen EVs"]}
+]}
+]}
+];
+
+// ═══ STORAGE ════════════════════════════════════════════════
+
+const LS={
+  get:(k)=>{try{return JSON.parse(localStorage.getItem(k)||'{}')}catch{return{}}},
+  set:(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch{}}
+};
+
+let wpDone=LS.get('ev_wp_done');
+let fcKnown=new Set(Object.keys(LS.get('ev_fc_known')));
+let rsData=LS.get('ev_rs_data');
+
+function saveWP(){LS.set('ev_wp_done',wpDone)}
+function saveFC(){const o={};fcKnown.forEach(k=>o[k]=1);LS.set('ev_fc_known',o)}
+function saveRS(){LS.set('ev_rs_data',rsData)}
+
+// ═══ THEME ══════════════════════════════════════════════════
+
+function toggleTheme(){
+  const cur=document.documentElement.getAttribute('data-theme');
+  const next=cur==='dark'?'light':'dark';
+  document.documentElement.setAttribute('data-theme',next);
+  LS.set('ev_theme',next);
+}
+
+function setTheme(t){
+  document.documentElement.setAttribute('data-theme',t);
+  LS.set('ev_theme',t);
+}
+
+function exportProgress(){
+  const data={wpDone,fcKnown:Object.fromEntries([...fcKnown].map(k=>[k,1])),rsData,exported:new Date().toISOString()};
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='ev-mastery-progress.json';
+  a.click();
+  showToast('📥 Fortschritt exportiert!');
+}
+
+function importProgress(input){
+  const file=input.files[0];
+  if(!file)return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    try{
+      const data=JSON.parse(e.target.result);
+      if(data.wpDone){wpDone=data.wpDone;saveWP()}
+      if(data.fcKnown){fcKnown=new Set(Object.keys(data.fcKnown));saveFC()}
+      if(data.rsData){rsData=data.rsData;saveRS()}
+      renderWochenplan();
+      renderFlashcards();
+      renderRessourcen();
+      updateOverall();
+      showToast('✓ Fortschritt importiert!');
+    }catch{showToast('Fehler beim Importieren');}
+  };
+  reader.readAsText(file);
+  input.value='';
+}
+
+// ═══ NAV ════════════════════════════════════════════════════
+
+function showPanel(id,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nbtn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+  btn.classList.add('active');
+}
+
+function toggleCard(id){
+  const cb=document.getElementById('cb-'+id);
+  const cv=document.getElementById('cv-'+id);
+  if(!cb||!cv)return;
+  const open=cb.classList.toggle('open');
+  cv.classList.toggle('open',open);
+}
+
+// ═══ TOAST ══════════════════════════════════════════════════
+
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2000);
+}
+
+// ═══ STAGE COLORS ═══════════════════════════════════════════
+
+const SC={1:'--l1',2:'--l2',3:'--l3',4:'--l4',5:'--l5',6:'--l6'};
+function sc(s){return `color:var(${SC[s]||'--ac'});background:rgba(var(${SC[s]||'--ac'}),0.08)`}
+function bc(s){return `background:color-mix(in srgb,var(${SC[s]}) 15%,var(--s2));color:var(${SC[s]})`}
+
+// ═══ RENDER: ROADMAP ════════════════════════════════════════
+
+function renderRoadmap(){
+  const el=document.getElementById('panel-roadmap');
+  const totalH=STAGES.reduce((a,s)=>a+s.hours,0);
+  el.innerHTML=`
+<div class="sh"><div class="st">⚡ EV Mastery System</div><div class="ss">Dein persönlicher 12-Monats-Lernpfad · CPO/eMSP · DACH · Expert-Level</div></div>
+<div class="stats">
+<div class="stat"><div class="stn">12</div><div class="stl">Monate</div></div>
+<div class="stat"><div class="stn">${totalH}h</div><div class="stl">Lernstunden</div></div>
+<div class="stat"><div class="stn">42</div><div class="stl">Flashcards</div></div>
+<div class="stat"><div class="stn">36</div><div class="stl">Ressourcen</div></div>
+</div>
+<div class="tls">${STAGES.map(s=>`<div class="tlseg"><div class="tls-c" style="color:var(${s.color})">${s.code}</div><div class="tls-m">${s.period}</div><div class="tls-ti">${s.hours}h</div></div>`).join('')}</div>
+${STAGES.map(s=>`
+<div class="card">
+<div class="ch" onclick="toggleCard('st${s.id}')">
+<div class="stg-title-row">
+<span class="bdg" style="background:color-mix(in srgb,var(${s.color}) 18%,var(--s2));color:var(${s.color})">${s.code}</span>
+<span class="stg-title">${s.title}</span>
+<span class="stg-period">${s.period}</span>
+<span class="stg-hours">${s.hours}h</span>
+</div>
+<span class="cvn" id="cv-st${s.id}">▶</span>
+</div>
+<div class="cb" id="cb-st${s.id}">
+<div class="stabs">
+<button class="stab-btn active" onclick="showStageTab('st${s.id}',0,this)">Kernthemen</button>
+<button class="stab-btn" onclick="showStageTab('st${s.id}',1,this)">Benchmarks</button>
+<button class="stab-btn" onclick="showStageTab('st${s.id}',2,this)">Ressourcen</button>
+</div>
+<div class="stab-c active" id="st${s.id}-tab0"><ul class="thl">${s.themes.map(t=>`<li>${t}</li>`).join('')}</ul></div>
+<div class="stab-c" id="st${s.id}-tab1"><ul class="bml">${s.benchmarks.map(b=>`<li>${b}</li>`).join('')}</ul></div>
+<div class="stab-c" id="st${s.id}-tab2"><ul class="thl">${s.resources.map(r=>`<li>${r}</li>`).join('')}</ul></div>
+</div>
+</div>`).join('')}
+<div class="card">
+<div class="ch" onclick="toggleCard('prin')">
+<span class="stg-title">🧠 Die 10 Kernprinzipien – Top 1% vs. Top 10%</span>
+<span class="cvn" id="cv-prin">▶</span>
+</div>
+<div class="cb" id="cb-prin">
+${PRINCIPLES.map(p=>`<div class="pri"><div class="pn">${p.n}</div><div><div class="pt">${p.title}</div><div class="px">${p.text}</div></div></div>`).join('')}
+</div>
+</div>`;
+}
+
+function showStageTab(stageId,idx,btn){
+  [0,1,2].forEach(i=>{
+    const el=document.getElementById(`${stageId}-tab${i}`);
+    if(el)el.classList.toggle('active',i===idx);
+  });
+  const par=btn.parentElement;
+  par.querySelectorAll('.stab-btn').forEach((b,i)=>b.classList.toggle('active',i===idx));
+}
+
+// ═══ RENDER: WOCHENPLAN ═════════════════════════════════════
+
+function wpKey(wi,di){return `w${wi+1}-d${di}`}
+
+function renderWochenplan(){
+  const el=document.getElementById('panel-wochenplan');
+  const totalDays=WP.reduce((a,w)=>a+w.days.length,0);
+  let doneDays=0;
+  WP.forEach((w,wi)=>w.days.forEach((_,di)=>{if(wpDone[wpKey(wi,di)])doneDays++}));
+  const pct=Math.round(doneDays/totalDays*100);
+  
+  el.innerHTML=`<div class="sh">
+<div class="st">📅 Wochenplan – Stufe 1</div>
+<div class="ss">8 Wochen · 56 Lerntage · täglich 30–70 Minuten · Elektrotechnisches Fundament + Kerntechnologie</div>
+</div>
+<div class="card" style="margin-bottom:1.25rem">
+<div style="padding:1rem 1.125rem">
+<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.5rem">
+<span style="font-family:var(--fd);font-size:.78rem;font-weight:700">Gesamtfortschritt Stufe 1</span>
+<span style="font-family:var(--fm);font-size:.78rem;color:var(--ac);font-weight:700">${doneDays}/${totalDays} Tage · ${pct}%</span>
+</div>
+<div class="pbar"><div class="pf" style="width:${pct}%"></div></div>
+</div>
+</div>
+${WP.map((w,wi)=>{
+  const wDone=w.days.filter((_,di)=>wpDone[wpKey(wi,di)]).length;
+  const wPct=Math.round(wDone/w.days.length*100);
+  const totalMin=w.days.reduce((a,d)=>a+d.m,0);
+  return `
+<div class="card">
+<div class="ch" onclick="toggleCard('w${wi}')">
+<div class="wk-sum">
+<span class="wk-nb">W${w.w}</span>
+<span class="wk-title">${w.title}</span>
+<span class="wk-pct">${wDone}/${w.days.length} · ${wPct}%</span>
+<span style="font-family:var(--fm);font-size:.72rem;color:var(--t3);margin-left:.25rem">${Math.round(totalMin/60*10)/10}h</span>
+</div>
+<span class="cvn" id="cv-w${wi}">▶</span>
+</div>
+<div class="cb" id="cb-w${wi}">
+<div class="wk-pbar pbar" style="margin-bottom:.875rem"><div class="pf" style="width:${wPct}%" id="wpbar-w${wi}"></div></div>
+${w.days.map((day,di)=>{
+  const key=wpKey(wi,di);
+  const done=!!wpDone[key];
+  return `<div class="day-item">
+<input type="checkbox" class="day-cb" ${done?'checked':''} onchange="toggleWPDay('${key}',${wi},'${wpKey(wi,di)}',this)" id="wp-${key}">
+<span class="day-wd">${day.d}</span>
+<div class="day-dc ${done?'done':''}" id="day-dc-${key}">
+<div class="day-topic">${day.t}</div>
+<div class="day-act">${day.a}</div>
+<div class="day-res">${day.u?`<a href="${day.u}" target="_blank" style="color:var(--a2);font-style:italic;font-size:.75rem;text-decoration:none">📖 ${day.r} ↗</a>`:`<span style="font-style:italic;font-size:.75rem;color:var(--t3)">📖 ${day.r}</span>`}</div>
+</div>
+<span class="day-min">${day.m}min</span>
+</div>`;
+}).join('')}
+</div>
+</div>`}).join('')}`;
+}
+
+function toggleWPDay(key,wi,fullKey,cb){
+  wpDone[key]=cb.checked;
+  saveWP();scheduleSave();
+  const dc=document.getElementById('day-dc-'+key);
+  if(dc)dc.classList.toggle('done',cb.checked);
+  updateWPProgress(wi);
+  updateOverall();
+  if(cb.checked)showToast('✓ Erledigt!');
+}
+
+function updateWPProgress(wi){
+  const w=WP[wi];
+  const done=w.days.filter((_,di)=>wpDone[wpKey(wi,di)]).length;
+  const pct=Math.round(done/w.days.length*100);
+  const pb=document.getElementById('wpbar-w'+wi);
+  if(pb)pb.style.width=pct+'%';
+  const header=document.querySelector(`#cb-w${wi} ~ .ch .wk-pct`)||
+    document.querySelector(`[id="cb-w${wi}"]`)?.previousElementSibling?.querySelector('.wk-pct');
+  // Refresh pct text in header
+  const cards=document.querySelectorAll('.card');
+  // update overall
+  const totalDays=WP.reduce((a,w)=>a+w.days.length,0);
+  let doneDays=0;
+  WP.forEach((w,wi2)=>w.days.forEach((_,di)=>{if(wpDone[wpKey(wi2,di)])doneDays++}));
+  const totalPct=Math.round(doneDays/totalDays*100);
+  const opbar=document.querySelector('.pf');
+  if(opbar)opbar.style.width=totalPct+'%';
+}
+
+// ═══ RENDER: DEEP DIVE ══════════════════════════════════════
+
+let ddActive=0;
+
+function renderDeepDive(){
+  const el=document.getElementById('panel-deepdive');
+  el.innerHTML=`<div class="sh">
+<div class="st">🔬 Deep Dive</div>
+<div class="ss">4 Kernthemen mit detaillierten technischen und kommerziellen Inhalten</div>
+</div>
+<div class="dd-sel">
+${DD.map((d,i)=>`<button class="dd-sb ${i===0?'active':''}" onclick="showDD(${i},this)">${d.ti}</button>`).join('')}
+</div>
+${DD.map((d,i)=>`
+<div class="dd-p ${i===0?'active':''}" id="ddp-${i}">
+<div style="margin-bottom:1.25rem">
+<div style="font-family:var(--fd);font-size:1.125rem;font-weight:800">${d.ti}</div>
+<div style="font-size:.875rem;color:var(--t2)">${d.sub}</div>
+</div>
+${d.sections.map(sec=>`
+<div class="card dd-blk">
+<div class="ch" onclick="toggleCard('dd${i}${sec.t.replace(/\s/g,'').substring(0,8)}')">
+<span style="font-family:var(--fd);font-size:.875rem;font-weight:700">${sec.t}</span>
+<span class="cvn" id="cv-dd${i}${sec.t.replace(/\s/g,'').substring(0,8)}">▶</span>
+</div>
+<div class="cb" id="cb-dd${i}${sec.t.replace(/\s/g,'').substring(0,8)}">
+${sec.items.map(item=>{
+  if(item.type==='text')return`<p class="dd-tx">${item.c}</p>`;
+  if(item.type==='list')return`<ul class="dd-ul">${item.items.map(x=>`<li>${x}</li>`).join('')}</ul>`;
+  if(item.type==='code')return`<div class="code">${escHtml(item.c)}</div>`;
+  return'';
+}).join('')}
+</div>
+</div>`).join('')}
+</div>`).join('')}`;
+}
+
+function escHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+
+function showDD(idx,btn){
+  ddActive=idx;
+  document.querySelectorAll('.dd-p').forEach((p,i)=>p.classList.toggle('active',i===idx));
+  document.querySelectorAll('.dd-sb').forEach((b,i)=>b.classList.toggle('active',i===idx));
+}
+
+// ═══ RENDER: FLASHCARDS ═════════════════════════════════════
+
+let fcFilter=0;
+let fcFiltered=[];
+let fcIdx=0;
+let fcFlipped=false;
+
+function getFilteredCards(){
+  return fcFilter===0?FC:FC.filter(c=>c.s===fcFilter);
+}
+
+function renderFlashcards(){
+  const el=document.getElementById('panel-flashcards');
+  const known=fcKnown.size;
+  el.innerHTML=`<div class="sh">
+<div class="st">🃏 Flashcards</div>
+<div class="ss">42 Karten · 7 pro Stufe · Selbststudie mit Fortschrittsspeicherung</div>
+</div>
+<div class="fc-top">
+<div class="fc-filters">
+<button class="fc-fb ${fcFilter===0?'active':''}" onclick="setFCFilter(0,this)">Alle (${FC.length})</button>
+${[1,2,3,4,5,6].map(i=>{
+  const cnt=FC.filter(c=>c.s===i).length;
+  return`<button class="fc-fb ${fcFilter===i?'active':''}" onclick="setFCFilter(${i},this)">L${i} (${cnt})</button>`;
+}).join('')}
+</div>
+<div class="fc-sl" id="fc-sl">Bekannt: <span style="color:var(--ac)">${known}</span> / ${FC.length}</div>
+</div>
+<div style="background:var(--s);border:1px solid var(--bd);border-radius:var(--r);padding:.625rem 1.125rem;margin-bottom:1rem">
+<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.375rem">
+<span style="font-family:var(--fd);font-size:.72rem;color:var(--t2)">Bekannt</span>
+<span style="font-family:var(--fm);font-size:.72rem;color:var(--ac)">${Math.round(known/FC.length*100)}%</span>
+</div>
+<div class="pbar"><div class="pf" id="fc-pf" style="width:${Math.round(known/FC.length*100)}%"></div></div>
+</div>
+<div class="fc-wrap" id="fc-wrap"></div>
+<div class="fc-acts">
+<button class="fc-nb" id="fc-prev" onclick="fcNav(-1)">← Zurück</button>
+<span class="fc-ctr" id="fc-ctr"></span>
+<button class="fc-nb" id="fc-next" onclick="fcNav(1)">Weiter →</button>
+</div>
+<div class="fc-vbs" id="fc-vbs" style="display:none">
+<button class="fc-vb fc-ok" onclick="fcVote(true)">✓ Gewusst</button>
+<button class="fc-vb fc-rt" onclick="fcVote(false)">↺ Nochmals</button>
+</div>`;
+  fcFiltered=getFilteredCards();
+  fcIdx=Math.min(fcIdx,Math.max(0,fcFiltered.length-1));
+  renderFCCard();
+}
+
+function renderFCCard(){
+  const wrap=document.getElementById('fc-wrap');
+  const ctr=document.getElementById('fc-ctr');
+  const vbs=document.getElementById('fc-vbs');
+  const prev=document.getElementById('fc-prev');
+  const next=document.getElementById('fc-next');
+  if(!wrap||fcFiltered.length===0){if(wrap)wrap.innerHTML='<div style="text-align:center;padding:2rem;color:var(--t3)">Keine Karten in dieser Auswahl.</div>';return;}
+  
+  const card=fcFiltered[fcIdx];
+  const known=fcKnown.has(String(card.id));
+  const stageColors={1:'--l1',2:'--l2',3:'--l3',4:'--l4',5:'--l5',6:'--l6'};
+  const sc=stageColors[card.s]||'--ac';
+  
+  fcFlipped=false;
+  wrap.innerHTML=`<div class="fc-scene" id="fc-scene" onclick="flipCard()">
+<div class="fc-face fc-front">
+<div class="fc-stag" style="color:var(${sc})">Stufe ${card.s} · Karte ${card.id} ${known?'✓ bekannt':''}</div>
+<div class="fc-q">${card.q}</div>
+<div class="fc-hint">Antwort anzeigen → tippen/klicken</div>
+</div>
+<div class="fc-face fc-back">
+<div class="fc-atitle">Antwort</div>
+<ul class="fc-alist">${card.a.map(a=>`<li>${a}</li>`).join('')}</ul>
+</div>
+</div>`;
+  
+  ctr.textContent=`${fcIdx+1} / ${fcFiltered.length}`;
+  if(prev)prev.disabled=fcIdx===0;
+  if(next)next.disabled=fcIdx===fcFiltered.length-1;
+  if(vbs)vbs.style.display='none';
+}
+
+function flipCard(){
+  const scene=document.getElementById('fc-scene');
+  if(!scene)return;
+  fcFlipped=!fcFlipped;
+  scene.classList.toggle('flipped',fcFlipped);
+  const vbs=document.getElementById('fc-vbs');
+  if(vbs)vbs.style.display=fcFlipped?'flex':'none';
+}
+
+function fcNav(dir){
+  fcIdx=Math.max(0,Math.min(fcFiltered.length-1,fcIdx+dir));
+  renderFCCard();
+}
+
+function fcVote(correct){
+  if(fcFiltered.length===0)return;
+  const card=fcFiltered[fcIdx];
+  if(correct){
+    fcKnown.add(String(card.id));
+    showToast('✓ Bekannt!');
+  } else {
+    fcKnown.delete(String(card.id));
+    showToast('↺ Zum Üben markiert');
+  }
+  saveFC();scheduleSave();
+  updateFCStats();
+  if(fcIdx<fcFiltered.length-1)fcIdx++;
+  renderFCCard();
+}
+
+function setFCFilter(f,btn){
+  fcFilter=f;
+  fcIdx=0;
+  document.querySelectorAll('.fc-fb').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  fcFiltered=getFilteredCards();
+  renderFCCard();
+}
+
+function updateFCStats(){
+  const known=fcKnown.size;
+  const sl=document.getElementById('fc-sl');
+  if(sl)sl.innerHTML=`Bekannt: <span style="color:var(--ac)">${known}</span> / ${FC.length}`;
+  const pf=document.getElementById('fc-pf');
+  if(pf)pf.style.width=Math.round(known/FC.length*100)+'%';
+}
+
+// ═══ RENDER: RESSOURCEN ═════════════════════════════════════
+
+let rsFilter=0;
+
+function renderRessourcen(){
+  const el=document.getElementById('panel-ressourcen');
+  const allDone=RS.filter(r=>(rsData[r.id]||{}).done).length;
+  el.innerHTML=`<div class="sh">
+<div class="st">📚 Ressourcen-Tracker</div>
+<div class="ss">36 Ressourcen · 6 pro Stufe · mit Priorität, Fortschritt und eigenen Notizen</div>
+</div>
+<div style="background:var(--s);border:1px solid var(--bd);border-radius:var(--r);padding:.875rem 1.125rem;margin-bottom:1rem">
+<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.375rem">
+<span style="font-family:var(--fd);font-size:.78rem;font-weight:700">Gelesen</span>
+<span style="font-family:var(--fm);font-size:.78rem;color:var(--ac)">${allDone} / ${RS.length}</span>
+</div>
+<div class="pbar"><div class="pf" id="rs-pf" style="width:${Math.round(allDone/RS.length*100)}%"></div></div>
+</div>
+<div class="rs-filt">
+<button class="rs-fb ${rsFilter===0?'active':''}" onclick="setRSFilter(0,this)">Alle</button>
+${[1,2,3,4,5,6].map(i=>`<button class="rs-fb ${rsFilter===i?'active':''}" onclick="setRSFilter(${i},this)">L${i}</button>`).join('')}
+</div>
+<div id="rs-list"></div>`;
+  renderRSList();
+}
+
+function renderRSList(){
+  const list=document.getElementById('rs-list');
+  if(!list)return;
+  const items=rsFilter===0?RS:RS.filter(r=>r.s===rsFilter);
+  const stageColors={1:'--l1',2:'--l2',3:'--l3',4:'--l4',5:'--l5',6:'--l6'};
+  list.innerHTML=items.map(r=>{
+    const d=rsData[r.id]||{};
+    const sc=stageColors[r.s]||'--ac';
+    return`<div class="rs-item">
+<input type="checkbox" class="rs-cb" ${d.done?'checked':''} onchange="rsToggle(${r.id},'done',this.checked)">
+<span class="rs-bdg" style="background:color-mix(in srgb,var(${sc}) 18%,var(--s2));color:var(${sc})">L${r.s}<br>${r.type}</span>
+<div>
+<div class="rs-ti ${d.done?'done':''}" id="rs-ti-${r.id}">${r.ti}</div>
+<div class="rs-au">${r.au}</div>
+<div class="rs-dc">${r.dc}</div>
+${r.url?`<a href="${r.url}" target="_blank" style="color:var(--a2);font-size:.75rem;text-decoration:none">🔗 Öffnen ↗</a>`:''}
+<textarea class="rs-note" rows="1" placeholder="Eigene Notizen..." onchange="rsToggle(${r.id},'note',this.value)">${d.note||''}</textarea>
+</div>
+<span class="rs-star ${d.starred?'on':''}" id="rs-star-${r.id}" onclick="rsToggleStar(${r.id})">★</span>
+</div>`;
+  }).join('');
+}
+
+function rsToggle(id,field,val){
+  if(!rsData[id])rsData[id]={};
+  rsData[id][field]=val;
+  scheduleSave();
+  if(field==='done'){
+    const ti=document.getElementById('rs-ti-'+id);
+    if(ti)ti.classList.toggle('done',val);
+    updateRSStats();
+    if(val)showToast('📚 Als gelesen markiert!');
+  }
+  saveRS();
+}
+
+function rsToggleStar(id){
+  if(!rsData[id])rsData[id]={};
+  rsData[id].starred=!rsData[id].starred;
+  const star=document.getElementById('rs-star-'+id);
+  if(star)star.classList.toggle('on',rsData[id].starred);
+  saveRS();
+  showToast(rsData[id].starred?'⭐ Priorität gesetzt':'Priorität entfernt');
+}
+
+function updateRSStats(){
+  const allDone=RS.filter(r=>(rsData[r.id]||{}).done).length;
+  const pf=document.getElementById('rs-pf');
+  if(pf)pf.style.width=Math.round(allDone/RS.length*100)+'%';
+}
+
+function setRSFilter(f,btn){
+  rsFilter=f;
+  document.querySelectorAll('.rs-fb').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderRSList();
+}
+
+// ═══ CLOUD SYNC (GitHub Gist) ══════════════════════════════
+
+let ghToken = '';
+let gistId = '';
+let saveTimer = null;
+
+function initSync(){
+  ghToken = localStorage.getItem('ev_gh_token') || '';
+  gistId  = localStorage.getItem('ev_gist_id')  || '';
+  if(ghToken) setSyncSt('bereit');
+  else setSyncSt('');
+}
+
+function setSyncSt(state){
+  const el=document.getElementById('syncSt');
+  if(!el)return;
+  const cfg={
+    '':         {txt:'',         col:'var(--t3)'},
+    'bereit':   {txt:'',         col:'var(--t3)'},
+    'speichert':{txt:'⏳ Speichert…', col:'var(--t2)'},
+    'gespeichert':{txt:'☁ Gespeichert',col:'var(--ac)'},
+    'fehler':   {txt:'⚠ Sync-Fehler', col:'var(--l5)'},
+    'offline':  {txt:'📴 Offline',    col:'var(--l4)'},
+    'lädt':     {txt:'⏬ Lädt…',      col:'var(--t2)'},
+    'geladen':  {txt:'☁ Geladen',    col:'var(--ac)'}
+  };
+  const c=cfg[state]||cfg[''];
+  el.textContent=c.txt;
+  el.style.color=c.col;
+}
+
+function scheduleSave(){
+  clearTimeout(saveTimer);
+  saveTimer=setTimeout(cloudSave, 1500);
+  setSyncSt('speichert');
+}
+
+function getSyncData(){
+  return {
+    wpDone,
+    fcKnown:[...fcKnown],
+    rsData,
+    savedAt:new Date().toISOString()
+  };
+}
+
+function applySyncData(data){
+  if(data.wpDone) wpDone=data.wpDone;
+  if(data.fcKnown) fcKnown=new Set(data.fcKnown);
+  if(data.rsData) rsData=data.rsData;
+  saveWP();saveFC();saveRS();
+}
+
+async function cloudSave(){
+  if(!ghToken){setSyncSt('');return;}
+  setSyncSt('speichert');
+  const content=JSON.stringify(getSyncData(),null,2);
+  const files={'ev-mastery-progress.json':{content}};
+  const headers={
+    'Authorization':'Bearer '+ghToken,
+    'Content-Type':'application/json',
+    'X-GitHub-Api-Version':'2022-11-28'
+  };
+  try{
+    let res;
+    if(!gistId){
+      res=await fetch('https://api.github.com/gists',{
+        method:'POST',headers,
+        body:JSON.stringify({description:'EV Mastery – Lernfortschritt',public:false,files})
+      });
+      if(!res.ok) throw new Error(res.status);
+      const g=await res.json();
+      gistId=g.id;
+      localStorage.setItem('ev_gist_id',gistId);
+    } else {
+      res=await fetch('https://api.github.com/gists/'+gistId,{
+        method:'PATCH',headers,
+        body:JSON.stringify({files})
+      });
+      if(!res.ok) throw new Error(res.status);
+    }
+    setSyncSt('gespeichert');
+    setTimeout(()=>setSyncSt('bereit'),3000);
+  }catch(e){
+    setSyncSt(navigator.onLine?'fehler':'offline');
+  }
+}
+
+async function cloudLoad(){
+  if(!ghToken||!gistId) return false;
+  setSyncSt('lädt');
+  try{
+    const res=await fetch('https://api.github.com/gists/'+gistId,{
+      headers:{
+        'Authorization':'Bearer '+ghToken,
+        'X-GitHub-Api-Version':'2022-11-28'
+      }
+    });
+    if(!res.ok) throw new Error(res.status);
+    const g=await res.json();
+    const f=g.files['ev-mastery-progress.json'];
+    if(!f) return false;
+    applySyncData(JSON.parse(f.content));
+    setSyncSt('geladen');
+    setTimeout(()=>setSyncSt('bereit'),3000);
+    return true;
+  }catch(e){
+    setSyncSt(navigator.onLine?'fehler':'offline');
+    return false;
+  }
+}
+
+function showSetup(){document.getElementById('setupOverlay').style.display='flex';}
+function hideSetup(){document.getElementById('setupOverlay').style.display='none';}
+
+async function connectGist(){
+  const inp=document.getElementById('tokenInp');
+  const msg=document.getElementById('tokenMsg');
+  const token=inp.value.trim();
+  if(!token){msg.className='token-msg err';msg.textContent='Bitte Token eingeben.';return;}
+  msg.className='token-msg';msg.textContent='Prüfe Token…';
+  try{
+    const res=await fetch('https://api.github.com/user',{
+      headers:{'Authorization':'Bearer '+token,'X-GitHub-Api-Version':'2022-11-28'}
+    });
+    if(!res.ok) throw new Error('Ungültiges Token (HTTP '+res.status+')');
+    const u=await res.json();
+    ghToken=token;
+    gistId='';
+    localStorage.setItem('ev_gh_token',ghToken);
+    localStorage.removeItem('ev_gist_id');
+    msg.className='token-msg ok';
+    msg.textContent='✓ Verbunden als @'+u.login+' · Speichere Fortschritt…';
+    await cloudSave();
+    setTimeout(()=>{hideSetup();showToast('☁ Sync eingerichtet – alles läuft automatisch!');},1000);
+  }catch(e){
+    msg.className='token-msg err';
+    msg.textContent='Fehler: '+e.message+'. Bitte Token und Berechtigungen prüfen.';
+  }
+}
+
+// ═══ OVERALL PROGRESS ═══════════════════════════════════════
+
+function updateOverall(){
+  const wpTotal=WP.reduce((a,w)=>a+w.days.length,0);
+  const wpDoneN=WP.reduce((a,w,wi)=>a+w.days.filter((_,di)=>wpDone[wpKey(wi,di)]).length,0);
+  const rsDoneN=RS.filter(r=>(rsData[r.id]||{}).done).length;
+  const pct=Math.round((wpDoneN/wpTotal*33)+(fcKnown.size/FC.length*33)+(rsDoneN/RS.length*34));
+  
+  const fill=document.getElementById('ptFill');
+  if(fill)fill.style.width=pct+'%';
+  const pctEl=document.getElementById('ptPct');
+  if(pctEl)pctEl.textContent=pct+'%';
+  
+  // Colour stage segments
+  const segs=document.querySelectorAll('.pt-seg');
+  const stageW=100/6;
+  segs.forEach((seg,i)=>{
+    const segEnd=(i+1)*stageW;
+    const segMid=(i+0.5)*stageW;
+    seg.classList.toggle('done', pct>=segEnd);
+    seg.classList.toggle('current', pct>=segMid-stageW/2 && pct<segEnd);
+  });
+}
+
+function renderTimeline(){
+  const markers=document.getElementById('ptMarkers');
+  const row=document.getElementById('ptStageRow');
+  if(!markers||!row)return;
+  const stageW=100/6;
+  markers.innerHTML=[1,2,3,4,5].map(i=>`<div class="pt-divider" style="left:${i*stageW}%"></div>`).join('');
+  row.innerHTML=STAGES.map(s=>`<div class="pt-seg">${s.code}<br><span style="font-size:.58rem;font-weight:400">${s.period.replace('Monat ','M')}</span></div>`).join('');
+}
+
+
+// ═══ RENDER: ANLEITUNG ══════════════════════════════════════
+
+function renderAnleitung(){
+  document.getElementById('panel-anleitung').innerHTML=`
+<div class="sh">
+<div class="st">📖 Anleitung & Bedienung</div>
+<div class="ss">So arbeitest du am effektivsten mit dem System</div>
+</div>
+
+<div class="ibox" style="margin-bottom:1.25rem">
+<strong style="font-family:var(--fd)">Grundprinzip:</strong> Der Wochenplan führt — alles andere vertieft. Du brauchst täglich nur einen Tab: den Wochenplan. Alle anderen Tabs öffnest du bei Bedarf.
+</div>
+
+<div class="card">
+<div class="ch" onclick="toggleCard('al1')">
+<div style="display:flex;align-items:center;gap:.875rem;flex:1">
+<span style="font-size:1.25rem">📅</span>
+<div>
+<div style="font-family:var(--fd);font-size:.95rem;font-weight:800">Wochenplan — tägliche Arbeit</div>
+<div style="font-size:.8rem;color:var(--t2)">Dein primärer Tab · jeden Tag öffnen</div>
+</div>
+</div>
+<span class="cvn" id="cv-al1">▶</span>
+</div>
+<div class="cb open" id="cb-al1">
+<p style="font-size:.9rem;margin-bottom:.875rem">Das ist dein <strong>täglicher Startpunkt</strong>. Öffne den Wochenplan, schau welcher Wochentag heute ist, lies die Aktivität — und arbeite sie ab. Danach Checkbox anhaken. Der Fortschrittsbalken oben bewegt sich automatisch.</p>
+<ul class="dd-ul">
+<li>Jeder Tageseintrag sagt dir: <em>was</em> du lernst, <em>was</em> du konkret tust, und <em>wo</em> du nachschaust</li>
+<li>Du musst nichts selbst planen — alles ist bereits vorbereitet</li>
+<li>Dauert pro Tag 30–70 Minuten (steht rechts bei jedem Eintrag)</li>
+<li>Woche aufklappen → alle 7 Tage sichtbar → Tage der Reihe nach abhaken</li>
+<li>Sonntag ist immer "Review" — nutze ihn für Flashcards, nicht für neuen Stoff</li>
+</ul>
+<div class="ibox" style="margin-top:.875rem;font-size:.82rem">
+💡 <strong>Tipp:</strong> Klappe immer nur die aktuelle Woche auf. Die anderen bleiben zu — das reduziert Ablenkung.
+</div>
+</div>
+</div>
+
+<div class="card">
+<div class="ch" onclick="toggleCard('al2')">
+<div style="display:flex;align-items:center;gap:.875rem;flex:1">
+<span style="font-size:1.25rem">🔬</span>
+<div>
+<div style="font-family:var(--fd);font-size:.95rem;font-weight:800">Deep Dive — wenn du tiefer verstehen willst</div>
+<div style="font-size:.8rem;color:var(--t2)">Nachschlagewerk · bei Bedarf öffnen · kein Pflichtprogramm</div>
+</div>
+</div>
+<span class="cvn" id="cv-al2">▶</span>
+</div>
+<div class="cb open" id="cb-al2">
+<p style="font-size:.9rem;margin-bottom:.875rem">Der Deep Dive ist kein zweiter Wochenplan — er ist das <strong>Nachschlagewerk</strong> wenn du verstehen willst <em>warum</em> etwas so funktioniert, nicht nur <em>was</em> es ist.</p>
+<ul class="dd-ul">
+<li><strong>OCPP 2.0.1</strong> → öffnen wenn der Wochenplan dich zu Protokollen führt (Woche 7+)</li>
+<li><strong>CPO Business Case</strong> → öffnen wenn du Kostenstrukturen oder Förderung recherchierst</li>
+<li><strong>ISO 15118</strong> → öffnen wenn Plug & Charge oder V2G im Wochenplan auftaucht</li>
+<li><strong>V2G & BESS</strong> → öffnen für Stufe 5 (Monat 9–10)</li>
+<li>Jeder Abschnitt ist einzeln aufklappbar — lies nur was du gerade brauchst</li>
+</ul>
+<div class="ibox" style="margin-top:.875rem;font-size:.82rem">
+💡 <strong>Tipp:</strong> Öffne den Deep Dive parallel zum Wochenplan in einem zweiten Browser-Tab.
+</div>
+</div>
+</div>
+
+<div class="card">
+<div class="ch" onclick="toggleCard('al3')">
+<div style="display:flex;align-items:center;gap:.875rem;flex:1">
+<span style="font-size:1.25rem">🃏</span>
+<div>
+<div style="font-family:var(--fd);font-size:.95rem;font-weight:800">Flashcards — einprägen und testen</div>
+<div style="font-size:.8rem;color:var(--t2)">Jeden Sonntag · am Stufenende · Wissenslücken schliessen</div>
+</div>
+</div>
+<span class="cvn" id="cv-al3">▶</span>
+</div>
+<div class="cb open" id="cb-al3">
+<p style="font-size:.9rem;margin-bottom:.875rem">Flashcards sind kein Lesetool — sie sind dein <strong>wöchentlicher Selbsttest</strong>. Der Wochenplan erinnert dich jeden Sonntag daran.</p>
+<ul class="dd-ul">
+<li>Filter auf die aktuelle Stufe (z.B. <strong>L1</strong>) → alle 7 Karten durcharbeiten</li>
+<li>Karte anklicken → Antwort erscheint auf der Rückseite</li>
+<li>Kannte ich die Antwort? → <strong>✓ Gewusst</strong> (grün) · Nicht sicher? → <strong>↺ Nochmals</strong></li>
+<li>"Nochmals"-Karten kommen beim nächsten Review wieder</li>
+<li>Nach 4 Wochen: Filter auf <strong>Alle</strong> und alle bisherigen Karten mischen</li>
+<li>Am Stufenende: alle L1–Lx Karten auf 100% "Gewusst" bringen, bevor du zur nächsten Stufe gehst</li>
+</ul>
+<div class="ibox" style="margin-top:.875rem;font-size:.82rem">
+💡 <strong>Tipp:</strong> Wenn du eine Karte nicht sicher weisst, lies zuerst den passenden Deep Dive — dann komm zurück zur Karte.
+</div>
+</div>
+</div>
+
+<div class="card">
+<div class="ch" onclick="toggleCard('al4')">
+<div style="display:flex;align-items:center;gap:.875rem;flex:1">
+<span style="font-size:1.25rem">📚</span>
+<div>
+<div style="font-family:var(--fd);font-size:.95rem;font-weight:800">Ressourcen — Lektüre tracken</div>
+<div style="font-size:.8rem;color:var(--t2)">Einmal pro Woche · kein täglicher Aufwand</div>
+</div>
+</div>
+<span class="cvn" id="cv-al4">▶</span>
+</div>
+<div class="cb open" id="cb-al4">
+<p style="font-size:.9rem;margin-bottom:.875rem">Der Ressourcen-Tab ist dein <strong>Leseprotokoll</strong>. Sobald du eine Ressource aus dem Wochenplan gelesen, ein Video geschaut oder ein Whitepaper durchgearbeitet hast, markierst du sie hier als erledigt.</p>
+<ul class="dd-ul">
+<li>Checkbox ✓ = gelesen / angeschaut / abgeschlossen</li>
+<li>Stern ⭐ = besonders wichtig, unbedingt nochmals lesen</li>
+<li>Notizfeld = eigene Stichworte, Seitenverweise, offene Fragen</li>
+<li>Filter nach Stufe: zeigt nur Ressourcen der aktuellen Lernphase</li>
+<li>Links ↗ direkt anklickbar (Websites, PDFs, Spezifikationen)</li>
+</ul>
+<div class="ibox" style="margin-top:.875rem;font-size:.82rem">
+💡 <strong>Tipp:</strong> Einmal pro Woche 5 Minuten für den Ressourcen-Tab — das genügt. Nicht täglich pflegen.
+</div>
+</div>
+</div>
+
+<div class="card">
+<div class="ch" onclick="toggleCard('al5')">
+<div style="display:flex;align-items:center;gap:.875rem;flex:1">
+<span style="font-size:1.25rem">🗺</span>
+<div>
+<div style="font-family:var(--fd);font-size:.95rem;font-weight:800">Roadmap — Überblick und Selbsttest</div>
+<div style="font-size:.8rem;color:var(--t2)">Einmalig zu Beginn · dann nur am Stufenende</div>
+</div>
+</div>
+<span class="cvn" id="cv-al5">▶</span>
+</div>
+<div class="cb open" id="cb-al5">
+<p style="font-size:.9rem;margin-bottom:.875rem">Die Roadmap zeigt das <strong>Gesamtbild</strong> deines 12-monatigen Lernpfads. Du schaust sie dir einmal zu Beginn an — und dann wieder am Ende jeder Stufe für den Selbsttest.</p>
+<ul class="dd-ul">
+<li><strong>Tab "Kernthemen"</strong>: Was lerne ich in dieser Stufe?</li>
+<li><strong>Tab "Benchmarks"</strong>: Kann ich jeden Punkt ohne Notizen erklären? Das ist dein Stufenabschluss-Test</li>
+<li><strong>Tab "Ressourcen"</strong>: Übersicht der empfohlenen Quellen je Stufe</li>
+<li>Erst wenn du alle 7 Benchmarks einer Stufe sicher beantworten kannst → nächste Stufe starten</li>
+<li>Die 10 Kernprinzipien (unten in der Roadmap) immer im Hinterkopf behalten</li>
+</ul>
+<div class="ibox" style="margin-top:.875rem;font-size:.82rem">
+💡 <strong>Tipp:</strong> Mach den Benchmark-Test laut — erkläre jeden Punkt so, als ob du ihn einem Investor präsentierst.
+</div>
+</div>
+</div>
+
+<div class="card">
+<div class="ch" onclick="toggleCard('al6')">
+<div style="display:flex;align-items:center;gap:.875rem;flex:1">
+<span style="font-size:1.25rem">📊</span>
+<div>
+<div style="font-family:var(--fd);font-size:.95rem;font-weight:800">Fortschrittsbalken — was er misst</div>
+<div style="font-size:.8rem;color:var(--t2)">Automatisch · immer sichtbar · kein manuelles Pflegen</div>
+</div>
+</div>
+<span class="cvn" id="cv-al6">▶</span>
+</div>
+<div class="cb open" id="cb-al6">
+<p style="font-size:.9rem;margin-bottom:.875rem">Der <strong>Balken oben</strong> (direkt unter der Navigation) zeigt deinen Gesamtfortschritt von 0–100%. Er bewegt sich automatisch — du musst nichts extra tun.</p>
+<ul class="dd-ul">
+<li>33% basieren auf: abgehakten Tagen im Wochenplan</li>
+<li>33% basieren auf: Flashcards als "Gewusst" markiert</li>
+<li>34% basieren auf: Ressourcen als gelesen abgehakt</li>
+<li>Die Stufenbezeichnungen L1–L6 darunter zeigen wo du im 12-Monats-Pfad stehst</li>
+<li>Die aktuelle Stufe ist hervorgehoben, abgeschlossene Stufen grün</li>
+</ul>
+<div class="ibox" style="margin-top:.875rem;font-size:.82rem">
+💡 <strong>Hinweis:</strong> 100% bedeutet: alle Wochenplan-Tage abgehakt, alle Flashcards bekannt, alle Ressourcen gelesen. Das ist das Ziel nach 12 Monaten.
+</div>
+</div>
+</div>
+
+<div class="card">
+<div class="ch" onclick="toggleCard('al7')">
+<div style="display:flex;align-items:center;gap:.875rem;flex:1">
+<span style="font-size:1.25rem">☁️</span>
+<div>
+<div style="font-family:var(--fd);font-size:.95rem;font-weight:800">Export / Import — geräteübergreifend arbeiten</div>
+<div style="font-size:.8rem;color:var(--t2)">Für OneDrive, Laptop ↔ Handy, Fortschritt sichern</div>
+</div>
+</div>
+<span class="cvn" id="cv-al7">▶</span>
+</div>
+<div class="cb open" id="cb-al7">
+<p style="font-size:.9rem;margin-bottom:.875rem">Der Lernstand wird im Browser gespeichert (localStorage) — also <strong>gerätespezifisch</strong>. Um ihn auf ein anderes Gerät zu übertragen, nutze Export/Import.</p>
+<ul class="dd-ul">
+<li><strong>Auf Gerät A:</strong> Oben rechts <em>⬆ Export</em> klicken → Datei <code style="font-family:var(--fm);font-size:.8rem;background:var(--s2);padding:.1rem .3rem;border-radius:3px">ev-mastery-progress.json</code> wird heruntergeladen</li>
+<li><strong>Datei auf OneDrive ablegen</strong> (einmalig, im selben Ordner wie die HTML-Datei)</li>
+<li><strong>Auf Gerät B:</strong> HTML-Datei öffnen → <em>⬇ Import</em> klicken → JSON-Datei auswählen</li>
+<li>Alle Checkboxen, Flashcard-Fortschritt und Notizen sind sofort wieder da</li>
+<li>Nach jeder Lernsession exportieren wenn du das Gerät wechselst</li>
+</ul>
+<div class="ibox" style="margin-top:.875rem;font-size:.82rem">
+💡 <strong>Empfehlung:</strong> Benenne die JSON-Datei immer gleich und speichere sie immer am gleichen Ort — dann ist der Import in 10 Sekunden erledigt.
+</div>
+</div>
+</div>
+
+<div class="card" style="background:var(--ad);border-color:var(--ac)">
+<div style="padding:1.125rem">
+<div style="font-family:var(--fd);font-size:.875rem;font-weight:800;color:var(--ac);margin-bottom:.875rem">⏱ Empfohlener Wochenrhythmus</div>
+<div style="overflow-x:auto">
+<table style="width:100%;border-collapse:collapse;font-size:.85rem">
+<thead>
+<tr style="border-bottom:2px solid var(--bd)">
+<th style="text-align:left;padding:.4rem .625rem;font-family:var(--fd);font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--t2)">Wann</th>
+<th style="text-align:left;padding:.4rem .625rem;font-family:var(--fd);font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--t2)">Was</th>
+<th style="text-align:left;padding:.4rem .625rem;font-family:var(--fd);font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--t2)">Tab</th>
+</tr>
+</thead>
+<tbody>
+<tr style="border-bottom:1px solid var(--bd)"><td style="padding:.4rem .625rem">Mo – Sa täglich</td><td style="padding:.4rem .625rem">Aktivität abarbeiten, Tag abhaken</td><td style="padding:.4rem .625rem;color:var(--ac);font-family:var(--fd);font-weight:700">📅 Wochenplan</td></tr>
+<tr style="border-bottom:1px solid var(--bd)"><td style="padding:.4rem .625rem">Bei Fragen</td><td style="padding:.4rem .625rem">Hintergrund und Technik nachschlagen</td><td style="padding:.4rem .625rem;color:var(--ac);font-family:var(--fd);font-weight:700">🔬 Deep Dive</td></tr>
+<tr style="border-bottom:1px solid var(--bd)"><td style="padding:.4rem .625rem">Sonntag</td><td style="padding:.4rem .625rem">Flashcards der Woche wiederholen</td><td style="padding:.4rem .625rem;color:var(--ac);font-family:var(--fd);font-weight:700">🃏 Flashcards</td></tr>
+<tr style="border-bottom:1px solid var(--bd)"><td style="padding:.4rem .625rem">1× pro Woche</td><td style="padding:.4rem .625rem">Ressourcen als gelesen markieren</td><td style="padding:.4rem .625rem;color:var(--ac);font-family:var(--fd);font-weight:700">📚 Ressourcen</td></tr>
+<tr style="border-bottom:1px solid var(--bd)"><td style="padding:.4rem .625rem">Stufenende</td><td style="padding:.4rem .625rem">Benchmarks selbst prüfen</td><td style="padding:.4rem .625rem;color:var(--ac);font-family:var(--fd);font-weight:700">🗺 Roadmap</td></tr>
+<tr><td style="padding:.4rem .625rem">Gerätewechsel</td><td style="padding:.4rem .625rem">Fortschritt exportieren → importieren</td><td style="padding:.4rem .625rem;color:var(--ac);font-family:var(--fd);font-weight:700">⬆⬇ Export/Import</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>`;
+}
+
+// ═══ INIT ════════════════════════════════════════════════════
+
+document.addEventListener('DOMContentLoaded',()=>{
+  const t=LS.get('ev_theme');
+  if(t&&typeof t==='string')setTheme(t);
+  
+  renderRoadmap();
+  renderWochenplan();
+  renderDeepDive();
+  renderFlashcards();
+  renderRessourcen();
+  renderAnleitung();
+  renderTimeline();
+  updateOverall();
+  
+  fcFiltered=getFilteredCards();
+  renderFCCard();
+  
+  // Cloud sync
+  initSync();
+  if(ghToken && gistId){
+    cloudLoad().then(loaded=>{
+      if(loaded){
+        renderWochenplan();
+        renderFlashcards();
+        renderRessourcen();
+        updateOverall();
+        fcFiltered=getFilteredCards();
+        renderFCCard();
+      }
+    });
+  } else if(!ghToken){
+    // Show setup hint after 2s for new users
+    setTimeout(()=>{
+      const el=document.getElementById('syncSt');
+      if(el){el.textContent='☁ Sync einrichten';el.style.color='var(--l4)';el.style.cursor='pointer';el.onclick=showSetup;}
+    },2000);
+  }
+});
+</script>
+
+<div class="setup-overlay" id="setupOverlay" style="display:none">
+  <div class="setup-box">
+    <div class="setup-title">☁ Automatische Cloud-Synchronisation</div>
+    <p class="setup-desc">Dein Lernfortschritt wird automatisch gespeichert und auf allen Geräten synchronisiert — ohne Export/Import. Einmalige Einrichtung mit einem kostenlosen GitHub-Account.</p>
+    <div class="setup-step">
+      <div class="step-n">1</div>
+      <div class="step-tx">Kostenlosen GitHub-Account erstellen (falls noch nicht vorhanden):<br><a href="https://github.com/signup" target="_blank">github.com/signup ↗</a></div>
+    </div>
+    <div class="setup-step">
+      <div class="step-n">2</div>
+      <div class="step-tx">Token erstellen: <a href="https://github.com/settings/tokens?type=beta" target="_blank">github.com → Settings → Developer settings → Fine-grained tokens → Generate new token ↗</a><br>Name: z.B. "EV Mastery" · Ablaufdatum: wähle selbst · Berechtigung: <strong>Account permissions → Gists → Read and Write</strong></div>
+    </div>
+    <div class="setup-step">
+      <div class="step-n">3</div>
+      <div class="step-tx">Token hier einfügen — wird nur lokal auf diesem Gerät gespeichert:</div>
+    </div>
+    <input type="password" id="tokenInp" class="token-inp" placeholder="github_pat_...">
+    <div class="setup-btns">
+      <button class="btn-connect" onclick="connectGist()">Verbinden & Synchronisieren</button>
+      <button class="btn-later" onclick="hideSetup()">Schliessen</button>
+    </div>
+    <div id="tokenMsg"></div>
+  </div>
+</div>
+</body>
+</html>
