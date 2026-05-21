@@ -153,6 +153,14 @@ ul.bml li::before{content:"✓";position:absolute;left:0;color:var(--ac);font-si
 .rs-note:focus{outline:none;border-color:var(--ac)}
 .rs-star{cursor:pointer;font-size:1.1rem;user-select:none;color:var(--s3);margin-top:.1rem;transition:color .15s}
 .rs-star.on{color:#fbbf24}
+.gl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:.625rem;margin-top:1rem}
+.gl-item{background:var(--s);border:1px solid var(--bd);border-radius:var(--r);padding:.875rem 1rem}
+.gl-term{font-family:var(--fd);font-size:.875rem;font-weight:800;color:var(--ac);margin-bottom:.25rem}
+.gl-full{font-size:.82rem;color:var(--t);margin-bottom:.25rem;font-weight:600}
+.gl-def{font-size:.78rem;color:var(--t2);line-height:1.5}
+.gl-search{width:100%;background:var(--s2);border:1px solid var(--bd);border-radius:var(--rs);color:var(--t);font-family:inherit;font-size:.9rem;padding:.625rem .875rem;margin-bottom:1rem;transition:border-color .15s}
+.gl-search:focus{outline:none;border-color:var(--ac)}
+.gl-cat{font-family:var(--fd);font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);margin:.875rem 0 .375rem}
 .toast{position:fixed;bottom:1.5rem;right:1.5rem;background:var(--ac);color:#000;padding:.625rem 1.125rem;border-radius:8px;font-family:var(--fd);font-size:.875rem;font-weight:700;letter-spacing:.04em;opacity:0;transform:translateY(.5rem);transition:all .25s;pointer-events:none;z-index:999}
 .toast.show{opacity:1;transform:translateY(0)}
 .ibox{background:var(--ad);border:1px solid var(--ac);border-radius:var(--rs);padding:.75rem 1rem;font-size:.875rem;margin-bottom:1rem}
@@ -234,6 +242,7 @@ ul.bml li::before{content:"✓";position:absolute;left:0;color:var(--ac);font-si
   <button class="nbtn" onclick="showPanel('flashcards',this)">🃏 Flashcards</button>
   <button class="nbtn" onclick="showPanel('ressourcen',this)">📚 Ressourcen</button>
   <button class="nbtn" onclick="showPanel('anleitung',this)">📖 Anleitung</button>
+  <button class="nbtn" onclick="showPanel('glossar',this)">📋 Glossar</button>
 </nav>
 <main class="main">
   <div id="panel-roadmap" class="panel active"></div>
@@ -242,6 +251,7 @@ ul.bml li::before{content:"✓";position:absolute;left:0;color:var(--ac);font-si
   <div id="panel-flashcards" class="panel"></div>
   <div id="panel-ressourcen" class="panel"></div>
   <div id="panel-anleitung" class="panel"></div>
+  <div id="panel-glossar" class="panel"></div>
 </main>
 <div class="toast" id="toast"></div>
 <script>
@@ -396,7 +406,25 @@ const FC=[
 {id:39,s:6,q:"Was ist das 'Chicken-and-Egg'-Problem der Ladeinfrastruktur?",a:["Wenig EVs → kein Investment-Rendite → wenig Ladenetz","Wenig Ladenetz → Kaufhemmung → wenig EV-Wachstum","Lösung: Regulierung (AFIR), Förderung, OEM-Commitment","Analogie: Tankstellennetz der 1920er Jahre"],},
 {id:40,s:6,q:"Wie entwickelt sich der EV-Markt in DACH bis 2030?",a:["CH: 50% Neuzulassungen EV-Ziel 2030 (Bund)","DE: 1 Mio öffentliche Ladepunkte Ziel bis 2030","Hemmnis: Netzkapazität, Förderstopp DE 2023/24","Trend: LFP-Massenmarkt, chinesische OEMs DACH-Eintritt"]},
 {id:41,s:6,q:"Was ist Interoperabilität im EV-Laden?",a:["Jedes Fahrzeug lädt an jeder Station ohne Registrierung","Technisch: OCPP + OCPI + ISO 15118 + AFIR","Geschäftlich: Roaming-Verträge via Hubject / e-clearing","Ohne Interoperabilität: Fragmentierung, Marktversagen"]},
-{id:42,s:6,q:"Was unterscheidet einen Thought Leader von einem Experten?",a:["Experte: weiss viel – Thought Leader: prägt Diskussion","Aktiv publizieren: LinkedIn, Konferenzen, Whitepapers","Netzwerk: CharIN, AVERE, nationale Verbände (VDIK, TCS)","Einfluss: Policy-Konsultationen, Medien, Ausbildung"]}
+{id:42,s:6,q:"Was unterscheidet einen Thought Leader von einem Experten?",a:["Experte: weiss viel – Thought Leader: prägt Diskussion","Aktiv publizieren: LinkedIn, Konferenzen, Whitepapers","Netzwerk: CharIN, AVERE, nationale Verbände (VDIK, TCS)","Einfluss: Policy-Konsultationen, Medien, Ausbildung"]},
+{id:43,s:3,q:"Was ist ein CSMS und wie unterscheidet es sich von CPMS?",a:["CSMS = Charge Station Management System (OCPP 2.0.1-Terminologie)","CPMS = älterer Begriff für exakt dieselbe Software","Kernfunktionen: Authentifizierung, Monitoring, Smart Charging, Reporting","Markt DACH: has·to·be, Monta, Virta, AMPECO, Chargepoint"]},
+{id:44,s:3,q:"Welche 8 Module definiert OCPI 2.2.1?",a:["Locations (POI), Tokens (RFID/App), Sessions (laufend), CDRs (Abrechnung)","Tariffs (Preise), Commands (Remote Start/Stop), Credentials (Auth)","Hub Client Info (nur Hub-Modell)","CDRs sind Basis für Abrechnung CPO → eMSP → Fahrer"]},
+{id:45,s:3,q:"Was ist eine EMAID und wie ist sie aufgebaut?",a:["EMAID = Electric Mobility Account Identifier (eindeutige Nutzer-ID im Roaming)","Aufbau: [CC]-[eMSP-Code]-[Typ][Instanz]-[Prüfzeichen]","Beispiel: DE-ABC-C12345678-Y (DE = Land, ABC = eMSP)","Basis für Token-Erkennung in OCPI und ISO 15118 PnC"]},
+{id:46,s:4,q:"Welche Zahlungsmethoden schreibt AFIR für öffentliche Ladepunkte vor?",a:["DC >50kW: NFC-Kontaktlos (Visa/Mastercard) am POS-Terminal Pflicht ab 2024","Ad-hoc-Zahlung: kein App/Abo nötig – direkt an der Säule bezahlen","kWh-Preis muss angezeigt werden (Preistransparenzpflicht)","AC: mindestens eine sichere elektronische Zahlungsmethode"]},
+{id:47,s:3,q:"Was regelt §14a EnWG und was darf der Netzbetreiber?",a:["Pflicht: Neue steuerbare Verbrauchseinrichtungen >4,2kW müssen dimmbar sein","VNB darf auf 4,2kW drosseln – NICHT abschalten! Mindestladen garantiert","Kompensation für Nutzer: 19,50€/a reduziertes Netzentgelt","Umsetzung: FNN-Steuerbox / OCPP Smart Charging / OpenADR"]},
+{id:48,s:3,q:"Was ist OICP und wie verhält es sich zu OCPI?",a:["OICP = Open Intercharge Protocol (von Hubject entwickelt, proprietär)","Funktion identisch zu OCPI: Auth, Session, CDR, POI, Preise","Hubject übersetzt intern zwischen OICP und OCPI","Crossclearance: Hubject ↔ e-clearing.net – gegenseitiger Token-Zugriff"]},
+{id:49,s:4,q:"Was regelt die Ladesäulenverordnung (LSV 2026) und welche Pflichten hat ein CPO?",a:["LSV gilt seit 1.1.2026: technische Mindestanforderungen für öffentliche Ladepunkte DE","Anzeigepflicht: Inbetriebnahme, Betreiberwechsel, Ausserbetriebnahme beim BNetzA-Meldeportal","Ausserbetriebnahme >3 Monate: separat meldepflichtig, Wartungsfenster für Kürzeres","BNetzA überwacht AFIR- und LSV-Compliance – mit Sanktionsbefugnis"]},
+{id:50,s:4,q:"Was ist die THG-Prämie und wie nutzen CPOs sie als Erlösquelle?",a:["THG = Treibhausgasminderungsquote (BImSchG §37a)","Ladestrommengen werden als vermiedene CO₂-Emissionen zertifiziert und verkauft","Erlös 2025: ~35€/MWh – jährlich variierend je nach Marktpreis","Aggregatoren übernehmen Abwicklung: emobility.energy, The Mobility House, Greenpeace Energy"]},
+{id:51,s:3,q:"Was zeigt der BSI-Lagebericht 2025 zur Cybersecurity von Ladeinfrastruktur?",a:["81 CVEs in Ladestationen identifiziert – erhebliches Sicherheitsdefizit","Pwn2Own 2024: 54 neue Schwachstellen in 10 Ladesäulenmodellen gefunden","Häufigste Ursachen: fehlende Eingabevalidierung, Authentifizierungsumgehung","Schutzmaßnahmen: OCPP SP3 (mTLS), TLS 1.3, Firmware-Updates, Netzwerksegmentierung"]},
+{id:52,s:4,q:"Was regelt die PAngV für Preisanzeigen an Ladesäulen?",a:["PAngV §14: Preis muss vor Ladestart vollständig sichtbar sein (kWh + Zeitpreis + Gebühr)","Neue Anlagen ab April 2024: Preis direkt am Terminal anzeigen Pflicht","Bestandsanlagen bis Januar 2027: Preis via registrierungsfreie mobile Webseite erlaubt","Preis darf sich während laufender Sitzung nicht erhöhen (Vertrauensschutz)"]},
+{id:53,s:4,q:"Was ist das GEIG und welche Pflichten bestehen seit 2025?",a:["GEIG = Gebäude-Elektromobilitätsinfrastruktur-Gesetz (seit 2021, verschärft 2025)","Seit 1.1.2025: Nichtwohngebäude >20 Stellplätze → mindestens 1 Ladepunkt Pflicht","Neubau Wohngebäude >5 Stellplätze: JEDER Stellplatz braucht Leerrohr","Ab 2027 (EPBD): Pflichten schon ab 3 Stellplätzen – GEIG-Novelle kommt – Basis: EPBD 2024/1275"]},
+{id:54,s:4,q:"Was ist White Label CPO / Charging as a Service (CaaS)?",a:["White Label: Professioneller CPO betreibt alles, Standorteigentümer erscheint als Marke","CaaS: Rundum-Sorglos – Hardware, Installation, Betrieb, Abrechnung aus einer Hand","Für Eigentümer: kein CAPEX, keine technische Expertise nötig","Revenue-Modelle: Fixgebühr (2–5€/LP/Monat) oder Revenue Share (10–30%)"]},
+{id:55,s:2,q:"Was ist eine Ladekurve und warum lädt ein EV nicht linear?",a:["Ladekurve zeigt Ladeleistung über SOC-Verlauf – NICHT konstant!","Volle Leistung: typisch nur bis 50–80% SOC (je nach Fahrzeug/Chemie)","Danach: BMS drosselt Leistung zum Schutz der Batterie (Lithium-Plating vermeiden)","Praxis: 10→80% oft schneller als 80→100% – relevant für Standzeit-Kalkulation"]},
+{id:56,s:5,q:"Was ist MCS und warum ist es für die Zukunft relevant?",a:["MCS = Megawatt Charging System (CharIN-Standard für LKW/Schwerlast)","Leistung: bis 3,75 MW (vs. CCS max. 350kW für PKW)","MCS-Connector: neuer Steckertyp, nicht CCS-kompatibel","Rollout 2025–2027: relevant für Truck-CPOs, Logistik-Depots, Autobahn-Raststätten"]},
+{id:57,s:4,q:"Welche Normen und Bewilligungen gelten in der Schweiz für Ladeinfrastruktur?",a:["NIN 2025 (SN 411000): Installationsnorm mit neuem Kapitel 8.2 für Prosumer/DC","NIV Art. 9/15: Installations- bzw. Anschlussbewilligung Pflicht","ESTI: Aufsichtsbehörde – prüft Sicherheitsnachweise (SiNa)","SIA 2060: Branchenstandard für Dimensionierung EV-Laden an Gebäuden"]},
+{id:58,s:4,q:"Was sind ZEV, vZEV und LEG im Schweizer Mantelerlass?",a:["ZEV: Zusammenschluss zum Eigenverbrauch – gemeinsam PV nutzen hinter einem Anschluss","vZEV (seit Jan 2025): Virtueller ZEV – auch über Parzellengrenzen möglich","LEG (ab Jan 2026): Lokale Elektrizitätsgemeinschaft – Stromhandel über Verteilnetz","Für CPOs: Ermöglicht PV+EV-Laden in MFH ohne separaten Netzanschluss"]},
+{id:59,s:4,q:"Was regelt das ElWG 2025 in Österreich und wann greift NISG 2026?",a:["ElWG: Ersetzt ElWOG 2010, neue Energiegemeinschafts-Regeln ab 1.10.2026","NISG 2026: NIS2-Umsetzung AT, in Kraft 1.10.2026, Meldepflicht 24h/72h","E-Control: Regulierungsbehörde für Strom/Gas in Österreich","Drei Cyber-Regime in DACH: DE=NIS2UmsuCG, AT=NISG, CH=ISG"]},
+{id:60,s:4,q:"Welche Versicherungen braucht ein CPO und was ist VdS 3885?",a:["Betreiberhaftpflicht (Pflicht), Elektronikversicherung, Cyber-Haftpflicht","VdS 3885: GDV-Richtlinie für EV-Laden in geschlossenen Garagen","§§23–26 VVG: Nicht gemeldete Wallbox → Gefahrerhöhung → Versicherungsverlust","GDV-Statistik: Keine erhöhte Brandgefahr durch E-Autos nachgewiesen"]}
 ];
 
 const RS=[
@@ -435,7 +463,28 @@ const RS=[
 {id:33,s:6,ti:"AVERE: European EV Statistics",au:"AVERE (EU)",type:"Website",url:"https://www.avere.org",dc:"Europäische Statistiken: Zulassungen, Infrastruktur, Policy-Updates"},
 {id:34,s:6,ti:"CharIN Summit Proceedings",au:"CharIN e.V.",type:"Konferenz",url:"https://www.charin.global",dc:"Jährliche Konferenz: Vorträge zu Standards, V2G, Business, Policy"},
 {id:35,s:6,ti:"Agora Verkehrswende – Ladeinfrastruktur 2030",au:"Agora Verkehrswende",type:"Bericht",url:"https://www.agora-verkehrswende.de/veroeffentlichungen/",dc:"Deutschsprachige Analyse: Netzintegration, Ladeinfrastruktur-Ausbaupfade, Geschäftsmodelle 2030"},
-{id:36,s:6,ti:"Mobilitätsakademie Schweiz – EV-Kurs",au:"Mobilitätsakademie (CH)",type:"Online-Kurs",url:"https://www.mobilitaetsakademie.ch",dc:"Schweizer Kurs für E-Mobilität Professionals: Praxis, Recht, Technik DACH"}
+{id:36,s:6,ti:"Mobilitätsakademie Schweiz – EV-Kurs",au:"Mobilitätsakademie (CH)",type:"Online-Kurs",url:"https://www.mobilitaetsakademie.ch",dc:"Schweizer Kurs für E-Mobilität Professionals: Praxis, Recht, Technik DACH"},
+{id:37,s:3,ti:"has·to·be – CSMS Plattform DACH",au:"has·to·be (AT)",type:"Website",url:"https://www.has-to-be.com/de/",dc:"Führender CSMS-Anbieter im deutschsprachigen Raum – Produktdemo, Preis, Eichrecht"},
+{id:38,s:3,ti:"Monta – CPMS Plattform",au:"Monta (DK)",type:"Website",url:"https://monta.com/de/",dc:"Wachstumsstarker CSMS mit attraktivem Preismodell – gut für DACH-Einstieg"},
+{id:39,s:3,ti:"AMPECO – 10 Fragen an CPMS-Anbieter",au:"AMPECO",type:"Guide",url:"https://www.ampeco.com/de/blog/10-fragen-die-cpos-ihrem-cpms-anbieter-stellen-sollten/",dc:"Praxisleitfaden auf Deutsch: Welche Fragen du bei der CSMS-Evaluation stellen musst"},
+{id:40,s:3,ti:"Nationale Leitstelle – EV-Glossar",au:"Nationale Leitstelle (DE)",type:"Website",url:"https://nationale-leitstelle.de/verstehen/glossar/",dc:"Offizielle Begriffsdefinitionen für Ladeinfrastruktur – EVSE, CPO, eMSP, EMAID, etc."},
+{id:41,s:3,ti:"e-clearing.net – Roaming-Hub DE",au:"e-clearing.net",type:"Website",url:"https://www.e-clearing.net/de/",dc:"Deutschsprachiger Roaming-Hub: OCPI-basiert, Alternative zu Hubject für DE-Fokus"},
+{id:42,s:4,ti:"BNetzA – §14a EnWG Umsetzung",au:"Bundesnetzagentur (DE)",type:"Website",url:"https://www.bundesnetzagentur.de/DE/Fachthemen/ElektrizitaetundGas/E-Mobilitaet/14aEnWG/start.html",dc:"Offizielle Seite zur §14a-Umsetzung: Fristen, Steuerungskanal, Kompensation"},
+{id:43,s:4,ti:"OpenADR Alliance – Standard",au:"OpenADR Alliance",type:"Website",url:"https://www.openadr.org/",dc:"OpenADR 2.0 Spezifikation, Testprogramme, Mitglieder – Demand Response Standard"},
+{id:44,s:4,ti:"LSV 2026 – Ladesäulenverordnung (deutsch)",au:"BMWK / Bundesregierung",type:"Gesetz",url:"https://www.gesetze-im-internet.de/lsv_2026/BJNR16F0B0025.html",dc:"Volltext der neuen LSV ab 1.1.2026: technische Mindestanforderungen, Interoperabilität, Meldepflichten"},
+{id:45,s:4,ti:"BNetzA – Meldeportal Ladesäulenregister",au:"Bundesnetzagentur (DE)",type:"Portal",url:"https://ladesaeulenregister.bnetza.de/",dc:"Pflichtportal für CPOs: Anzeige öffentlicher Ladepunkte, Betreiberwechsel, Ausserbetriebnahmen"},
+{id:46,s:4,ti:"THG-Prämie für Ladepunkte",au:"emobility.energy",type:"Website",url:"https://www.emobility.energy/thg/",dc:"THG-Dienstleister DACH: Antrag, aktuelle Vergütungspreise 2025, Abwicklung für CPOs"},
+{id:47,s:3,ti:"BSI – Lagebericht IT-Sicherheit Ladeinfrastruktur 2025",au:"BSI (DE)",type:"PDF",url:"https://www.bsi.bund.de/SharedDocs/Downloads/DE/BSI/Publikationen/Branchenlagebild/IT-Sicherheit_oeffentl_Ladeinfrastruktur.pdf",dc:"Erster BSI-Sicherheitsbericht: 81 CVEs, Angriffsszenarien, Handlungsempfehlungen für CPOs"},
+{id:48,s:4,ti:"PAngV – Preisangabenverordnung",au:"Bundesministerium / gesetze-im-internet.de",type:"Gesetz",url:"https://www.gesetze-im-internet.de/pangv/",dc:"§14 PAngV: Preistransparenzpflichten für Ladeinfrastruktur-Betreiber in Deutschland"},
+{id:49,s:4,ti:"GEIG Volltext (deutsch)",au:"BMWK / gesetze-im-internet.de",type:"Gesetz",url:"https://www.gesetze-im-internet.de/geig/",dc:"Gebäude-Elektromobilitätsinfrastruktur-Gesetz: Pflichten für Wohn- und Nichtwohngebäude"},
+{id:50,s:4,ti:"ADAC – Wallbox in Eigentumswohnung (WEG §20)",au:"ADAC (DE)",type:"Ratgeber",url:"https://www.adac.de/rund-ums-fahrzeug/elektromobilitaet/laden/wallbox-eigentumswohnung/",dc:"Praktischer Ratgeber WEG §20: Beschlussfassung, Kosten, Lastmanagement in Gemeinschaftsgaragen"},
+{id:51,s:5,ti:"CharIN – MCS Megawatt Charging System",au:"CharIN e.V.",type:"Standard",url:"https://www.charin.global/de/technology/mcs/",dc:"Megawatt-Laden für LKW/Schwerlast: Steckerstandard, Spezifikation, Timeline 2025–2027"},
+{id:52,s:4,ti:"ESTI – Niederspannungsinstallationen (CH)",au:"ESTI (CH)",type:"Website",url:"https://www.esti.admin.ch/de/themen/niederspannungsinstallationen",dc:"Schweizer Bewilligungsverfahren, SiNa-Prüfung, Vorschriften für Ladeinfrastruktur"},
+{id:53,s:4,ti:"VSE – Stromgesetz Mantelerlass (CH)",au:"VSE",type:"Website",url:"https://www.strom.ch/de/schwerpunkte/stromgesetz-mantelerlass",dc:"Zusammenfassung Mantelerlass: ZEV, vZEV, LEG und Auswirkungen auf Ladeinfrastruktur"},
+{id:54,s:4,ti:"CMS – ElWG Zusammenfassung (AT)",au:"CMS Law",type:"Artikel",url:"https://cms.law/de/aut/legal-updates/gemeinsame-energienutzung-welche-moeglichkeiten-schafft-das-elwg",dc:"Juristische Analyse ElWG: Energiegemeinschaften, Netzentgelte, Übergangsfristen"},
+{id:55,s:3,ti:"Pionix – AFIR Update Spring 2025",au:"Pionix GmbH",type:"Artikel",url:"https://www.pionix.com/news/afir-regulation-update-spring-2025",dc:"AFIR-Durchführungsrechtsakte: DATEX-II, ISO 15118-Pflicht ab 2027, Mobilithek-Anbindung"},
+{id:56,s:3,ti:"BSI – KRITIS-Regulierung",au:"BSI (DE)",type:"Website",url:"https://www.bsi.bund.de/DE/Themen/KRITIS-und-regulierte-Unternehmen/kritis-und-regulierte-unternehmen_node.html",dc:"KRITIS-Dachgesetz, NIS2, CRA: Pflichten für Ladeinfrastruktur-Betreiber als kritische Infrastruktur"},
+{id:57,s:4,ti:"BACS – Bundesamt für Cybersicherheit (CH)",au:"BACS (CH)",type:"Website",url:"https://www.ncsc.admin.ch/",dc:"Schweizer Cybersicherheitsbehörde: ISG-Meldepflichten, Warnungen, Empfehlungen für EV-Infrastruktur"}
 ];
 
 const DD=[
@@ -495,6 +544,23 @@ const DD=[
 {type:"links",items:[
 {url:"https://www.openchargealliance.org/downloads/",label:"OCA – OCPP 2.1 Draft Spezifikation (kostenlos, englisch)",dc:"Aktueller Entwurf mit V2G, Dynamic Tariffs, DSO-Integration"},
 {url:"https://www.charin.global/de/technology/",label:"CharIN – Technologie-Roadmap Standards (deutsch)",dc:"Übersicht der Standardentwicklung inkl. OCPP 2.1 Timeline"}
+]},
+{t:"Cybersecurity: BSI-Lagebericht 2025",items:[
+{type:"text",c:"Das Bundesamt für Sicherheit in der Informationstechnik (BSI) veröffentlichte 2025 seinen ersten Lagebericht zur IT-Sicherheit öffentlicher Ladeinfrastruktur – mit alarmierendem Befund. Für CPOs und CSMS-Betreiber ergibt sich akuter Handlungsbedarf."},
+{type:"list",items:["BSI-Fazit 2025: 81 CVEs (kritische Sicherheitslücken) in Ladestationen identifiziert","Pwn2Own Automotive 2024: 54 neue Schwachstellen in 10 verschiedenen Ladesäulenmodellen entdeckt","Häufigste Ursachen: fehlende Eingabevalidierung, Authentifizierungsumgehung, unsichere Firmware","Angriffsziele: Ladesäulen-Firmware (DoS), OCPP-Backend (Manipulation), Zahlungsdaten","Worst Case: Koordinierter Angriff auf viele Ladepunkte gleichzeitig → Netzinstabilität","NIS2-Richtlinie (EU): Grosse Ladeinfrastruktur gilt als kritische Infrastruktur – erhöhte Sicherheitspflichten","Pflichten ab NIS2: Risikomanagement, Meldepflicht bei Sicherheitsvorfällen, Lieferkettensicherheit"]},
+{type:"text",c:"Praktische Schutzmassnahmen für CPOs und CSMS-Betreiber:"},
+{type:"list",items:["OCPP Security Profile 3 (mTLS) verwenden – gegenseitige Zertifikatsauthentifizierung","TLS 1.2 Minimum, TLS 1.3 empfohlen – veraltete Cipher Suites deaktivieren","Regelmässige Firmware-Updates: CSMS-seitig via OCPP UpdateFirmware-Mechanismus","Netzwerksegmentierung: EVSE-Netz vom Corporate-Netz trennen (VLAN)","Monitoring: Anomalieerkennung im CSMS auf ungewöhnliche OCPP-Nachrichten","Penetrationstests: Jährlich oder nach grossen Updates empfohlen","DEKRA Cybersecurity-Zertifizierung für Ladestationen verfügbar (seit 2022)"]},
+{type:"links",items:[
+{url:"https://www.bsi.bund.de/SharedDocs/Downloads/DE/BSI/Publikationen/Branchenlagebild/IT-Sicherheit_oeffentl_Ladeinfrastruktur.pdf",label:"BSI – Lagebericht IT-Sicherheit Ladeinfrastruktur 2025 (PDF, deutsch)",dc:"Erster offizieller BSI-Bericht: 81 CVEs, Angreifsszenarien, Handlungsempfehlungen für CPOs"},
+{url:"https://www.bsi.bund.de/DE/Themen/Unternehmen-und-Organisationen/Informationen-und-Empfehlungen/Empfehlungen-nach-Angriffszielen/Cloud-Computing/TLS/tls_node.html",label:"BSI – TLS Technische Richtlinie (deutsch)",dc:"BSI-Empfehlungen zu TLS-Versionen und Cipher-Suites für sichere OCPP-Verbindungen"},
+{url:"https://www.dekra.de/de/dekra-bietet-erstes-cybersecurity-pruefsiegel-fuer-e-ladesaeulen/",label:"DEKRA – Cybersecurity-Prüfsiegel für Ladesäulen (deutsch)",dc:"Erstes Cybersecurity-Zertifizierungsprogramm für EV-Ladeinfrastruktur von DEKRA"}
+]}
+]},
+{t:"KRITIS-Dachgesetz, CRA & IEC 62443",items:[
+{type:"list",items:["KRITIS-Dachgesetz (DE, ab 2026): Physische Resilienz kritischer Infrastrukturen – ergänzt NIS2","Cyber Resilience Act (CRA, EU 2024/2847): Hardware-OEMs müssen Security-Updates für Produktlebenszeit liefern","CRA-Vollvollzug ab 11.12.2027: Direkte Auswirkung auf Wallbox/HPC-Beschaffung und Lieferantenverträge","IEC 62443: Globaler Rahmenwerk für OT-Sicherheit (Industrial Automation) – Standard für Backend-Architektur","DORA (Digital Operational Resilience Act): Relevant für eMSPs als Zahlungsdienstleister","ChargeLeague (ex Spark Alliance): IONITY/Fastned/Electra/Atlante – neues Peer-to-Peer-Roaming ohne Hub – 1.700 Standorte, 11.000+ Ladepunkte, 25+ Länder","Drei Cyber-Regime in DACH: DE = NIS2UmsuCG, AT = NISG 2026, CH = ISG – unterschiedliche Schwellen"]},
+{type:"links",items:[
+{url:"https://www.bsi.bund.de/DE/Themen/KRITIS-und-regulierte-Unternehmen/kritis-und-regulierte-unternehmen_node.html",label:"BSI – KRITIS-Regulierung (deutsch)",dc:"Übersicht kritische Infrastrukturen: Pflichten, Meldewege, Sektorenabgrenzung"}
+]}
 ]}
 ]}
 ]},
@@ -521,7 +587,7 @@ const DD=[
 ]}
 ]},
 {t:"Eichrecht im Detail (DE/AT/CH)",items:[
-{type:"list",items:["DE: MessEG §3 + MessEV – Eichpflicht bei jeder öffentlichen Ladesitzung","MID-konforme Zähler pflicht: Siemens, Landis+Gyr, ABB (zugelassene Typen)","OCMF (Open Charge Metering Format): JSON mit RSA/ECDSA Signatur + geeichtem Zählerstand","Transparenz-Software: Kunden können Messung selbst auf Korrektheit prüfen (Pflicht DE)","Eichfrist: 8 Jahre (DE) – dann Neueichung oder Zähleraustausch nötig","Österreich: MID-Pflicht ab 2022, ähnlich wie DE, eichrechtskonform von Anfang an planen","Schweiz MetV: Messung muss korrekt sein, aber kein strenges OCMF-Pflicht – Best Practice empfohlen"]},
+{type:"list",items:["DE: MessEG §3 + MessEV – Eichpflicht bei jeder öffentlichen Ladesitzung","MID-konforme Zähler pflicht: Siemens, Landis+Gyr, ABB (zugelassene Typen)","S.A.F.E. Transparenzsoftware: Open-Source-Verifizierungstool – Pflicht-Komplementärsoftware zu OCMF in Deutschland","PTB-A 50.7: Zentrale PTB-Anforderungsschrift für Messgeräte in der Elektromobilität","VDE-AR-E 2418-3-100: DKE-Anwendungsregel für eichrechtskonforme konduktive Lade-Einrichtungen","OCMF (Open Charge Metering Format): JSON mit RSA/ECDSA Signatur + geeichtem Zählerstand","Transparenz-Software: Kunden können Messung selbst auf Korrektheit prüfen (Pflicht DE)","Eichfrist: 8 Jahre (DE) – dann Neueichung oder Zähleraustausch nötig","Österreich: MID-Pflicht ab 2022, ähnlich wie DE, eichrechtskonform von Anfang an planen","Schweiz MetV: Messung muss korrekt sein, aber kein strenges OCMF-Pflicht – Best Practice empfohlen"]},
 {type:"code",c:"// OCMF Beispiel-Struktur (vereinfacht)\n{\n  \"FV\": \"1.0\",\n  \"GI\": \"ABB Terra AC\",\n  \"GS\": \"SN12345678\",\n  \"GV\": \"Fw1.23\",\n  \"PG\": \"T12345\",\n  \"RD\": [{\n    \"TM\": \"2025-05-19T08:15:00,000+0100 I\",\n    \"TX\": \"B\",\n    \"RV\": 1234.567,\n    \"RI\": \"1-0:1.8.0\",\n    \"RU\": \"kWh\",\n    \"RT\": \"DC\",\n    \"ST\": \"G\"\n  }],\n  \"SA\": \"MEQ...==\"  // Signatur\n}"},
 {type:"links",items:[
 {url:"https://www.ptb.de/cms/ptb/fachabteilungen/abteilung9/fb-93/ladesaeulen.html",label:"PTB – Eichrecht Ladesäulen Leitfaden (deutsch)",dc:"Massgebliche Publikation der Physikalisch-Technischen Bundesanstalt zu MessEG §3"},
@@ -530,7 +596,67 @@ const DD=[
 ]}
 ]},
 {t:"Förderstrategie DACH 2024/25",items:[
-{type:"list",items:["DE – BEW (BAFA): Gewerbliche Ladepunkte bis 40% Förderquote, Antrag VOR Baubeginn!","DE – KfW 441: Wohngebäude-Ladepunkte, Tilgungszuschuss bis 30%","AT – E-Ladeinfrastruktur-Förderung: BMK-Programm, regelmässige Ausschreibungen","CH – Kantonal: ZH (Energiefonds ZH), BE (AEK Kanton), GE (SIG-Förderung)","EU – CEF Transport: Grosse Korridorprojekte, Matching Funds","Kumulierungsregeln: BEW + KfW oft kombinierbar – immer aktuelles Merkblatt prüfen!","Strategie: Förderantrag als erstes in Projekt-Meilensteinplan eintragen"]}
+{type:"list",items:["DE – BEW (BAFA): Gewerbliche Ladepunkte bis 40% Förderquote, Antrag VOR Baubeginn!","DE – KfW 441: Wohngebäude-Ladepunkte, Tilgungszuschuss bis 30%","AT – E-Ladeinfrastruktur-Förderung: BMK-Programm, regelmässige Ausschreibungen","CH – Kantonal: ZH (Energiefonds ZH), BE (AEK Kanton), GE (SIG-Förderung)","EU – CEF Transport: Grosse Korridorprojekte, Matching Funds","Kumulierungsregeln: BEW + KfW oft kombinierbar – immer aktuelles Merkblatt prüfen!","Strategie: Förderantrag als erstes in Projekt-Meilensteinplan eintragen"]},
+{type:"links",items:[
+{url:"https://www.bafa.de/DE/Energie/Energieeffizienz/Ladeinfrastruktur/ladeinfrastruktur_node.html",label:"BAFA – BEW Bundesförderung Ladeinfrastruktur (deutsch)",dc:"Aktuelles Merkblatt, Fördervoraussetzungen, Online-Antragstellung"},
+{url:"https://www.kfw.de/inlandsfoerderung/Unternehmen/Energie-und-Umwelt/Finanzierungsangebote/Ladestationen-fuer-Elektroautos-(441)/",label:"KfW 441 – Ladestationen Merkblatt (deutsch)",dc:"Tilgungszuschüsse, kombinierbar mit BEW, Wohngebäude-Fokus"},
+{url:"https://www.bmk.gv.at/themen/mobilitaet/e-mobilitaet/foerderungen.html",label:"BMK Österreich – E-Mobilitätsförderung (deutsch)",dc:"Aktuelle Förderprogramme für Ladeinfrastruktur in Österreich"}
+]}
+]},
+{t:"Ladesäulenverordnung (LSV) & Meldepflicht",items:[
+{type:"text",c:"Die Ladesäulenverordnung (LSV) ist die zentrale deutsche Betriebsvorschrift für öffentliche Ladepunkte. Komplett neu geregelt im Dezember 2025, gilt die neue LSV seit dem 1. Januar 2026 und ersetzt die Fassung von 2016."},
+{type:"list",items:["LSV §1: Gilt für alle öffentlich zugänglichen Ladepunkte für Fahrzeugklassen M und N","Technische Mindestanforderungen: OCPP-konform, interoperabel, Steckerstandards nach AFIR","Preistransparenz: kWh-Preis muss vor Ladestart sichtbar sein (auch via mobile Webseite)","Zahlung: DC >50kW NFC-Kontaktlos Pflicht, AC mindestens sichere elektronische Zahlung","Interoperabilität: RFID-Karte und App-Zahlung ohne vorherige Registrierung beim CPO möglich","BNetzA überwacht AFIR- und LSV-Compliance seit Dezember 2024 – mit Sanktionsbefugnis"]},
+{type:"text",c:"Meldepflicht: Jeder CPO muss öffentliche Ladepunkte beim Ladesäulenregister der Bundesnetzagentur anzeigen. Stand April 2026: 149.000+ Normal- und 51.000+ Schnellladepunkte registriert."},
+{type:"list",items:["Anzeigepflicht: Inbetriebnahme muss vor oder sofort nach Start beim BNetzA-Meldeportal angezeigt werden","Betreiberwechsel: Alter und neuer Betreiber müssen beide separat melden (seit LSV 2025)","Ausserbetriebnahme: Anzeigepflicht bei geplanter Stilllegung >3 Monate","Wartungsfenster: Kurze Unterbrechungen (<3 Monate) im Portal als Wartungsfenster eintragen","Änderungen: Technisch relevante Umbaumassnahmen sind ebenfalls meldepflichtig","Konsequenz: Nicht gemeldete Ladepunkte erscheinen nicht auf BNetzA-Ladesäulenkarte"]},
+{type:"links",items:[
+{url:"https://www.gesetze-im-internet.de/lsv_2026/BJNR16F0B0025.html",label:"LSV 2026 – Volltext (gesetze-im-internet.de, deutsch)",dc:"Offizielle Ladesäulenverordnung ab 1.1.2026 – technische Mindestanforderungen, Meldepflichten"},
+{url:"https://ladesaeulenregister.bnetza.de/",label:"BNetzA – Meldeportal Ladesäulenregister (deutsch)",dc:"Offizielles Portal zur Anzeige öffentlicher Ladepunkte – Pflicht für jeden CPO"},
+{url:"https://www.mobilityhouse.com/de_de/knowledge-center/artikel/ladesaeulenverordnung-lsv-in-deutschland-erklaert",label:"The Mobility House – LSV Erklärung (deutsch)",dc:"Verständliche Zusammenfassung der LSV 2025/2026 mit praktischen Hinweisen für CPOs"}
+]}
+]},
+{t:"GEIG – Gebäude-Elektromobilitätsinfrastruktur-Gesetz",items:[
+{type:"text",c:"Das GEIG ist neben der LSV das wichtigste Gesetz für den Ladeinfrastruktur-Markt in Deutschland. Es verpflichtet Gebäudeeigentümer zum Aufbau von Lade- und Leitungsinfrastruktur — und schafft damit massiven Bedarf für CPOs."},
+{type:"list",items:["Neubau Wohngebäude >5 Stellplätze: JEDER Stellplatz muss Leitungsinfrastruktur (Leerrohr) erhalten","Neubau Nichtwohngebäude >6 Stellplätze: jeder 3. Stellplatz Leerrohr + mindestens 1 Ladepunkt","Bestand Nichtwohngebäude >20 Stellplätze: seit 1. Januar 2025 mindestens 1 Ladepunkt Pflicht","Grössere Renovierung (>25% Gebäudehülle): Nachrüstpflichten für Leitungsinfrastruktur","Ausnahmen: KMU-Gebäude bei überwiegender Eigennutzung; Härtefallklausel bei >7% Renovierungskosten","Quartierslösung: Ladepunkt-Pflicht kann standortübergreifend gebündelt erfüllt werden"]},
+{type:"text",c:"EPBD 2024 (EU-Gebäuderichtlinie) verschärft die Anforderungen ab 2027 nochmals erheblich:"},
+{type:"list",items:["Ab 2027: Pflichten schon ab 3 Stellplätzen (statt bisher 5/6)","Vorverkabelungspflicht für alle Stellplätze bei Neubauten","Nachrüstpflicht bei Bestandsgebäuden wird ausgeweitet","Deutschland muss EPBD bis Mai 2026 in nationales Recht (GEIG-Novelle) überführen","Für CPOs: GEIG-Pflicht = garantierter Markt für Ladeinfrastruktur-Installation"]},
+{type:"links",items:[
+{url:"https://www.gesetze-im-internet.de/geig/",label:"GEIG Volltext (gesetze-im-internet.de, deutsch)",dc:"Gebäude-Elektromobilitätsinfrastruktur-Gesetz im offiziellen Wortlaut"},
+{url:"https://www.mennekes.de/emobility/wissen/ratgeber-emobility/geig/",label:"MENNEKES – GEIG Ratgeber (deutsch)",dc:"Verständliche Zusammenfassung mit Grafiken: Wer ist betroffen, was gilt ab wann"},
+{url:"https://www.eha.net/blog/details/geig-gebaeude-elektromobilitaetsinfrastruktur-gesetz.html",label:"EHA – GEIG für Filialisten & Multi-Site (deutsch)",dc:"GEIG-Umsetzung für Unternehmen mit vielen Standorten: Planung, Förderung, Quartierslösung"}
+]}
+]},
+{t:"Fleet & Depot Charging",items:[
+{type:"text",c:"Depot-Laden für Flotten unterscheidet sich fundamental vom öffentlichen Laden: kein Roaming nötig, private Netze, Overnight-Fokus und massives Lastmanagement."},
+{type:"list",items:["Depot-Topologie: 50–500 Fahrzeuge laden gleichzeitig – Lastspitzen bis Megawatt-Bereich","Return-to-Depot-Zyklus: Fahrzeuge kommen gleichzeitig zurück → Lademanagement kritisch","Overnight-Strategie: Laden zwischen 22–06 Uhr, günstiger Strom, wenig Netzlast","Protokoll: meist OCPP, oft proprietär (Master-Slave), Modbus bei älteren Anlagen","Lastmanagement: dynamisch (EMS steuert), Priority-Queuing nach Abfahrtszeit","Anbieter DACH: Mer, Zaptec, ABB, Webfleet, Siemens, Heliox für Busdepots","Business Case: meist höhere Auslastung als öffentlich (60–90%), besserer ROI"]},
+{type:"links",items:[
+{url:"https://www.bdew.de/energie/elektromobilitaet/",label:"BDEW – Fuhrpark & Flottenladen (deutsch)",dc:"Leitfaden Flottenelektrifizierung: Ladeinfrastruktur, Betrieb, Abrechnung"},
+{url:"https://www.vda.de/de/themen/innovation-und-technik/elektromobilitaet",label:"VDA – Elektromobilität Fuhrpark & Flotten (deutsch)",dc:"Marktdaten, Fahrzeugmodelle, Infrastrukturplanung für gewerbliche Flotten"}
+]}
+]},
+{t:"SLAs & KPIs im CPO-Betrieb",items:[
+{type:"text",c:"Wer einen Ladepark professionell betreibt, braucht messbare Ziele. Diese KPIs und SLA-Bausteine sind Standard in CPO-Betriebsverträgen."},
+{type:"list",items:["Uptime: Verfügbarkeit >95% (branchenüblich), >99% für Premium-Standorte","MTTR (Mean Time to Repair): Zeit bis Wiederherstellung – Ziel <4h für HPC","Session Success Rate: % erfolgreicher Ladevorgänge – Ziel >97%","Energie/EVSE/Jahr: kWh pro Ladepunkt – Benchmark AC: 3.000–8.000 kWh/a","Auslastung %: geladene Stunden / verfügbare Stunden – Break-Even ~18–22%","ARPU (Average Revenue per User): Erlös pro aktivem Nutzer/Monat","First-Line Resolution Rate: Helpdesk-Anrufe die ohne Techniker gelöst werden","SLA mit Standorteigentümer: Uptime-Garantie, Reaktionszeit, Eskalation, Pönale"]},
+{type:"links",items:[
+{url:"https://www.bdew.de/energie/elektromobilitaet/",label:"BDEW – Betriebsanforderungen Ladeinfrastruktur (deutsch)",dc:"Qualitätsstandards und KPI-Rahmen für CPO-Betrieb in Deutschland"}
+]}
+,
+{t:"THG-Prämie als Erlösquelle",items:[
+{type:"text",c:"Die Treibhausgasminderungsquote (THG-Prämie) ist eine oft unterschätzte Erlösquelle für CPOs: Ladestrommengen können als vermiedene CO₂-Emissionen zertifiziert und an Mineralölunternehmen verkauft werden."},
+{type:"list",items:["Rechtsgrundlage: Bundesimmissionsschutzgesetz (BImSchG) §37a – Treibhausgasminderungspflicht","Anspruch: Betreiber öffentlicher UND privater Ladepunkte können THG-Quote einreichen","Ablauf: Ladestrommengen werden durch THG-Dienstleister zertifiziert und an Quotenpflichtige verkauft","Erlöspotenzial 2025: ~35€/MWh (Ladestrom Garant) – variiert jährlich je nach Marktpreisen","B2C-Variante: Auch EV-Fahrer mit privater Wallbox können jährlich ~50–200€ THG-Prämie erhalten","Aggregatoren DACH: emobility.energy, Greenpeace Energy, Charge4Europe, The Mobility House","Für CPOs: 35€/MWh × X MWh/Jahr = direkter Zusatzerlös ohne Mehraufwand im Betrieb","Kombinierbar: THG-Prämie + Ladeerlös + Peak-Shaving + ggf. FCR = Revenue Stacking"]},
+{type:"links",items:[
+{url:"https://www.emobility.energy/thg/",label:"emobility.energy – THG-Prämie für Ladepunkte (deutsch)",dc:"THG-Dienstleister für CPOs: Antrag, Abwicklung, aktuelle Vergütungspreise 2025"},
+{url:"https://www.mobilityhouse.com/de_de/knowledge-center/thg-quote-fuer-ladestationen.html",label:"The Mobility House – THG-Quote Ladestationen (deutsch)",dc:"Erklärung THG-Prämie für CPOs: Funktionsprinzip, Erlöspotenzial, Beantragung"}
+]}
+]},
+{t:"White Label CPO & Charging as a Service (CaaS)",items:[
+{type:"text",c:"Viele Gebäudeeigentümer, Einzelhändler und Gemeinden wollen Ladeinfrastruktur anbieten, aber nicht selbst CPO sein. Die Lösung: White-Label-Betrieb durch einen professionellen CPO oder Charging as a Service (CaaS)."},
+{type:"list",items:["White Label CPO: Professioneller Betreiber führt alles im Hintergrund, Standorteigentümer erscheint als Marke","CaaS (Charging as a Service): Rundum-Sorglos-Paket – Hardware, Installation, Betrieb, Abrechnung aus einer Hand","Für den Standorteigentümer: Kein CAPEX, keine technische Expertise nötig, monatliche Gebühr oder Revenue Share","Für den CPO: Skalierung ohne eigene Standortakquise, Portfolioaufbau, langfristige Verträge","Vertragsdauer: typisch 5–10 Jahre, mit Optionsverlängerung","Abgrenzung Rollen: Wer ist CPO im Sinne der LSV? Wer hat Meldepflicht bei BNetzA? → Vertraglich klären","Anbieter DACH: ChargeOne (CaaS), has·to·be (White Label CSMS), EnBW (Fullservice), ADAC e-Charge"]},
+{type:"list",items:["Praxistipp: Im Vertrag klar regeln: Eigentum der Hardware, Datenzugang, CSMS-Wechselrecht, Exit-Klausel","GEIG-Treiber: Viele Nichtwohngebäude-Eigentümer suchen CaaS-Lösung weil sie GEIG-Pflicht erfüllen müssen","Revenue-Modelle: Fixgebühr (2–5€/LP/Monat), Revenue Share (10–30% der Ladeerlöse), Hybrid","Due Diligence: Prüfe OCPP-Kompatibilität, Eichrecht-Konformität, Roaming-Anbindung des CaaS-Anbieters"]}
+]},
+{t:"Versicherung, Haftung & Brandschutz",items:[
+{type:"text",c:"Der gesamte versicherungs- und haftungsrechtliche Block wird in CPO-Curricula fast immer übersehen – ist aber für jedes reale Projekt existenziell."},
+{type:"list",items:["Betreiberhaftpflicht: Pflicht für jeden CPO – deckt Personen-, Sach- und Vermögensschäden ab","Elektronikversicherung: Sachschäden an EVSE-Hardware (Vandalismus, Blitz, Überspannung)","ProdHaftG (Produkthaftungsgesetz): OEM haftet für Produktfehler, CPO für Betriebsfehler","Betriebsunterbrechungsversicherung (BU): Ertragsausfall bei Standortausfall","Cyber-Haftpflicht: Gekoppelt an NIS2/KRITIS – Pflicht ab bestimmter Unternehmensgrösse","§§23–26 VVG (Gefahrerhöhung): Nicht angezeigte Ladeinfrastruktur am Gebäude → Versicherungsverlust!","VdS 3885: GDV-Richtlinie für EV-Laden in geschlossenen Garagen – baulich, technisch, organisatorisch","GDV-Statistik: Keine erhöhte Brandgefahr durch E-Fahrzeuge gegenüber Verbrennern nachgewiesen","Praxistipp: Gebäudeversicherung VOR Installation über Wallbox-Einbau informieren (VVG-Pflicht)"]}
+]}
 ]}
 ]},
 {id:"iso15118",ti:"ISO 15118 / Plug & Charge",sub:"Protokollarchitektur & DACH-Rollout",sections:[
@@ -588,7 +714,7 @@ const DD=[
 {url:"https://www.charin.global/de/technology/iso-15118/",label:"CharIN – ISO 15118-20 BPT Überblick (deutsch)",dc:"Technische Anforderungen für V2G nach ISO 15118-20"}
 ]}
 ]},
-{t:"V2G Status DACH 2025",items:[
+{t:"V2G Marktreife DACH 2025/2026",items:[
 {type:"list",items:["DC V2G Fahrzeuge: Hyundai IONIQ 5/6, KIA EV6 (DC V2G via CCS), BYD Atto 3 (V2L)","AC V2G: Nissan Leaf (CHAdeMO, veraltet), einige chinesische Modelle (Markteinführung)","V2H EVSE: Wallbox Quasar 2 (DC), E3/DC Hauskraftwerk, Fronius Wattpilot","Pilotnetzwerke 2024/25: LichtBlick Smart Charging (DE), Repower Pilot (CH)","Regulatorische Hürden DE: Netzentgelte auf Rückspeisung, Doppelbesteuerung","Prognose Massenmarkt: 2027–2029 nach ISO 15118-20 Rollout + Regulatorikklärung"]},
 {type:"links",items:[
 {url:"https://www.bundesnetzagentur.de/DE/Fachthemen/ElektrizitaetundGas/E-Mobilitaet/start.html",label:"Bundesnetzagentur – E-Mobilität Marktdaten DE (deutsch)",dc:"Aktuelle Daten zu EV-Zulassungen, Ladepunkten und Marktentwicklung"},
@@ -615,6 +741,226 @@ const DD=[
 ]},
 {t:"Second-Life Batterien",items:[
 {type:"list",items:["Kriterium: EV-Batterie < 80% SOH → zu wenig Reichweite → Second Life stationär","SOH-Bewertung: Kapazitätsmessung, Impedanzspektroskopie, Ladekurvenanalyse","Wirtschaft: 30–50% günstiger als Neubatterien (nach Aufarbeitungskosten)","Typische Second-Life-Nutzung: 2–8 weitere Jahre stationär bei moderatem Zyklieren","Herausforderung: Heterogenität der Rückläufer, fehlende OEM-Garantie, Qualitätssicherung","Marktplayer: Volkswagen (ID.3 Rückläufer), Renault, Autobatterie.com, Spiers New Technologies","Prognose: Markt wächst stark ab 2026–2028 mit ersten Massenrückläufern von frühen EVs"]}
+]}
+]}
+,
+{id:"csms",ti:"CSMS / CPMS",sub:"Lademanagement-Software: Markt, Funktion & Auswahl",sections:[
+{t:"Was ist ein CSMS und was bedeutet CPMS?",items:[
+{type:"text",c:"CSMS (Charge Station Management System) ist die offizielle OCPP 2.0.1-Bezeichnung für die Backend-Software, die alle Ladestationen eines Betreibers verwaltet. CPMS (Charge Point Management System) ist die ältere, aber noch weit verbreitete Alternativbezeichnung für exakt dasselbe System."},
+{type:"list",items:["CSMS = OCPP 2.0.1-Terminologie, CPMS = älterer Begriff – identische Funktion","Zentrale Rolle: Verbindet EVSE (über OCPP) mit Betreiber-Backend und Roaming-Plattformen","Kommunikation: EVSE ↔ CSMS via OCPP | CSMS ↔ eMSP via OCPI | CSMS ↔ DSO via OSCP","Kernfunktionen: Authentifizierung, Monitoring, Smart Charging, Reporting, Firmware-Updates","Deployment: SaaS (Cloud-Hosting beim Anbieter) oder On-Premise (eigener Server)"]},
+{type:"code",c:"// CSMS im Ökosystem\n\nEVSE ──[OCPP]──► CSMS ──[OCPI]──► Roaming-Hub ──[OCPI]──► eMSP\n                  │\n                  ├──[OSCP]──► DSO (Netzkapazität)\n                  ├──[OpenADR]──► Aggregator\n                  └──[API]──► Eigene App / ERP / BI-System"},
+{type:"links",items:[
+{url:"https://www.ampeco.com/de/blog/10-fragen-die-cpos-ihrem-cpms-anbieter-stellen-sollten/",label:"AMPECO – 10 Fragen an deinen CPMS-Anbieter (deutsch)",dc:"Praktischer Leitfaden für die CSMS-Evaluation – welche Fragen du stellen musst"},
+{url:"https://www.nationale-leitstelle.de/verstehen/glossar/",label:"Nationale Leitstelle – EV Glossar (deutsch)",dc:"Offizielle Begriffsdefinitionen für Ladeinfrastruktur in Deutschland"}
+]}
+]},
+{t:"Kernfunktionen im Detail",items:[
+{type:"list",items:["Authentifizierung: Token-Verwaltung, Whitelist-Sync, Online-Auth via OCPI, Auth-Cache","Monitoring: Echtzeit-Status aller EVSE, Fehleralarme, Verfügbarkeitsüberwachung","Smart Charging: Charging Profiles verwalten, Lastmanagement-Algorithmen, §14a-Steuerung","Reporting: Energiemenge, Umsatz, Auslastung, CDR-Export für Eichrecht und Abrechnung","Firmware-Management: Remote OTA-Updates, Rollback-Funktion, Update-Scheduling","Tarifverwaltung: Preise pro Standort/Connector, dynamische Tarife, B2B-Sondertarife","Kundenservice: Remote-Reset, Remote-Start, Störungsdokumentation, Ticket-System"]},
+{type:"links",items:[
+{url:"https://www.openchargealliance.org/downloads/",label:"OCA – OCPP 2.0.1 Funktionsblöcke (englisch)",dc:"Vollständige Liste aller Functional Blocks die ein CSMS implementieren kann"},
+{url:"https://www.ladenetz.de/",label:"Ladenetz.de – CSMS & Betrieb Praxiswissen (deutsch)",dc:"Praxisinformationen zu CSMS-Auswahl und Betrieb aus CPO-Perspektive"}
+]}
+]},
+{t:"Marktübersicht DACH",items:[
+{type:"list",items:["has·to·be (Österreich): Marktführer AT, starke DACH-Präsenz, Eichrecht-konform, Salesforce-Integration","Monta (Dänemark): schnell wachsend in DACH, gute UX, attraktives Preismodell","Virta (Finnland): Enterprise-fokussiert, breite DACH-Referenzen, starkes Roaming","AMPECO (international): White-Label-Spezialist, flexibel, gut für Eigenmarken","Chargepoint (USA): eher Enterprise/Fleet, US-Marktführer, wächst in Europa","Lacroix Energy (Frankreich): Frankreich + DACH-Märkte, gute Eichrecht-Integration","Eigene Entwicklung: sinnvoll ab >500 Ladepunkten mit spezifischen Anforderungen"]},
+{type:"links",items:[
+{url:"https://www.has-to-be.com/de/",label:"has·to·be – CSMS DACH-Marktführer (deutsch)",dc:"Führender CSMS-Anbieter im deutschsprachigen Raum mit OCMF-Eichrecht"},
+{url:"https://monta.com/de/",label:"Monta – CPMS Plattform (deutsch)",dc:"Wachstumsstarker CSMS-Anbieter mit attraktivem Preismodell für DACH"}
+]}
+]},
+{t:"Auswahlkriterien für CPOs",items:[
+{type:"list",items:["OCPP-Version: 1.6 + 2.0.1 Support Pflicht, 2.1-Roadmap vorhanden?","Eichrecht: OCMF-Unterstützung, Transparenz-Software, MID-zertifizierte Zählerintegration","Roaming: OCPI 2.2.1 native, Hubject + e-clearing.net Anbindung?","API-Qualität: REST-API für eigene Apps, Webhook-Support, Dokumentation","Preismodell: per Ladepunkt/Monat (2–8€), Revenue Share, Setup-Fee, Mindestvertragslaufzeit","White-Label: Eigenes Branding möglich? (App, Portal, E-Mails)","SLA des CSMS-Anbieters: 99,9% Uptime? Support-Zeiten? Eskalationsweg?","Lock-in-Risiko: Datenmitnahme möglich? OCPP-Standard schützt EVSE-Seite, aber Backend-Daten?"]},
+{type:"links",items:[
+{url:"https://www.ampeco.com/de/blog/warum-cpms-anpassbarkeit-mehr-als-nur-ein-nettes-extra-ist/",label:"AMPECO – CPMS Auswahlkriterien (deutsch)",dc:"Praktischer Leitfaden: Worauf es bei der CSMS-Auswahl wirklich ankommt"}
+]}
+]},
+{t:"Make vs. Buy Entscheidung",items:[
+{type:"list",items:["SaaS-CSMS empfohlen bis ~500 Ladepunkte: schneller Start, geringere Investition","Eigenes CSMS ab ~500+ LP sinnvoll: volle Kontrolle, spezifische Features, Margen","Total Cost of Ownership berechnen: Lizenz vs. Entwicklungskosten + Team","Hybridmodell: SaaS-CSMS nutzen + eigene Integrationen via API","Exit-Strategie: OCPP schützt EVSE-Seite – welche Daten bekommst du mit?","Wichtig: CSMS-Wechsel ist aufwändig – Entscheidung sorgfältig treffen"]},
+{type:"links",items:[
+{url:"https://www.virta.global/de/",label:"Virta – Enterprise CSMS (deutsch)",dc:"Enterprise-CSMS mit starker DACH-Präsenz und breiten Roaming-Integrationen"},
+{url:"https://www.ampeco.com/de/",label:"AMPECO – White-Label CPMS (deutsch/englisch)",dc:"White-Label-CSMS für CPOs die eine eigene Marke aufbauen wollen"}
+]}
+]}
+]},
+{id:"ocpi_deep",ti:"OCPI Deep Dive",sub:"Roaming-Protokoll: Module, Ablauf & OICP",sections:[
+{t:"Architektur: P2P vs. Hub-Modell",items:[
+{type:"text",c:"OCPI (Open Charge Point Interface) ist das Roaming-Protokoll das CPOs und eMSPs miteinander verbindet. Es gibt zwei Verbindungsmodelle: direkt (Peer-to-Peer) und über einen Hub."},
+{type:"list",items:["Peer-to-Peer (P2P): CPO verbindet sich direkt mit jedem eMSP (bilateral)","Hub-Modell: CPO und eMSP verbinden sich einmalig mit einem Hub → Zugang zum gesamten Netzwerk","Hub DACH: Hubject (grösster), e-clearing.net (DE-fokussiert), Gireve (FR/EU)","Crossclearance: Hubject ↔ e-clearing.net haben Vereinbarung → gegenseitiger Datenfluss","Vorteile Hub: eine Verbindung statt n Verbindungen, schnelleres Onboarding"]},
+{type:"code",c:"// Verbindungsmodelle\n\nP2P:   CPO ──[OCPI]──► eMSP1\n       CPO ──[OCPI]──► eMSP2\n       CPO ──[OCPI]──► eMSP3  (n Verbindungen)\n\nHub:   CPO ──[OCPI]──► HUB ──[OCPI]──► eMSP1\n                        └──[OCPI]──► eMSP2\n                        └──[OCPI]──► eMSP3  (1 Verbindung)"},
+{type:"links",items:[
+{url:"https://evroaming.io/ocpi-background/",label:"EVRoaming Foundation – OCPI Hintergrund (englisch)",dc:"Offizielle Erklärung der OCPI-Architektur vom Standard-Verwalter"},
+{url:"https://www.hubject.com/de/",label:"Hubject – Intercharge Network (deutsch)",dc:"Grösster EV-Roaming-Hub in Europa: OCPI + OICP, Crossclearance mit e-clearing.net"}
+]}
+]},
+{t:"Die 8 OCPI-Module im Detail",items:[
+{type:"list",items:["Locations: POI-Daten – Standort, Steckertypen, Preise, Öffnungszeiten, Echtzeit-Verfügbarkeit","Tokens: RFID-UIDs und App-Tokens – eMSP sendet Whitelist an CPO für Offline-Auth","Sessions: Laufende Ladesitzungen – Echtzeit-Updates an eMSP (kWh, Dauer, Status)","CDRs (Charge Detail Records): Abgeschlossene Sitzungen – Basis für Abrechnung CPO→eMSP","Tariffs: Preisstrukturen – kWh-Preis, Zeitpreis, Session-Fee, Idle-Fee definiert","Commands: Fernsteuerung – START_SESSION, STOP_SESSION, RESERVE_NOW, UNLOCK_CONNECTOR","Credentials: Gegenseitige Authentifizierung zwischen CPO und eMSP (Token-Exchange)","Hub Client Info (nur Hub-Modell): Welche Parteien sind am Hub angeschlossen?"]},
+{type:"links",items:[
+{url:"https://evroaming.io/",label:"EVRoaming Foundation – OCPI 2.2.1 Spec (englisch)",dc:"Vollständige OCPI-Spezifikation auf GitHub – alle Module mit Beispielen"},
+{url:"https://www.e-clearing.net/de/",label:"e-clearing.net – Roaming-Hub DE (deutsch)",dc:"Deutschsprachiger Roaming-Hub, alternative zu Hubject, fokussiert auf DE/AT"}
+]}
+]},
+{t:"Roaming-Ablauf Step by Step",items:[
+{type:"list",items:["1. Onboarding: eMSP sendet Token-Whitelist via OCPI an Hub → Hub verteilt an alle CPOs","2. Fahrer steckt ein: EVSE prüft Token lokal (Whitelist) oder online (REAL_TIME via OCPI)","3. Autorisierung: CPO-CSMS fragt Hub → Hub fragt eMSP → Antwort: ALLOWED / BLOCKED","4. Session läuft: CSMS sendet Session-Updates (kWh, Zeit) via OCPI an Hub → eMSP","5. Session endet: EVSE sendet CDR an CSMS","6. Clearing: CSMS sendet CDR über OCPI an Hub (innerhalb 24h)","7. Hub routet CDR zum zuständigen eMSP","8. Abrechnung: eMSP berechnet Fahrer, zahlt CPO über Clearing-Vereinbarung"]},
+{type:"code",c:"// Autorisierungs-Flow (vereinfacht)\n\nEVSE → CSMS: Authorize(rfid_uid)\nCSMS → Hub:  POST /ocpi/cpo/2.2/tokens/{uid}/authorize\nHub  → eMSP: GET /ocpi/emsp/2.2/tokens/{uid}\neMSP → Hub:  { allowed: true, info: {uid, type, auth_method} }\nHub  → CSMS: { allowed: ALLOWED }\nCSMS → EVSE: ACCEPTED"},
+{type:"links",items:[
+{url:"https://evroaming.io/ocpi-background/",label:"EVRoaming Foundation – OCPI Token & Auth (englisch)",dc:"Detaillierte Erklärung Token-Typen und Autorisierungsmodi in OCPI"}
+]}
+]},
+{t:"Token-Typen & Autorisierungsmodi",items:[
+{type:"list",items:["Token-Typ RFID: physische Karte, UID = 4 oder 7 Byte Hexadezimal (z.B. AB:CD:EF:12)","Token-Typ APP_USER: vom eMSP via App generiert, nicht physisch","Token-Typ OTHER: ISO 15118 Certificate (EMAID-basiert für PnC)","Autorisierungsmodus WHITELIST: CPO hat lokale Token-Liste – schnell, offline-fähig","Autorisierungsmodus REAL_TIME: CSMS fragt eMSP bei jeder Session – langsam, immer aktuell","Autorisierungsmodus ALWAYS_ONLINE: REAL_TIME ohne Fallback – für sichere Umgebungen","Auth-Cache (OCPP 2.0.1): Lokal gecachte Tokens mit Ablaufzeit – Kompromiss"]},
+{type:"links",items:[
+{url:"https://evroaming.io/",label:"OCPI Spec – Token Modul (englisch)",dc:"Vollständige Definition aller Token-Typen und Autorisierungsmodi"}
+]}
+]},
+{t:"OICP & OCPI 3.0",items:[
+{type:"text",c:"Neben OCPI gibt es mit OICP (Open Intercharge Protocol) ein weiteres wichtiges Roaming-Protokoll – proprietär von Hubject entwickelt aber weit verbreitet in DACH."},
+{type:"list",items:["OICP = Open Intercharge Protocol: von Hubject entwickelt, ähnliche Funktion wie OCPI","Verbreitung DACH: viele grosse CPOs und eMSPs nutzen Hubject → OICP de facto Standard","OICP vs. OCPI: technisch ähnlich, aber proprietär und Hubject-zentriert","Hubject als Übersetzer: Hubject unterstützt beide Protokolle und übersetzt intern","e-clearing.net: nutzt OCPI, Crossclearance-Vertrag mit Hubject","OCPI 2.3.0 (Feb 2025): Neues Booking-Modul (Fleet-Reservierungen), Direct-Payment-Modul, signierte Zählerwerte, AFIR-NAP-Konformität","OCPI 3.0 (in Entwicklung): PnC-Integration, Push-Notifications am Display, neue Auth-Methoden","Strategisch: OCPI 3.0 wird OICP langfristig ablösen – aber OICP bleibt relevant bis ~2028"]},
+{type:"links",items:[
+{url:"https://www.hubject.com/de/",label:"Hubject – OICP & Intercharge Network (deutsch)",dc:"OICP-Dokumentation und Anbindungsinformationen beim Hubject-Hub"},
+{url:"https://evroaming.io/",label:"EVRoaming Foundation – OCPI 3.0 Vorschau (englisch)",dc:"Neue Features in OCPI 3.0: PnC-Integration, Display-Notifications, erweiterte Auth"}
+]}
+]}
+]},
+{id:"auth",ti:"Authentifizierung & Zahlung",sub:"Tokens, Tariffe & AFIR-konforme Bezahlung",sections:[
+{t:"Authentifizierungsstack im Überblick",items:[
+{type:"text",c:"Bevor eine Ladesitzung starten kann, muss der Nutzer authentifiziert werden. Es gibt 5 technische Wege – von der physischen Karte bis zur automatischen Fahrzeugerkennung."},
+{type:"list",items:["RFID-Karte: NFC, UID 4/7 Byte, ausgestellt vom eMSP – häufigste Methode","App-Token: vom eMSP-Backend generiert, QR-Code oder Bluetooth-Start","ISO 15118 PnC: Vertragszertifikat im Fahrzeug – kein RFID, kein Smartphone nötig","Autocharge: Fahrzeug-MAC-Adresse als Identifier – unsicher, von AFIR nicht anerkannt","Ad-hoc-Zahlung: NFC-Kreditkarte oder QR-Code direkt an Säule – ohne Registrierung","EMAID (Electric Mobility Account Identifier): Standardisierte Nutzer-ID im Roaming-Netz"]},
+{type:"code",c:"// EMAID Aufbau\n// Format: [CC]-[EMI3-Code]-[Instance]-[Check]\n// Beispiel: DE-ABC-C12345678-Y\n//   DE    = Länderkürzel (Deutschland)\n//   ABC   = eMSP-Code (von EMI3 zugewiesen)\n//   C     = Token-Typ (C = Contract)\n//   12345678 = Instanz-ID (eMSP-intern)\n//   Y     = Prüfzeichen"},
+{type:"links",items:[
+{url:"https://www.nationale-leitstelle.de/verstehen/glossar/",label:"Nationale Leitstelle – Authentifizierungs-Glossar (deutsch)",dc:"Offizielle Begriffe zu RFID, Token, EMAID und Authentifizierungsverfahren"}
+]}
+]},
+{t:"Whitelist vs. Online-Autorisierung",items:[
+{type:"list",items:["Whitelist (OCPI): eMSP sendet Token-Liste an CPO → EVSE prüft lokal → offline-fähig","Online REAL_TIME: CSMS fragt eMSP bei jeder Sitzung → immer aktuell, aber Latenz","Kombiniert: Whitelist + REAL_TIME-Fallback – Standard bei grossen CPOs","OCPP 2.0.1 Auth-Cache: Lokal gecachte Tokens mit TTL (Time to Live)","Sicherheitsaspekt: Gestohlene/gesperrte Karte: Whitelist-Update dauert Stunden, REAL_TIME sofort","Praxis: HPC-Standorte meist REAL_TIME, AC-Netze meist Whitelist für Performance"]},
+{type:"links",items:[
+{url:"https://evroaming.io/",label:"OCPI – Token Whitelist Synchronisation (englisch)",dc:"Technische Details der Token-Synchronisation zwischen eMSP und CPO"}
+]}
+]},
+{t:"Tarifmodelle im Detail",items:[
+{type:"list",items:["kWh-basiert: €/kWh – einfach, fair, AFIR-konform – Standard für Konsumenten","Zeitbasiert: €/Minute – für Ultra-HPC sinnvoll (350kW × 15min = viel Energie)","Sessionbasiert: Grundgebühr pro Ladevorgang – für kurze Sessions relevant","Idle Fee / Blocking Fee: Strafgebühr nach Ladeende (z.B. 0,10€/min nach 60min)","Kombiniert: 0,45€/kWh + 0,05€/min nach 90min – häufigste Praxis bei HPC","Dynamische Tarife: Echtzeit-Strompreise (OCPI 3.0) – noch selten, kommt mit V2G","B2B/Firmenwagen: Kostenstellen-Zuordnung, Monatsrechnung, SEPA-Lastschrift"]},
+{type:"links",items:[
+{url:"https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=CELEX:32023R1804",label:"AFIR Art. 5 – Preistransparenz & Tarifanzeige (deutsch)",dc:"Rechtsgrundlage für kWh-Preisanzeigepflicht und Verbot zeitbasierter Tarife als Einzel-Modell"}
+]}
+]},
+{t:"Zahlungsmethoden (AFIR-konform)",items:[
+{type:"list",items:["AFIR-Pflicht DC >50kW ab 2024: NFC-Kontaktlos (Visa/Mastercard) Pflicht am Terminal","AFIR-Pflicht AC öffentlich: mindestens eine sichere elektronische Zahlungsmethode","NFC-POS-Terminal: Kontaktlos bis 50€ ohne PIN, darüber mit PIN – an HPC Standard","QR-Code: Link zu Web-Bezahlseite des CPO/eMSP – günstigere Alternative für AC","App: eMSP-App mit gespeicherter Zahlungsmethode – bequem aber nicht Ad-hoc","RFID: über eMSP-Vertrag – günstigste Transaktion für CPO (kein Interchange-Fee)","Zahlungsabwickler für CPOs: Adyen, Stripe, Payone, Nets – Interchange-Fee 1–3%","SEPA-Lastschrift: B2B-Abrechnung, Firmenwagen – kein POS-Terminal nötig"]},
+{type:"links",items:[
+{url:"https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=CELEX:32023R1804",label:"AFIR – Ad-hoc-Zahlung & NFC-Pflicht (deutsch)",dc:"EU-Verordnung: Zahlungspflichten für öffentliche Ladepunkte ab 2024/2025"},
+{url:"https://www.bundesnetzagentur.de/DE/Fachthemen/ElektrizitaetundGas/E-Mobilitaet/start.html",label:"Bundesnetzagentur – Preistransparenz Laden (deutsch)",dc:"Umsetzungshinweise zur AFIR-Preisanzeigepflicht in Deutschland"}
+]}
+]},
+{t:"Billing Flow: CPO → eMSP → Fahrer",items:[
+{type:"list",items:["Energiebezug: CPO kauft Strom vom VNB (Letztverbraucher-Rolle gemäss MessEG)","Session-Ende: EVSE → CSMS sendet CDR (mit OCMF-Sigatur für Eichrecht DE)","CDR-Transfer: CSMS → OCPI Hub → eMSP (innerhalb 24h, Pflicht in OCPI)","eMSP-Abrechnung: eMSP stellt Fahrer kWh-Verbrauch + Marge in Rechnung","Clearing CPO↔eMSP: eMSP zahlt CPO monatlich via SEPA – Preis aus OCPI Tariffs","Roaming-Marge: typisch 0,05–0,15€/kWh Aufschlag eMSP auf CPO-Preis","Dispute-Handling: CDR-Differenzen werden via OCPI CDR-Korrekturen gelöst"]},
+{type:"links",items:[
+{url:"https://www.ladenetz.de/eichrecht/",label:"Ladenetz.de – CDR & Eichrecht Abrechnung (deutsch)",dc:"Wie eichrechtskonforme CDRs erstellt und übermittelt werden"}
+]}
+,
+{t:"Preisangabenverordnung (PAngV) & Preistransparenz",items:[
+{type:"text",c:"Die Preisangabenverordnung (PAngV) regelt wie Preise an Ladesäulen angezeigt werden müssen. Sie wurde im Dezember 2024 an AFIR angepasst – mit direkten Konsequenzen für CPOs."},
+{type:"list",items:["PAngV Grundprinzip: Preis muss vor Beginn des Ladevorgangs klar und vollständig sichtbar sein","Neue Anlagen ab April 2024: Preis direkt am Terminal anzeigen – in kWh und ggf. Zeitpreis","Bestandsanlagen bis Januar 2027: Preis alternativ via registrierungsfreie mobile Webseite/QR erlaubt","Preisänderungen: Preis darf sich während laufender Sitzung nicht erhöhen (Vertrauensschutz)","Preisbestandteile klar trennen: kWh-Preis, Zeitpreis, Sitzungsgebühr – einzeln ausweisen","Mehrsprachigkeit: AFIR fordert Preis auf Englisch zusätzlich – empfohlen an Autobahnstandorten","BNetzA-Durchsetzung: Bundesbehörde überwacht AFIR und PAngV-Compliance seit Dez. 2024"]},
+{type:"list",items:["Praxistipp: kWh-Preis immer als primäre Einheit anzeigen (AFIR-Pflicht, Konsumentenschutz)","Idle Fee separat ausweisen und klar kommunizieren – Überraschungsgebühren vermeiden","Tarifänderungen: CSMS-seitig verwalten, OCPI Tariffs aktuell halten für Roaming-Partner","Bestandssäulen: QR-Code-Lösung mit Link zu Preiswebseite rechtzeitig implementieren (Deadline 2027)"]},
+{type:"links",items:[
+{url:"https://www.gesetze-im-internet.de/pangv/",label:"PAngV Volltext (gesetze-im-internet.de, deutsch)",dc:"Preisangabenverordnung: §14 regelt Preistransparenz für Ladeinfrastruktur"},
+{url:"https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=CELEX:32023R1804",label:"AFIR Art. 5 – Preistransparenz & Ad-hoc-Pflichten (deutsch)",dc:"EU-Rechtsgrundlage für Preisanzeigepflicht, Ad-hoc-Zahlung und Tariftransparenz"},
+{url:"https://www.bundesnetzagentur.de/DE/Fachthemen/ElektrizitaetundGas/E-Mobilitaet/start.html",label:"BNetzA – AFIR & PAngV Compliance (deutsch)",dc:"Bundesnetzagentur als Überwachungsbehörde: Informationen zur Durchsetzung der Preispflichten"}
+]}
+]},
+{t:"AFIR-Durchführungsrechtsakte & DATEX-II/Mobilithek",items:[
+{type:"text",c:"Hinter der AFIR-Verordnung stehen nachgelagerte Durchführungsrechtsakte, die das operative Recht definieren. Ab April 2026 wird es ernst."},
+{type:"list",items:["Implementing Regulation (EU) 2025/655 vom 02.04.2025: Konkretisiert NAP-Datenbereitstellung","DATEX-II-Format: Ab 14. April 2026 verbindlich für statische und dynamische Ladepunktdaten","Mobilithek (DE): Nationales Datenportal – statische Daten innerhalb 24h, dynamische innerhalb 1 Minute aktualisieren","ISO-15118-Pflicht ab 01.01.2027: Alle neuen öffentlichen Ladepunkte müssen ISO 15118-20 unterstützen","Smart-Charging-Kommunikation ab 01.01.2027 nicht mehr optional","Grandfathering: Bestandsladepunkte ausgenommen, DC TEN-T bis 01.01.2027 nachrüsten","BNetzA überwacht Compliance seit LSV-Novelle 2024 – mit Sanktionsbefugnis"]},
+{type:"links",items:[
+{url:"https://www.pionix.com/news/afir-regulation-update-spring-2025",label:"Pionix – AFIR Update Frühjahr 2025 (englisch)",dc:"Detaillierte Analyse der AFIR-Durchführungsrechtsakte und ISO 15118-Pflicht ab 2027"}
+]}
+]}
+]}
+]},
+{id:"grid",ti:"Grid Integration",sub:"§14a EnWG, OSCP, OpenADR, Load Balancing & OICP",sections:[
+{t:"§14a EnWG im Detail",items:[
+{type:"text",c:"§14a EnWG ist die wichtigste neue Regulierung für EV-Laden in Deutschland. Seit November 2024 gilt: Alle neuen steuerbaren Verbrauchseinrichtungen >4,2kW müssen vom Netzbetreiber dimmbar sein."},
+{type:"list",items:["Pflicht: Neue Wallboxen/EVSE >4,2kW müssen steuerbar installiert werden (ab Nov 2024)","Was darf der VNB? Leistung auf 4,2kW drosseln – NICHT abschalten! Mindestladen garantiert","Kompensation für Nutzer: 19,50€/a reduziertes Netzentgelt je Anlage","Steuerungskanal: FNN-Steuerbox am Smart Meter Gateway (SMGW) – direkte Verbindung","Alternative: OCPP Smart Charging – CSMS empfängt Signal und sendet Charging Profile an EVSE","Alternative: OpenADR – Aggregator empfängt Signal und steuert CSMS","Alternative: Modbus/Direktkabel – proprietär, für Bestandsanlagen","Für CPOs öffentlich: §14a gilt für nicht-öffentlich (privat/Arbeitgeber), öffentlich via AFIR"]},
+{type:"code",c:"// §14a Steuerungsweg via OCPP\n\nVNB/DSO\n  └──[FNN-Steuerbox/CLS]──► Smart Meter Gateway\n                                └──[Signal: Dimmen auf 4,2kW]\n                                      └──► CSMS (empfängt via API)\n                                            └──[OCPP SetChargingProfile]──► EVSE\n                                                  (limit: 4200W, stackLevel: 9)"},
+{type:"links",items:[
+{url:"https://www.bundesnetzagentur.de/DE/Fachthemen/ElektrizitaetundGas/E-Mobilitaet/14aEnWG/start.html",label:"Bundesnetzagentur – §14a EnWG Umsetzung (deutsch)",dc:"Offizielle Informationsseite zur Umsetzung steuerbarer Verbrauchseinrichtungen"},
+{url:"https://www.vde.com/de/fnn",label:"VDE FNN – §14a Technische Umsetzungshinweise (deutsch)",dc:"Technische Anforderungen FNN-Steuerbox, CLS-Kanal, Schnittstellen"}
+]}
+]},
+{t:"§14a Modul 3 & AgNeS – Dynamische Netzentgelte",items:[
+{type:"list",items:["Modul 3 (zeitvariable Netzentgelte): Seit April 2025 für Endkunden wählbar bei steuerungsbereiten Anlagen","Kombination Modul 1+3: Steuerung durch VNB + günstigere Netzentgelte zu Schwachlastzeiten","AgNeS (Allgemeine Netzentgeltsystematik Strom): BNetzA-Verfahren GBK-25-01-1#3 seit Mai 2025","BNetzA präferiert: Dynamische Netzentgeltkomponenten + verpflichtende Baukostenzuschüsse","Finale Festlegung: Voraussichtlich 2026 – verbindliche ortsabhängige dynamische Netzentgelte frühestens 2027/2028","Übergangsregel: Bestandsanlagen mit alten Vereinbarungen bis 31.12.2028 geschützt","VDE-AR-N 4100 (Novelle 2025): Anmeldepflicht beim VNB für Ladeeinrichtungen ab 3,6kVA, Zustimmung ab 12kVA","Für CPOs/eMSPs: Tarifgestaltung muss zeitvariable Netzentgelte berücksichtigen – CSMS-seitig abbilden"]}
+]},
+{t:"OSCP – Open Smart Charging Protocol",items:[
+{type:"text",c:"OSCP (Open Smart Charging Protocol) ist die Schnittstelle zwischen dem CSMS eines CPOs und dem Energiemanagementsystem eines Standorts oder dem DSO (Netzbetreiber)."},
+{type:"list",items:["OSCP verbindet: CSMS ↔ DSO/EMS – übermittelt Kapazitätsprognosen","Funktion: DSO meldet verfügbare Netzkapazität für die nächsten Stunden an CSMS","CSMS nutzt OSCP-Daten um Smart Charging Profile entsprechend anzupassen","Unterschied zu OCPP: OCPP = CSMS↔EVSE | OSCP = CSMS↔DSO/EMS","Unterschied zu §14a: OSCP ist koordinierend (Prognosen), §14a ist direkte Steuerung","Unterschied zu OpenADR: OSCP = kapazitätsbasiert, OpenADR = ereignisbasiert (Preissignal)","DACH-Status 2025: noch wenig verbreitet, aber wächst mit Netzdigitalisierung"]},
+{type:"links",items:[
+{url:"https://www.openchargealliance.org/downloads/",label:"OCA – OSCP Spezifikation (englisch)",dc:"Open Smart Charging Protocol Spec – kostenlos von der Open Charge Alliance"}
+]}
+]},
+{t:"OpenADR 2.0",items:[
+{type:"text",c:"OpenADR (Open Automated Demand Response) ist ein offener Standard für automatisierte Demand-Response-Kommunikation zwischen Netzbetreibern, Aggregatoren und flexiblen Lasten wie EV-Ladepunkten."},
+{type:"list",items:["Architektur: VTN (Virtual Top Node) = Netzbetreiber/Aggregator sendet Signale","Architektur: VEN (Virtual End Node) = CSMS/EVSE empfängt und reagiert","Signaltypen: Preissignale (teuer/günstig), Kapazitätslimits, Curtailment-Anforderungen","Zusammenspiel: VEN (CSMS) empfängt OpenADR-Event → übersetzt in OCPP Smart Charging","Versionen: OpenADR 2.0b ist der aktuelle Standard","DACH-Status: einige DSOs nutzen OpenADR, Aggregatoren nutzen es für Regelenergie-Pools","Vorteil gegenüber §14a: internationaler Standard, nicht DE-spezifisch"]},
+{type:"links",items:[
+{url:"https://www.openadr.org/",label:"OpenADR Alliance – Standard & Spezifikation (englisch)",dc:"Offizielle Website mit Spezifikationen, Testprogrammen und Mitgliederliste"}
+]}
+]},
+{t:"Load Balancing Architekturen",items:[
+{type:"list",items:["Statisches Lastmanagement: fixer Gesamt-Grenzwert für alle EVSE am Standort (z.B. 80kW/4 EVSE)","Dynamisches Lastmanagement (DLM): Echtzeit-Messung + Umverteilung je nach Bedarf","Local Load Management (LLM): Algorithmus läuft lokal am Standort ohne Cloud-Verbindung","Equal Share: verfügbare Leistung gleichmässig auf alle aktiven EVSE verteilt","Priority-based: VIP-Nutzer, Fleet-Fahrzeuge, oder Fahrzeuge mit niedrigem SOC bevorzugt","Master-Slave Topologie: 1 EVSE als Controller (Master), Rest Slaves via Modbus/RS485","OCPP-basiert: CSMS sendet Charging Profiles – flexibel, aber latenzabhängig","Sizing-Regel: Gesamtleistung pro Standort = typisch 60–80% der installierten EVSE-Kapazität"]},
+{type:"code",c:"// Dynamic Load Balancing Beispiel\n// Standort: 4× 22kW EVSE, Netzanschluss: 50kW\n\nZeit 18:00: 4 Fahrzeuge angesteckt\nVerfügbar: 50kW ÷ 4 = 12,5kW je EVSE\n→ CSMS sendet: SetChargingProfile(limit: 12500W) an alle 4\n\nZeit 19:00: 2 Fahrzeuge fertig geladen\nVerfügbar: 50kW ÷ 2 = 25kW je EVSE\n→ CSMS sendet: SetChargingProfile(limit: 22000W) an 2 aktive"},
+{type:"links",items:[
+{url:"https://www.bundesnetzagentur.de/DE/Fachthemen/ElektrizitaetundGas/E-Mobilitaet/14aEnWG/start.html",label:"BNetzA – Lastmanagement & §14a Umsetzung (deutsch)",dc:"Technische Umsetzungsvarianten für Lastmanagement im §14a-Kontext"},
+{url:"https://www.bdew.de/energie/elektromobilitaet/",label:"BDEW – Smart Charging Leitfaden (deutsch)",dc:"Praxisleitfaden Load Balancing, Lastmanagement und Netzintegration"}
+]}
+]},
+{t:"OICP & Hubject-Ökosystem",items:[
+{type:"list",items:["OICP = Open Intercharge Protocol: von Hubject entwickelt, proprietär aber offen dokumentiert","Funktion identisch zu OCPI: POI-Daten, Token-Auth, Session-Daten, CDR, Preise","Verbreitung: grosse CPOs und eMSPs in DACH nutzen Hubject → OICP relevant","Hubject Intercharge: weltweites Netzwerk, >400.000 Ladepunkte angebunden","OICP-Module: EVSE Data, EVSE Status, Authorization, Charge Detail Records, Pricing","Crossclearance Hubject ↔ e-clearing.net: Token von e-clearing-Kunden funktionieren an Hubject-Ladepunkten und umgekehrt","Migration zu OCPI: Hubject unterstützt beide Protokolle – viele CPOs migrieren langfristig zu OCPI"]},
+{type:"links",items:[
+{url:"https://www.hubject.com/de/",label:"Hubject – OICP Dokumentation & Anbindung (deutsch)",dc:"Technische Dokumentation OICP und Anbindungsprozess an Intercharge Network"},
+{url:"https://www.e-clearing.net/de/",label:"e-clearing.net – OCPI Roaming Hub DE (deutsch)",dc:"Alternative zu Hubject mit Fokus auf deutschen Markt und OCPI-Standard"}
+]}
+]},
+{t:"WEG §20 – Wallbox-Recht für Wohnungseigentümer",items:[
+{type:"text",c:"Seit der WEG-Reform 2020 hat jeder Wohnungseigentümer in Deutschland das Recht auf Einbau einer Wallbox in der Gemeinschaftsgarage — auch gegen den Willen der anderen Eigentümer. Für Wohngebäude-Ladeinfrastruktur ist das ein Gamechanger."},
+{type:"list",items:["WEG §20 Abs. 2 Nr. 2: Anspruch auf bauliche Veränderungen für Ladestationen – kein Mehrheitsbeschluss nötig","Kosten: Wer will, zahlt selbst – die Gemeinschaft muss nicht mitzahlen","Genehmigung: Eigentümerversammlung muss zustimmen WIE gebaut wird, nicht OB","Mietrecht: Mieter haben kein direktes Recht, müssen Vermieter um Erlaubnis bitten (§554 BGB)","Umsetzung Praxis: Elektriker erstellt Konzept, WEG-Verwalter koordiniert Beschlussfassung","Lastmanagement Pflicht: Bei mehreren Wallboxen in einer Garage → dynamisches Lastmanagement nötig","Netzanschluss: VNB-Genehmigung ab 12kW (in manchen Netzen), §14a EnWG gilt auch hier","Schweiz: Stockwerkeigentum ähnlich – Mehrheitsbeschluss der STWE-Versammlung nötig"]},
+{type:"links",items:[
+{url:"https://www.adac.de/rund-ums-fahrzeug/elektromobilitaet/laden/wallbox-eigentumswohnung/",label:"ADAC – Wallbox in der Eigentumswohnung (deutsch)",dc:"Praktischer Ratgeber: WEG §20, Ablauf Beschlussfassung, Kosten, Lastmanagement"},
+{url:"https://www.gesetze-im-internet.de/woeigg/__20.html",label:"WEG §20 Volltext (gesetze-im-internet.de)",dc:"Gesetzestext: Bauliche Veränderungen, Ladestationen als privilegierte Massnahme"}
+]}
+]}
+]},
+{id:"reg_dach",ti:"Regulatorik CH & AT",sub:"Schweiz (NIN, ESTI, Mantelerlass) & Österreich (ElWG, NISG)",sections:[
+{t:"Schweiz: NIN 2025, NIV, ESTI & SIA 2060",items:[
+{type:"text",c:"Für die Schweiz gelten eigene Normen und Bewilligungsverfahren. Die NIN 2025 (Niederspannungs-Installationsnorm SN 411000) ist seit 1.1.2025 in Kraft und enthält das neue Kapitel 8.2 für Prosumer-/DC-Anlagen."},
+{type:"list",items:["NIN 2025 (SN 411000): Schweizer Installationsnorm, gilt seit 1.1.2025 – neues Kapitel 8.2 für DC/Prosumer","NIV (SR 734.27): Niederspannungsinstallationsverordnung – rechtliche Grundlage für Installationsbewilligungen","ESTI (Eidg. Starkstrominspektorat): Aufsichtsbehörde – erteilt Bewilligungen, prüft Sicherheitsnachweise (SiNa)","SIA 2060: Branchenstandard für Dimensionierung von Ladeinfrastruktur an Gebäuden in der Schweiz","Bewilligungspflicht: Art. 9 NIV (Installationsbewilligung) oder Art. 15 NIV (Anschlussbewilligung)","Meldepflicht Wallbox CH: bis 11kW einfache Meldung beim VNB, über 11kW Genehmigung nötig","Eichrecht CH: MetV (Messmittelverordnung) und METAS statt PTB – keine OCMF-Pflicht wie in DE"]},
+{type:"links",items:[
+{url:"https://www.esti.admin.ch/de/themen/niederspannungsinstallationen",label:"ESTI – Niederspannungsinstallationen (deutsch)",dc:"Bewilligungsverfahren, SiNa-Prüfung, Vorschriften für Ladeinfrastruktur in der Schweiz"},
+{url:"https://www.eit.swiss/de/recht-und-normen/normen",label:"EIT.swiss – Normenübersicht NIN 2025 (deutsch)",dc:"Branchenverband Elektro: NIN 2025 Änderungen, Schulungen, Praxisleitfäden"}
+]}
+]},
+{t:"Schweiz: Mantelerlass – ZEV, vZEV & LEG",items:[
+{type:"text",c:"Das Schweizer Stromgesetz (Mantelerlass) bringt seit 2025 drei Eigenverbrauchsmodelle mit direkter Relevanz für EV-Laden in Mehrparteienhäusern und Quartieren."},
+{type:"list",items:["ZEV (Zusammenschluss zum Eigenverbrauch): Bewährtes Modell – gemeinsamer Verbrauch hinter einem Anschlusspunkt","vZEV (virtueller ZEV, seit Jan 2025): Anschlussleitungen und lokale Infrastruktur gemeinsam nutzbar – auch über Parzellengrenzen","LEG (Lokale Elektrizitätsgemeinschaft, ab 1.1.2026): Gemeinschaftlicher Stromhandel über öffentliches Verteilnetz mit reduzierten Netznutzungstarifen","Für CPOs: ZEV/vZEV ermöglicht PV+EV-Laden-Kombination in MFH ohne separaten Netzanschluss","ElCom: Eidgenössische Elektrizitätskommission – Regulierungsbehörde für Strommarkt und Netztarife","VSE (Verband Schweiz. Elektrizitätsunternehmen): Publiziert Handbuch Ladeinfrastruktur und Branchenempfehlungen"]},
+{type:"links",items:[
+{url:"https://www.strom.ch/de/schwerpunkte/stromgesetz-mantelerlass",label:"VSE – Stromgesetz Mantelerlass (deutsch)",dc:"Verband Schweizerischer Elektrizitätsunternehmen: Zusammenfassung der Neuerungen"},
+{url:"https://www.ekz.ch/de/blue/wissen/2025/zev-leg.html",label:"EKZ – ZEV, vZEV und LEG erklärt (deutsch)",dc:"Praktische Erklärung der drei Eigenverbrauchsmodelle mit Beispielen"}
+]}
+]},
+{t:"Schweiz: ISG & Cybersecurity (BACS)",items:[
+{type:"list",items:["ISG (Informationssicherheitsgesetz): Seit 1.1.2025 mit 24h-Meldepflicht für Cybervorfälle","BACS (Bundesamt für Cybersicherheit): Empfänger der Meldungen – Schweizer Äquivalent zum BSI","Bussen: Bis CHF 100.000 bei Verletzung der Meldepflicht","Schweiz hat NIS2 NICHT ins nationale Recht übernommen – ISG ist eigenständig","Für CPOs in CH: Meldepflicht gilt wenn kritische Infrastruktur betroffen – VNB-Anbindung ist Trigger","Abgrenzung: EU-CPOs in CH müssen prüfen ob sie unter EU-NIS2 oder CH-ISG fallen"]},
+{type:"links",items:[
+{url:"https://www.ncsc.admin.ch/",label:"BACS (ehem. NCSC) – Bundesamt für Cybersicherheit (deutsch)",dc:"Schweizer Cybersicherheitsbehörde: Meldepflichten, Warnungen, Empfehlungen"}
+]}
+]},
+{t:"Österreich: ElWG 2025 & E-Control",items:[
+{type:"text",c:"Das Elektrizitätswirtschaftsgesetz (ElWG) ersetzt mittelfristig das alte ElWOG 2010. Verkündung 23.12.2025, erste Teile seit 24.12.2025 in Kraft – die operativen Regelungen zu Energiegemeinschaften greifen ab 1. Oktober 2026."},
+{type:"list",items:["ElWG §§65–72: Neue Regeln für Energiegemeinschaften (EEG, BEG) und gemeinsame Erzeugungsanlagen","ElWG §76: Ab Juni 2026 müssen neue PV-Anlagen ab 3,68kW netzwirksamer Leistung steuerbar sein","Lieferantenpflichten ab 100kW und Peer-to-Peer-Verträge neu geregelt","Neue Netzentgeltstruktur ab Jänner 2027 in Österreich","E-Control: Regulierungsbehörde – überwacht Netzzugang, Tarife, Marktregeln","EAG (Erneuerbaren-Ausbau-Gesetz): Förderung E-Mobilität mit 83 Mio. EUR Topf 2025","LADIN-Sonderrichtlinie: Förderung Ladeinfrastruktur in unterversorgten Gebieten AT","SMATRICS EnBW: Grösster HPC-Betreiber AT, 261 HPC-Punkte 2025, Expansion nach Norditalien"]},
+{type:"links",items:[
+{url:"https://cms.law/de/aut/legal-updates/gemeinsame-energienutzung-welche-moeglichkeiten-schafft-das-elwg",label:"CMS – ElWG Zusammenfassung (deutsch)",dc:"Juristische Analyse des neuen Elektrizitätswirtschaftsgesetzes mit Fokus Energiegemeinschaften"},
+{url:"https://smatrics.com/en/e-resources/subsidies-emobility",label:"SMATRICS – E-Mobilitätsförderung AT/DE (deutsch)",dc:"Aktuelle Förderprogramme für Ladeinfrastruktur in Österreich und Deutschland"}
+]}
+]},
+{t:"Österreich: NISG 2026 (Cybersecurity AT)",items:[
+{type:"list",items:["NISG 2026: Vom Nationalrat am 12.12.2025 beschlossen, verkündet 23.12.2025, in Kraft 1.10.2026","Schafft monokratische Behörde: Bundesamt für Cybersicherheit AT","Meldepflicht: Frühwarnung binnen 24h, Vollmeldung binnen 72h","Sektor Energie: Ladeinfrastrukturbetreiber ab 50 MA / 10 Mio. € Umsatz betroffen","Übergangsfristen: Bestehende Betreiber haben 6 Monate nach Inkrafttreten zur Compliance","Abgrenzung zu DE: Deutschland hat NIS2UmsuCG, Österreich hat NISG 2026 – unterschiedliche Schwellen","Für DACH-Consultants: Drei verschiedene Cybersecurity-Regime kennen (DE/AT/CH)"]},
+{type:"links",items:[
+{url:"https://positionen.wienerstadtwerke.at/aktuelles/nis-2-umsetzung-oesterreich",label:"Wiener Stadtwerke – NISG 2026 Zusammenfassung (deutsch)",dc:"Praxisnahe Zusammenfassung: Wer ist betroffen, Fristen, Meldepflichten in Österreich"}
+]}
 ]}
 ]}
 ];
@@ -1514,6 +1860,160 @@ function renderAnleitung(){
 </div>`;
 }
 
+
+// ═══ GLOSSAR DATA ════════════════════════════════════════════
+
+const GLOSSAR = [
+// Protokolle & Standards
+{k:"OCPP",f:"Open Charge Point Protocol",d:"Kommunikationsstandard EVSE ↔ CSMS. Versionen: 1.6 (verbreitet), 2.0.1 (neu), 2.1 (V2G). Von der Open Charge Alliance (OCA) verwaltet.",c:"Protokoll"},
+{k:"OCPI",f:"Open Charge Point Interface",d:"Roaming-Protokoll zwischen CPO und eMSP. Module: Locations, Tokens, Sessions, CDRs, Tariffs, Commands. Von der EVRoaming Foundation verwaltet.",c:"Protokoll"},
+{k:"OICP",f:"Open Intercharge Protocol",d:"Hubjects proprietäres Roaming-Protokoll. Technisch ähnlich OCPI. Weit verbreitet in DACH via Hubject-Hub.",c:"Protokoll"},
+{k:"OSCP",f:"Open Smart Charging Protocol",d:"Schnittstelle CSMS ↔ DSO/EMS für Kapazitätsprognosen. Basis für kapazitätsbasiertes Smart Charging.",c:"Protokoll"},
+{k:"OpenADR",f:"Open Automated Demand Response",d:"Standard für automatisierte Demand-Response. VTN (Netzbetreiber) sendet Signale an VEN (CSMS/EVSE). Version 2.0b aktuell.",c:"Protokoll"},
+// Systemrollen
+{k:"CPO",f:"Charge Point Operator",d:"Betreiber der Ladeinfrastruktur. Verantwortlich für Betrieb, Wartung, Abrechnung. Letztverbraucher im Sinne des Eichrechts.",c:"Rolle"},
+{k:"eMSP",f:"e-Mobility Service Provider",d:"Dienstleister für EV-Fahrer. Gibt RFID-Karten/Apps aus, schließt Roaming-Verträge mit CPOs, rechnet mit Endkunden ab. Auch: EMP, MSP.",c:"Rolle"},
+{k:"EMP",f:"Electric Mobility Provider",d:"Alternative Bezeichnung für eMSP. In manchen Märkten und Dokumenten verwendet. Identische Funktion.",c:"Rolle"},
+{k:"VNB",f:"Verteilnetzbetreiber",d:"Betreiber des lokalen Stromverteilnetzes (Nieder-/Mittelspannung). Stellt Netzanschluss bereit. Auch: DSO (Distribution System Operator).",c:"Rolle"},
+{k:"DSO",f:"Distribution System Operator",d:"Englische Bezeichnung für VNB. Betreibt Verteilnetz, vergütet Regelenergie, steuert §14a-Anlagen.",c:"Rolle"},
+{k:"ÜNB",f:"Übertragungsnetzbetreiber",d:"Betreiber des Höchstspannungsnetzes. In DE: 50Hertz, TenneT, Amprion, TransnetBW. In CH: Swissgrid.",c:"Rolle"},
+{k:"NSP",f:"Navigation Service Provider",d:"Anbieter von Navigationsdaten. Bezieht POI-Daten (Standorte, Verfügbarkeit) via OCPI Locations vom CPO.",c:"Rolle"},
+// Software-Systeme
+{k:"CSMS",f:"Charge Station Management System",d:"Backend-Software des CPOs. Verwaltet EVSE via OCPP. Neue Bezeichnung ab OCPP 2.0.1. Identisch mit CPMS.",c:"System"},
+{k:"CPMS",f:"Charge Point Management System",d:"Ältere Bezeichnung für CSMS. Technisch identisch. AMPECO, Monta, Virta, has·to·be sind CPMS/CSMS-Anbieter.",c:"System"},
+{k:"EMS",f:"Energy Management System",d:"Steuert Energieflüsse am Standort: EVSE, PV, BESS, Netz. Kommuniziert mit CSMS via OSCP oder proprietary.",c:"System"},
+{k:"BMS",f:"Battery Management System",d:"Überwacht Zellen in EV-Batterie oder BESS: Spannung, Temperatur, SOC, SOH. Schützt vor Über-/Unterspannung.",c:"System"},
+// Hardware
+{k:"EVSE",f:"Electric Vehicle Supply Equipment",d:"Oberbegriff für Ladestation/Wallbox. Beinhaltet: Steuerung, CP-Signal, Kabel/Stecker, Zähler. Nicht das Kabel allein.",c:"Hardware"},
+{k:"OBC",f:"On-Board Charger",d:"Wandelt AC-Netzstrom in DC für die Fahrzeugbatterie. Limitiert AC-Ladeleistung (7/11/22kW). Bei DC-Laden umgangen.",c:"Hardware"},
+{k:"BESS",f:"Battery Energy Storage System",d:"Stationärer Batteriespeicher. Anwendungen: Peak Shaving, Arbitrage, FCR. Chemie meist LFP. Anbieter: CATL, Sonnen, Tesla Megapack.",c:"Hardware"},
+// Steckerstandards
+{k:"CCS",f:"Combined Charging System",d:"DC-Schnellladestandard. Combo 2 (EU) = Typ-2 + DC-Pins. Bis 350kW. Protokoll: ISO 15118 via PLC.",c:"Standard"},
+{k:"HPC",f:"High Power Charging",d:"Schnellladung >150kW. Braucht Mittelspannungsanschluss ab ~150kW. Anbieter: IONITY, Alpitronic, Kempower.",c:"Standard"},
+// Authentifizierung
+{k:"RFID",f:"Radio-Frequency Identification",d:"Kontaktlose Identifikation via NFC. 4 oder 7 Byte UID. Ausgestellt vom eMSP. Häufigste Authentifizierungsmethode.",c:"Auth"},
+{k:"EMAID",f:"Electric Mobility Account Identifier",d:"Eindeutige Nutzer-ID im Roaming. Format: [CC]-[eMSP]-[Typ][Instanz]-[Check]. Basis für OCPI Token und ISO 15118 PnC.",c:"Auth"},
+{k:"UID",f:"Unique Identifier",d:"Eindeutige Kennung einer RFID-Karte. 4 oder 7 Byte hexadezimal (z.B. AB:CD:EF:12). Wird via OCPI als Token ausgetauscht.",c:"Auth"},
+{k:"PnC",f:"Plug & Charge",d:"Automatische Authentifizierung via ISO 15118. Kein RFID/App nötig. Zertifikat im Fahrzeug verifiziert den Nutzervertrag.",c:"Auth"},
+// Batterie-Kennwerte
+{k:"SOC",f:"State of Charge",d:"Ladezustand der Batterie in % (0–100%). Wird vom BMS via Coulomb Counting und Spannungskennlinie berechnet.",c:"Batterie"},
+{k:"SOH",f:"State of Health",d:"Alterungszustand der Batterie. 100% = neu, <80% = EoL für EV-Nutzung (Second Life sinnvoll). Kapazitätsverlust.",c:"Batterie"},
+{k:"SOP",f:"State of Power",d:"Aktuelle maximale Leistungsfähigkeit der Batterie. Sinkt bei Kälte und Alterung. Wichtig für Schnellladeplanung.",c:"Batterie"},
+{k:"C-Rate",f:"Charge Rate",d:"Lade-/Entladerate relativ zur Kapazität. 1C = Vollladung in 1h. DC-Schnellladen: typisch 1,5–3C.",c:"Batterie"},
+{k:"NMC",f:"Nickel-Mangan-Cobalt",d:"Häufige EV-Zellchemie. Hohe Energiedichte, mittlere Lebensdauer. Für Mittelklasse- und Premium-EVs.",c:"Batterie"},
+{k:"LFP",f:"Lithium-Eisenphosphat",d:"EV-Zellchemie ohne Kobalt. Günstig, sicher, lange Lebensdauer. Wächst stark. CATL/BYD dominieren.",c:"Batterie"},
+// Energie & Abrechnung
+{k:"CDR",f:"Charge Detail Record",d:"Abrechnungsdatensatz pro Ladesitzung. Enthält: kWh, Zeit, Standort, Auth. Format: OCPI CDR. Signiert: OCMF.",c:"Abrechnung"},
+{k:"OCMF",f:"Open Charge Metering Format",d:"JSON-Format für eichrechtskonforme Messwerte mit digitaler Signatur. Pflicht in DE für öffentliche Ladepunkte.",c:"Abrechnung"},
+{k:"MID",f:"Measuring Instruments Directive",d:"EU-Richtlinie für Messgeräte. MID-konformer Zähler ist Pflicht für öffentliches Laden in DE/AT.",c:"Abrechnung"},
+{k:"CDR",f:"Charge Detail Record",d:"Abrechnungsdatensatz pro Ladesitzung. Enthält: kWh, Zeit, Standort, Authentifizierungsmethode.",c:"Abrechnung"},
+// Regulatorik
+{k:"AFIR",f:"Alternative Fuels Infrastructure Regulation",d:"EU-Verordnung 2023/1804. Pflicht: AC-Laden alle 60km Autobahn, HPC ≥150kW, Ad-hoc-Zahlung, kWh-Preis.",c:"Regulatorik"},
+{k:"§14a",f:"§14a EnWG",d:"Deutsche Regelung für steuerbare Verbrauchseinrichtungen. Neue EVSE >4,2kW müssen vom VNB dimmbar sein. Kompensation 19,50€/a.",c:"Regulatorik"},
+{k:"MessEG",f:"Mess- und Eichgesetz",d:"Deutsches Gesetz für eichpflichtige Messungen. §3: öffentliches Laden eichpflichtig. Basis für OCMF-Pflicht.",c:"Regulatorik"},
+{k:"BEW",f:"Bundesförderung Ladeinfrastruktur",d:"BAFA-Förderprogramm DE. Bis 40% Förderquote für gewerbliche Ladepunkte. Antrag vor Baubeginn!",c:"Regulatorik"},
+// Netz & Energie
+{k:"FCR",f:"Frequency Containment Reserve",d:"Primärregelleistung. Reaktion <30 Sekunden. EVs und BESS können via Aggregator teilnehmen.",c:"Energie"},
+{k:"aFRR",f:"Automatic Frequency Restoration Reserve",d:"Sekundärregelleistung. Langsamer als FCR. Höhere Mindestgrössen. Zunehmend relevant für EV-Aggregatoren.",c:"Energie"},
+{k:"PPA",f:"Power Purchase Agreement",d:"Langfristiger Stromliefervertrag. CPOs sichern sich günstige kWh-Preise für 3–10 Jahre. Reduziert OPEX-Risiko.",c:"Energie"},
+{k:"V2G",f:"Vehicle-to-Grid",d:"EV speist Strom ins Netz zurück. Protokoll: ISO 15118-20 BPT. Status DACH 2025: Pilotnetzwerke, kein Massenmarkt.",c:"Energie"},
+{k:"V2H",f:"Vehicle-to-Home",d:"EV versorgt Haus mit gespeicherter Energie. Kein Netz-Rückspeisevertrag nötig. EVSE: Wallbox Quasar 2, E3/DC.",c:"Energie"},
+// Business
+{k:"CAPEX",f:"Capital Expenditure",d:"Investitionsausgaben: Hardware, Netzanschluss, Tiefbau, Installation. Einmalig. Faustregel: 1.500–5.000 CHF/kW.",c:"Business"},
+{k:"OPEX",f:"Operational Expenditure",d:"Betriebskosten: Strom, Netzentgelte, CSMS, Wartung, Zahlung. Laufend pro Jahr.",c:"Business"},
+{k:"ARPU",f:"Average Revenue per User",d:"Durchschnittlicher Erlös pro aktivem Nutzer pro Monat. KPI für eMSPs zur Messung der Monetarisierung.",c:"Business"},
+{k:"SLA",f:"Service Level Agreement",d:"Vereinbarung über Serviceniveau. CPO-relevante SLAs: Uptime >95%, MTTR <4h, Session Success Rate >97%.",c:"Business"},
+{k:"MTTR",f:"Mean Time to Repair",d:"Durchschnittliche Zeit bis zur Wiederherstellung nach Ausfall. HPC-Benchmark: <4h. Wichtige SLA-Kennzahl.",c:"Business"},
+{k:"EoL",f:"End of Life",d:"Lebensende. Batterie-EoL: SOH <80%. EVSE-EoL: typisch 10–15 Jahre. Ab EoL → Second Life oder Recycling.",c:"Business"},
+// Organisationen
+{k:"OCA",f:"Open Charge Alliance",d:"Non-Profit, verwaltet OCPP. Zertifizierungsprogramme für 1.6 und 2.0.1. Mitglieder: Hersteller, CPOs, Software-Anbieter.",c:"Organisation"},
+{k:"CharIN",f:"Charging Interface Initiative",d:"Industrie-Allianz für CCS-Standard und ISO 15118. Testfestivals für Interoperabilität. Sitz: Berlin.",c:"Organisation"},
+{k:"AVERE",f:"European Association for Electromobility",d:"EU-Dachverband für E-Mobilität. Statistiken, Policy-Arbeit, nationale Mitgliedsverbände.",c:"Organisation"},
+{k:"BDEW",f:"Bundesverband der Energie- und Wasserwirtschaft",d:"Deutscher Energieverband. Leitfäden für Ladeinfrastruktur, Netzentgelte, Smart Charging.",c:"Organisation"},
+{k:"PTB",f:"Physikalisch-Technische Bundesanstalt",d:"Nationale Metrologiebehörde DE. Leitfäden für Eichrecht, MID, OCMF an Ladesäulen.",c:"Organisation"},
+{k:"LSV",f:"Ladesäulenverordnung",d:"Deutsche Verordnung für öffentliche Ladepunkte. Seit 1.1.2026 neu geregelt. Technische Mindestanforderungen, Meldepflicht beim BNetzA-Ladesäulenregister.",c:"Regulatorik"},
+{k:"PAngV",f:"Preisangabenverordnung",d:"Regelt Preisanzeigepflichten an Ladesäulen. §14 PAngV: kWh-Preis vor Ladestart vollständig anzeigen. Bestandsanlagen: QR-Code bis 2027 erlaubt.",c:"Regulatorik"},
+{k:"THG",f:"Treibhausgasminderungsquote",d:"Erlösquelle für CPOs: Ladestrommengen als vermiedene CO₂-Emissionen zertifizieren und verkaufen. Erlös ~35€/MWh (2025). Aggregatoren: emobility.energy, The Mobility House.",c:"Business"},
+{k:"CVE",f:"Common Vulnerabilities and Exposures",d:"Standardisierte Kennung für Sicherheitslücken. BSI 2025: 81 CVEs in Ladestationen gefunden. Relevant für EVSE-Einkauf und Sicherheitsaudits.",c:"Regulatorik"},
+{k:"NIS2",f:"Network and Information Security Directive 2",d:"EU-Richtlinie für kritische Infrastruktur. Grosse Ladeinfrastruktur-Betreiber unterliegen erhöhten Sicherheitspflichten: Risikomanagement, Meldepflicht bei Vorfällen.",c:"Regulatorik"},
+{k:"BImSchG",f:"Bundesimmissionsschutzgesetz",d:"Rechtsgrundlage für THG-Prämie (§37a). Mineralölunternehmen müssen Treibhausgasminderungsquote erfüllen – durch Kauf von Ladestrom-Zertifikaten.",c:"Regulatorik"},
+{k:"Leitstelle",f:"Nationale Leitstelle Ladeinfrastruktur",d:"Deutsches Fachzentrum für öffentliche Ladeinfrastruktur. Veröffentlicht monatliche Berichte, Glossar, Flächen-Tool für Standortplanung.",c:"Organisation"},
+{k:"GEIG",f:"Gebäude-Elektromobilitätsinfrastruktur-Gesetz",d:"Verpflichtet Gebäudeeigentümer zur Ladeinfrastruktur. Seit 1.1.2025: Nichtwohngebäude >20 Stellplätze = mindestens 1 Ladepunkt. Ab 2027 verschärft (EPBD).",c:"Regulatorik"},
+{k:"WEG §20",f:"Wohnungseigentumsgesetz §20",d:"Seit 2020: Jeder Wohnungseigentümer hat Recht auf Wallbox-Einbau in Gemeinschaftsgarage – auch ohne Mehrheitsbeschluss der Eigentümergemeinschaft.",c:"Regulatorik"},
+{k:"MCS",f:"Megawatt Charging System",d:"CharIN-Standard für LKW-/Schwerlast-Laden bis 3,75 MW. Stecker: MCS-Connector. Rollout 2025–2027. Milence (Daimler Truck/Volvo/Traton JV) baut EU-weites MCS-Netz. Relevant für Truck-CPOs und Logistik-Depots.",c:"Standard"},
+{k:"CaaS",f:"Charging as a Service",d:"Geschäftsmodell: CPO bietet Rundum-Sorglos-Paket (Hardware, Installation, Betrieb, Abrechnung). Standorteigentümer zahlt monatliche Gebühr oder Revenue Share.",c:"Business"},
+{k:"Ladekurve",f:"Charging Curve",d:"EVs laden nicht linear: volle Leistung bis ~50–80% SOC, danach sinkt Ladeleistung stark. Grund: BMS schützt Batterie vor Überladung. Wichtig für Standzeit-Kalkulation.",c:"Batterie"},
+{k:"EPBD",f:"Energy Performance of Buildings Directive",d:"EU-Gebäuderichtlinie 2024: Verschärft Ladeinfrastruktur-Pflichten ab 2027 (Neubauten ab 3 Stellplätzen). Muss in GEIG-Novelle überführt werden.",c:"Regulatorik"},
+{k:"NACS",f:"North American Charging Standard",d:"Tesla-Steckerstandard, seit 2023 SAE J3400. In Nordamerika dominant. In DACH nicht relevant (CCS Combo 2 Standard), aber für globale Marktkenntnis wichtig.",c:"Standard"},
+{k:"IEC 63584",f:"OCPP als IEC-Norm",d:"OCPP 2.0.1 wurde 2024 durch IEC als EN IEC 63584:2025 angenommen. Ausschreibungen fordern zunehmend IEC-Konformität statt generisch OCPP.",c:"Standard"},
+{k:"DATEX-II",f:"Datenformat für Verkehrsinformationen",d:"Ab April 2026 verbindliches Format für NAP-Datenbereitstellung (Ladepunkt-Standorte, Preise, Verfügbarkeit) gemäss AFIR Implementing Regulation 2025/655.",c:"Standard"},
+{k:"Mobilithek",f:"Nationales Mobilitätsdatenportal DE",d:"Datenplattform des BMV: Statische Daten 24h, dynamische 1 Minute Aktualisierung. CPOs müssen Ladepunktdaten ab April 2026 im DATEX-II-Format liefern.",c:"System"},
+{k:"AgNeS",f:"Allgemeine Netzentgeltsystematik Strom",d:"BNetzA-Verfahren für dynamische Netzentgelte. Finale Festlegung 2026 erwartet. Ortsabhängige dynamische Netzentgelte frühestens 2027/2028.",c:"Regulatorik"},
+{k:"NIN",f:"Niederspannungs-Installationsnorm (CH)",d:"SN 411000, seit 1.1.2025 neue Fassung. Schweizer Pendant zur VDE. Neues Kapitel 8.2 für Prosumer/DC-Anlagen. Basis für Ladeinfrastruktur-Installation.",c:"Standard"},
+{k:"NIV",f:"Niederspannungsinstallationsverordnung (CH)",d:"SR 734.27. Schweizer Rechtsgrundlage für Installationsbewilligungen. Art. 9: Installationsbewilligung, Art. 15: Anschlussbewilligung.",c:"Regulatorik"},
+{k:"ESTI",f:"Eidgenössisches Starkstrominspektorat",d:"Schweizer Aufsichtsbehörde für elektrische Installationen. Erteilt Bewilligungen, prüft Sicherheitsnachweise (SiNa) nach NIV.",c:"Organisation"},
+{k:"SIA 2060",f:"Merkblatt Ladeinfrastruktur Gebäude (CH)",d:"Branchenstandard für Dimensionierung von Ladeinfrastruktur an Schweizer Gebäuden. Empfiehlt Leistungsstufen und Installationskonzepte.",c:"Standard"},
+{k:"ZEV",f:"Zusammenschluss zum Eigenverbrauch (CH)",d:"Schweizer Modell: Gemeinsamer Verbrauch von PV-Strom hinter einem Anschlusspunkt. Seit Mantelerlass 2025 ergänzt durch vZEV und LEG.",c:"Regulatorik"},
+{k:"LEG",f:"Lokale Elektrizitätsgemeinschaft (CH)",d:"Ab 1.1.2026: Gemeinschaftlicher Stromhandel über öffentliches Verteilnetz mit reduzierten Netznutzungstarifen. Neues Modell aus dem Mantelerlass.",c:"Regulatorik"},
+{k:"ISG",f:"Informationssicherheitsgesetz (CH)",d:"Seit 1.1.2025: 24h-Meldepflicht für Cybervorfälle an BACS. Bussen bis CHF 100.000. Schweiz hat NIS2 NICHT übernommen – ISG ist eigenständig.",c:"Regulatorik"},
+{k:"BACS",f:"Bundesamt für Cybersicherheit (CH)",d:"Schweizer Cybersicherheitsbehörde (ehem. NCSC). Empfänger der Meldungen nach ISG. Äquivalent zum deutschen BSI.",c:"Organisation"},
+{k:"ElWG",f:"Elektrizitätswirtschaftsgesetz (AT)",d:"Verkündet 23.12.2025, ersetzt ElWOG 2010. Neue Regeln für Energiegemeinschaften, steuerbare PV ab 3,68kW, neue Netzentgelte ab 2027.",c:"Regulatorik"},
+{k:"NISG",f:"Netz- und Informationssicherheitsgesetz (AT)",d:"Österreichs NIS2-Umsetzung. In Kraft 1.10.2026. Meldepflicht 24h/72h. Ladeinfrastruktur-Betreiber ab 50 MA / 10 Mio. EUR betroffen.",c:"Regulatorik"},
+{k:"E-Control",f:"Regulierungsbehörde Strommarkt (AT)",d:"Österreichische Regulierungsbehörde für Strom und Gas. Überwacht Netzzugang, Tarife und Marktregeln. Pendant zur deutschen BNetzA.",c:"Organisation"},
+{k:"VdS 3885",f:"Brandschutzrichtlinie EV-Laden in Garagen",d:"GDV-Tochter VdS: Standard für Planung, Installation und Betrieb von Ladeeinrichtungen in geschlossenen Garagen. Pflichtlektüre für Tiefgaragen-Projekte.",c:"Standard"},
+{k:"KRITIS",f:"Kritische Infrastrukturen (DE)",d:"KRITIS-Dachgesetz ab 2026: Physische Resilienz ergänzend zu NIS2. Ladeinfrastruktur als Teil der Verkehrs-/Energieinfrastruktur erfasst.",c:"Regulatorik"},
+{k:"CRA",f:"Cyber Resilience Act (EU)",d:"EU 2024/2847: Hardware-OEMs müssen Security-Updates für Produktlebenszeit liefern. Vollvollzug ab 11.12.2027. Betrifft Wallbox/HPC-Beschaffung.",c:"Regulatorik"},
+{k:"ChargeLeague",f:"HPC-Roaming-Allianz (ex Spark Alliance)",d:"IONITY, Fastned, Electra, Atlante: Peer-to-Peer-Roaming ohne Hub. 1.700 Standorte, 11.000+ Ladepunkte, 25+ Länder. Umbenannt Dez 2025.",c:"Organisation"},
+{k:"Milence",f:"LKW-Ladenetz-JV",d:"Joint Venture von Daimler Truck, Volvo Group, Traton. Baut EU-weites Schwerlast-Ladenetz mit MCS-Stationen. Pflicht-Wissen für HDV-Beratung.",c:"Organisation"},
+{k:"S.A.F.E.",f:"Transparenzsoftware Eichrecht",d:"Open-Source-Verifizierungstool für OCMF-signierte Messwerte. Pflicht-Komplementärsoftware zum Eichrecht in Deutschland. Von SAFE e.V. bereitgestellt.",c:"System"}
+];
+
+// ═══ RENDER: GLOSSAR ════════════════════════════════════════
+
+function renderGlossar(){
+  const el=document.getElementById('panel-glossar');
+  const cats=[...new Set(GLOSSAR.map(g=>g.c))];
+  const catColors={'Protokoll':'--l3','Rolle':'--l2','System':'--l1','Hardware':'--l4','Standard':'--l2','Auth':'--l3','Batterie':'--l5','Abrechnung':'--l4','Regulatorik':'--l5','Energie':'--l6','Business':'--l4','Organisation':'--l1'};
+  
+  el.innerHTML=`<div class="sh">
+<div class="st">📋 Glossar</div>
+<div class="ss">${GLOSSAR.length} Fachbegriffe · alle wichtigen Abkürzungen der EV-Ladeinfrastruktur</div>
+</div>
+<input type="text" class="gl-search" placeholder="Begriff suchen (z.B. OCPP, CPO, EMAID...)" oninput="filterGlossar(this.value)" id="gl-input">
+<div id="gl-content"></div>`;
+  renderGlossarItems('');
+}
+
+function renderGlossarItems(query){
+  const el=document.getElementById('gl-content');
+  if(!el)return;
+  const q=query.toLowerCase().trim();
+  const filtered=q?GLOSSAR.filter(g=>g.k.toLowerCase().includes(q)||g.f.toLowerCase().includes(q)||g.d.toLowerCase().includes(q)):GLOSSAR;
+  
+  if(q){
+    el.innerHTML=`<div class="gl-grid">${filtered.map(g=>renderGlossarItem(g)).join('')}</div>`;
+  } else {
+    const cats=[...new Set(GLOSSAR.map(g=>g.c))];
+    el.innerHTML=cats.map(cat=>{
+      const items=filtered.filter(g=>g.c===cat);
+      if(!items.length)return'';
+      return`<div class="gl-cat">${cat}</div><div class="gl-grid">${items.map(g=>renderGlossarItem(g)).join('')}</div>`;
+    }).join('');
+  }
+}
+
+function renderGlossarItem(g){
+  const catColors={'Protokoll':'--l3','Rolle':'--l2','System':'--l1','Hardware':'--l4','Standard':'--l2','Auth':'--l3','Batterie':'--l5','Abrechnung':'--l4','Regulatorik':'--l5','Energie':'--l6','Business':'--l4','Organisation':'--l1'};
+  const col=catColors[g.c]||'--ac';
+  return`<div class="gl-item">
+<div class="gl-term" style="color:var(${col})">${g.k}</div>
+<div class="gl-full">${g.f}</div>
+<div class="gl-def">${g.d}</div>
+</div>`;
+}
+
+function filterGlossar(q){renderGlossarItems(q);}
+
 // ═══ INIT ════════════════════════════════════════════════════
 
 document.addEventListener('DOMContentLoaded',()=>{
@@ -1526,6 +2026,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   renderFlashcards();
   renderRessourcen();
   renderAnleitung();
+  renderGlossar();
   renderTimeline();
   updateOverall();
   
